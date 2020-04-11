@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<title>English-for-kids</title>
@@ -7,14 +7,16 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="">
 
 
 <ul id="slide-out" class="sidenav sidenav-close">
 	<li><a href="#!" class=""><i class="blue-text material-icons">home
 	</i>Main page
 	</a></li>
-	<li><div class="divider"></div></li>
+	<li>
+		<div class="divider"></div>
+	</li>
 	<li><a class="subheader">Categories</a></li>
 	<li><a href="#!" class=""><i class="red-text material-icons">accessibility
 	</i>Action (Set A)
@@ -41,26 +43,110 @@
 	</i>Emotion
 	</a></li>
 </ul>
-<div class="container">
+<div class="container ">
 
 	<div class="section">
 		<div class="row">
-<div class="col s6">
-	<a href="#" data-target="slide-out"
-	   class="hoverable sidenav-trigger btn-floating btn-large pulse red"><i
-			class="material-icons">menu</i></a>
-</div>
+			<div class="col m2 s12">
+				<a href="#" data-target="slide-out"
+				   class="hoverable z-depth-2 sidenav-trigger btn-floating btn-large red"><i
+						class="material-icons">menu</i></a>
+			</div>
+			<div class="switcher col m10 s12">
+				<div class="switch center">
+					<label class="">
+
+						<h4 style="display: inline">Train</h4>
+						<i class=" material-icons valign-wrapper">face
+						</i>
+						<input type="checkbox">
+						<span class="lever pulse z-depth-3 "
+						      style="vertical-align: top; margin: 13px 20px;"></span>
+						<i class="red-text material-icons">extension
+						</i>
+						<h4 class="red-text" style="display: inline">Play
+						</h4>
+
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="section categories">
+			<div class="row">
+				<div class="col l3 s6">
+					<div
+							class="actionA card-image play-gradient hoverable center-align z-depth-2">
+						<img src="assets/img/dance.jpg" class="responsive-img">
+						<span class="card-title ">Action (Set A)</span>
+					</div>
+				</div>
+				<div class="col l3 s6">
+					<div
+							class="actionB card-image train-gradient hoverable center-align z-depth-2">
+						<img src="assets/img/swim.jpg" class="responsive-img">
+						<span class="card-title">Action (Set B)</span>
+					</div>
+				</div>
+				<div class="col l3 s6">
+					<div
+							class="actionC card-image train-gradient hoverable center-align z-depth-2">
+						<img src="assets/img/play.jpg" class="responsive-img">
+						<span class="card-title">Action (Set C)</span>
+					</div>
+				</div>
+				<div class="col l3 s6">
+					<div
+							class="adjective card-image train-gradient hoverable center-align z-depth-2">
+						<img src="assets/img/happy.jpg" class="responsive-img">
+						<span class="card-title">Adjective</span>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col l3 s6">
+					<div
+							class="animalA card-image train-gradient  hoverable center-align z-depth-2">
+						<img src="assets/img/fish1.jpg" class="responsive-img">
+						<span class="card-title ">Animal (Set A)</span>
+					</div>
+				</div>
+				<div class="col l3 s6">
+					<div
+							class="animalB card-image train-gradient hoverable center-align z-depth-2">
+						<img src="assets/img/dog.jpg" class="responsive-img">
+						<span class="card-title">Animal (Set B)</span>
+					</div>
+				</div>
+				<div class="col l3 s6">
+					<div
+							class="clothes card-image train-gradient hoverable center-align z-depth-2">
+						<img src="assets/img/skirt.jpg" class="responsive-img">
+						<span class="card-title">Clothes</span>
+					</div>
+				</div>
+				<div class="col l3 s6">
+					<div
+							class="emotion card-image train-gradient hoverable center-align z-depth-2">
+						<img src="assets/img/angry.jpg" class="responsive-img">
+						<span class="card-title">Emotion</span>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
+
+
 </div>
 
 <script src="script.js"></script>
 <script src="js/materialize.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         var elems = document.querySelectorAll('.sidenav');
-        var instances = M.Sidenav.init(elems, {edge:'left', draggable:'true',
-            preventScrolling:'true',inDuration: 500,outDuration: 500,});
+        var instances = M.Sidenav.init(elems, {
+            edge: 'left', draggable: 'true',
+            preventScrolling: 'true', inDuration: 500, outDuration: 500,
+        });
     });
 
 </script>
