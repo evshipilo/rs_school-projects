@@ -28,6 +28,7 @@ const changeColorOfCategoryCards = () => {
 
 const changeTrainCards = () => {
   if (applicationState.isTrain) {
+    document.querySelector('.stars-row').classList.add('disabled-element');
     document.querySelectorAll('.train-card').forEach((el) => {
       el.classList.remove('play-gradient');
       el.classList.add('train-gradient');
@@ -39,6 +40,7 @@ const changeTrainCards = () => {
       el.classList.remove('disabled-element');
     });
   } else {
+    document.querySelector('.stars-row').classList.remove('disabled-element');
     document.querySelectorAll('.train-card').forEach((el) => {
       el.classList.remove('train-gradient');
       el.classList.add('play-gradient');
