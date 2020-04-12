@@ -3,7 +3,7 @@ import { cards } from './js/Cards.js';
 const applicationState = {
   isTrain: 'true',
   isCategoriesPage: 'true',
-  flip: 'false',
+  isStartGame: 'false',
 };
 
 const changeStateIsTrain = () => {
@@ -58,13 +58,37 @@ const changeTrainCards = () => {
 const flipOnHelpClick = (event) => {
   if (event.target.classList.contains('help')) {
     const e = event;
-    applicationState.flip = true;
     const parent = e.target.parentElement;
     parent.style.transform = 'rotateY(180deg)';
     parent.parentElement.addEventListener('mouseleave', () => {
       parent.style.transform = 'rotateY(0deg)';
     }, { once: true });
   }
+};
+
+const goToHomePage = () => {
+  applicationState.isStartGame = false;
+  document.querySelector('.categories').classList.remove('disabled-element');
+  document.querySelector('.train').classList.add('disabled-element');
+};
+
+const changeVariablesOfTrainCards = (numOfPage) => {
+
+};
+
+const goToTrainPage = (numOfPage) => {
+  document.querySelector('.categories').classList.add('disabled-element');
+  document.querySelector('.train').classList.remove('disabled-element');
+  changeVariablesOfTrainCards(numOfPage);
+};
+
+const addSidenavClickHandler = () => {
+  document.querySelector('.sidenav').addEventListener('click', (event) => {
+    if (event.target.classList.contains('set0')) goToHomePage();
+    for (let i = 1; i <= 8; i += 1) {
+      if (event.target.classList.contains(`set${i}`)) goToTrainPage(i);
+    }
+  });
 };
 
 const addQuestionClickHandler = () => {
@@ -83,4 +107,5 @@ const addCheckboxClickHandler = () => {
 window.onload = function () {
   addCheckboxClickHandler();
   addQuestionClickHandler();
+  addSidenavClickHandler();
 };
