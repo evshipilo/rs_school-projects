@@ -70,7 +70,32 @@ const flipOnHelpClick = (event) => {
   }
 };
 
+const changeRepeatButtonToStart = () => {
+  const startButton = document.querySelector('.start-button');
+  startButton.classList.add('pulse');
+  startButton.classList.add('red');
+  startButton.classList.remove('green');
+  startButton.innerHTML = 'START GAME';
+};
+
+const changeStartGameButtonToRepeat = () => {
+  const startButton = document.querySelector('.start-button');
+  startButton.classList.remove('pulse');
+  startButton.classList.remove('red');
+  startButton.classList.add('green');
+  startButton.innerHTML = 'REPEAT';
+};
+
+
+const startGameOnClick = (event) => {
+  if (event.target.classList.contains('start-button')) {
+    applicationState.isStartGame = true;
+    changeStartGameButtonToRepeat();
+  }
+};
+
 const goToHomePage = () => {
+  changeRepeatButtonToStart();
   applicationState.isStartGame = false;
   applicationState.numOfTrainPage = 0;
   document.querySelector('.categories').classList.remove('disabled-element');
@@ -90,6 +115,8 @@ const changeVariablesOfTrainCards = (numOfPage) => {
 };
 
 const goToTrainPage = (numOfPage) => {
+  changeRepeatButtonToStart();
+  applicationState.isStartGame = false;
   applicationState.numOfTrainPage = numOfPage;
   document.querySelector('.categories').classList.add('disabled-element');
   document.querySelector('.train').classList.remove('disabled-element');
@@ -128,6 +155,8 @@ const addCheckboxClickHandler = () => {
     changeStateIsTrain();
     changeColorOfCategoryCards();
     changeTrainCards();
+    changeRepeatButtonToStart();
+    applicationState.isStartGame = false;
   });
 };
 
@@ -154,12 +183,15 @@ const addSidenavClickHandler = () => {
   });
 };
 
+
 const addTrainClickHandler = () => {
   document.querySelector('.train').addEventListener('click', (event) => {
     flipOnHelpClick(event);
     nameCardOnClick(event);
+    startGameOnClick(event);
   });
 };
+
 
 window.onload = function () {
   addCheckboxClickHandler();
