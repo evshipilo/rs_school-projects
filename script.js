@@ -4,6 +4,7 @@ const applicationState = {
   isTrain: 'true',
   isCategoriesPage: 'true',
   isStartGame: 'false',
+  numOfTrainPage: 0,
 };
 
 const changeStateIsTrain = () => {
@@ -68,6 +69,7 @@ const flipOnHelpClick = (event) => {
 
 const goToHomePage = () => {
   applicationState.isStartGame = false;
+  applicationState.numOfTrainPage = 0;
   document.querySelector('.categories').classList.remove('disabled-element');
   document.querySelector('.train').classList.add('disabled-element');
 };
@@ -85,6 +87,7 @@ const changeVariablesOfTrainCards = (numOfPage) => {
 };
 
 const goToTrainPage = (numOfPage) => {
+  applicationState.numOfTrainPage = numOfPage;
   document.querySelector('.categories').classList.add('disabled-element');
   document.querySelector('.train').classList.remove('disabled-element');
   changeVariablesOfTrainCards(numOfPage);
@@ -104,7 +107,26 @@ const lightActiveTegSideMenu = (numOfActiveTag) => {
   document.querySelector(`li .set${numOfActiveTag}`).classList.add('train-gradient');
 };
 
-const AddCategoriesClickHandler = () => {
+const getNumberOfTrainClickedCard = (event) => {
+  for (let i = 0; i <= 7; i += 1) {
+    if (event.target.classList.contains(`card${i}`)) return i;
+  }
+};
+
+const nameCardOnClick = (event) => {
+  const audio = new Audio(`${cards[applicationState.numOfTrainPage][getNumberOfTrainClickedCard(event)].audioSrc}`);
+  audio.play();
+};
+
+const addCheckboxClickHandler = () => {
+  document.querySelector('.checkbox').addEventListener('click', () => {
+    changeStateIsTrain();
+    changeColorOfCategoryCards();
+    changeTrainCards();
+  });
+};
+
+const addCategoriesClickHandler = () => {
   document.querySelector('.categories').addEventListener('click', (event) => {
     for (let i = 1; i <= 8; i += 1) {
       if (event.target.classList.contains(`set${i}`)) {
@@ -127,22 +149,16 @@ const addSidenavClickHandler = () => {
   });
 };
 
-const addQuestionClickHandler = () => {
-  document.querySelector('.train').addEventListener('click', flipOnHelpClick);
-};
-
-
-const addCheckboxClickHandler = () => {
-  document.querySelector('.checkbox').addEventListener('click', () => {
-    changeStateIsTrain();
-    changeColorOfCategoryCards();
-    changeTrainCards();
+const addTrainClickHandler = () => {
+  document.querySelector('.train').addEventListener('click', (event) => {
+    flipOnHelpClick(event);
+    nameCardOnClick(event);
   });
 };
 
 window.onload = function () {
   addCheckboxClickHandler();
-  addQuestionClickHandler();
   addSidenavClickHandler();
-  AddCategoriesClickHandler();
+  addCategoriesClickHandler();
+  addTrainClickHandler();
 };
