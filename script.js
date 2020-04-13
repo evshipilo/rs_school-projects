@@ -1,10 +1,11 @@
 import { cards } from './js/Cards.js';
 
 const applicationState = {
-  isTrain: 'true',
-  isCategoriesPage: 'true',
-  isStartGame: 'false',
+  isTrain: true,
+  isCategoriesPage: true,
+  isStartGame: false,
   numOfTrainPage: 0,
+  isFlip: false,
 };
 
 const changeStateIsTrain = () => {
@@ -61,8 +62,10 @@ const flipOnHelpClick = (event) => {
     const e = event;
     const parent = e.target.parentElement;
     parent.style.transform = 'rotateY(180deg)';
+    applicationState.isFlip = true;
     parent.parentElement.addEventListener('mouseleave', () => {
       parent.style.transform = 'rotateY(0deg)';
+      applicationState.isFlip = false;
     }, { once: true });
   }
 };
@@ -114,8 +117,10 @@ const getNumberOfTrainClickedCard = (event) => {
 };
 
 const nameCardOnClick = (event) => {
-  const audio = new Audio(`${cards[applicationState.numOfTrainPage][getNumberOfTrainClickedCard(event)].audioSrc}`);
-  audio.play();
+  if (!applicationState.isStartGame && !applicationState.isFlip && applicationState.isTrain) {
+    const audio = new Audio(`${cards[applicationState.numOfTrainPage][getNumberOfTrainClickedCard(event)].audioSrc}`);
+    audio.play();
+  }
 };
 
 const addCheckboxClickHandler = () => {
