@@ -90,11 +90,29 @@ const goToTrainPage = (numOfPage) => {
   changeVariablesOfTrainCards(numOfPage);
 };
 
+const lightHomeTegSideMenu = () => {
+  document.querySelectorAll('.sidenav a').forEach((element) => {
+    element.classList.remove('train-gradient');
+  });
+  document.querySelector('li .set0').classList.add('train-gradient');
+};
+
+const lightActiveTegSideMenu = (numOfActiveTag) => {
+  document.querySelectorAll('.sidenav a').forEach((element) => {
+    element.classList.remove('train-gradient');
+  });
+  document.querySelector(`li .set${numOfActiveTag}`).classList.add('train-gradient');
+};
+
 const addSidenavClickHandler = () => {
   document.querySelector('.sidenav').addEventListener('click', (event) => {
-    if (event.target.classList.contains('set0')) goToHomePage();
+    if (event.target.classList.contains('set0')) {
+      goToHomePage(); lightHomeTegSideMenu();
+    }
     for (let i = 1; i <= 8; i += 1) {
-      if (event.target.classList.contains(`set${i}`)) goToTrainPage(i);
+      if (event.target.classList.contains(`set${i}`)) {
+        goToTrainPage(i); lightActiveTegSideMenu(i);
+      }
     }
   });
 };
