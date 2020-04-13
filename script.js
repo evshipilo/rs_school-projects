@@ -73,7 +73,15 @@ const goToHomePage = () => {
 };
 
 const changeVariablesOfTrainCards = (numOfPage) => {
-
+  document.querySelectorAll('.flipper-container').forEach((element, number) => {
+    element.querySelectorAll('.image').forEach((el) => {
+      const e = el;
+      e.src = `${cards[numOfPage][number].image}`;
+    });
+    const elem = element;
+    elem.querySelector('.word').innerHTML = `${cards[numOfPage][number].word}`;
+    elem.querySelector('.translation').innerHTML = `${cards[numOfPage][number].translation}`;
+  });
 };
 
 const goToTrainPage = (numOfPage) => {

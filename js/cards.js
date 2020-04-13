@@ -1,5 +1,6 @@
 export const cards = [
-  ['Action (set A)', 'Action (set B)', 'Animal (set A)', 'Animal (set B)', 'Clothes', 'Emotions'],
+  ['Action (set A)', 'Action (set B)', 'Action (set B)', 'Adjective', 'Animal' +
+  ' (set A)', 'Animal (set B)', 'Clothes', 'Emotions'],
   [
     {
       word: 'cry',
@@ -89,7 +90,7 @@ export const cards = [
     },
     {
       word: 'skip',
-      translation: 'пропускать, прыгать',
+      translation: 'пропускать',
       image: 'img/skip.jpg',
       audioSrc: 'audio/skip.mp3',
     },
@@ -98,6 +99,106 @@ export const cards = [
       translation: 'плавать',
       image: 'img/swim.jpg',
       audioSrc: 'audio/swim.mp3',
+    },
+  ],
+  [
+    {
+      word: 'say',
+      translation: 'говорить',
+      image: 'img/say.jpg',
+      audioSrc: 'audio/say.mp3',
+    },
+    {
+      word: 'go',
+      translation: 'идти',
+      image: 'img/go.jpg',
+      audioSrc: 'audio/go.mp3',
+    },
+    {
+      word: 'get',
+      translation: 'получать',
+      image: 'img/get.jpg',
+      audioSrc: 'audio/get.mp3',
+    },
+    {
+      word: 'think',
+      translation: 'думать',
+      image: 'img/think.jpg',
+      audioSrc: 'audio/think.mp3',
+    },
+    {
+      word: 'use',
+      translation: 'использовать',
+      image: 'img/use.jpg',
+      audioSrc: 'audio/use.mp3',
+    },
+    {
+      word: 'find',
+      translation: 'находить',
+      image: 'img/find.jpg',
+      audioSrc: 'audio/find.mp3',
+    },
+    {
+      word: 'put',
+      translation: 'класть',
+      image: 'img/put.jpg',
+      audioSrc: 'audio/put.mp3',
+    },
+    {
+      word: 'hear',
+      translation: 'слышать',
+      image: 'img/hear.jpg',
+      audioSrc: 'audio/hear.mp3',
+    },
+  ],
+  [
+    {
+      word: 'cold',
+      translation: 'холодный',
+      image: 'img/cold.jpg',
+      audioSrc: 'audio/cold.mp3',
+    },
+    {
+      word: 'deep',
+      translation: 'глубокий',
+      image: 'img/deep.jpg',
+      audioSrc: 'audio/deep.mp3',
+    },
+    {
+      word: 'hard',
+      translation: 'твердый',
+      image: 'img/hard.jpg',
+      audioSrc: 'audio/hard.mp3',
+    },
+    {
+      word: 'hot',
+      translation: 'горячий',
+      image: 'img/hot.jpg',
+      audioSrc: 'audio/hot.mp3',
+    },
+    {
+      word: 'long',
+      translation: 'длинный',
+      image: 'img/long.jpg',
+      audioSrc: 'audio/long.mp3',
+    },
+    {
+      word: 'low',
+      translation: 'низкий',
+      image: 'img/low.jpg',
+      audioSrc: 'audio/low.mp3',
+    },
+    {
+      word: 'sharp',
+      translation: 'острый',
+      image: 'img/sharp.jpg',
+      audioSrc: 'audiosharp.mp3',
+    },
+    {
+      word: 'short',
+      translation: 'короткий',
+      image: 'img/short.jpg',
+      audioSrc: 'audio/short.mp3',
     },
   ],
   [
