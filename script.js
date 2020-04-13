@@ -104,6 +104,16 @@ const lightActiveTegSideMenu = (numOfActiveTag) => {
   document.querySelector(`li .set${numOfActiveTag}`).classList.add('train-gradient');
 };
 
+const AddCategoriesClickHandler = () => {
+  document.querySelector('.categories').addEventListener('click', (event) => {
+    for (let i = 1; i <= 8; i += 1) {
+      if (event.target.classList.contains(`set${i}`)) {
+        goToTrainPage(i); lightActiveTegSideMenu(i);
+      }
+    }
+  });
+};
+
 const addSidenavClickHandler = () => {
   document.querySelector('.sidenav').addEventListener('click', (event) => {
     if (event.target.classList.contains('set0')) {
@@ -134,4 +144,5 @@ window.onload = function () {
   addCheckboxClickHandler();
   addQuestionClickHandler();
   addSidenavClickHandler();
+  AddCategoriesClickHandler();
 };
