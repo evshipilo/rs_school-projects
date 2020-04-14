@@ -1,0 +1,6 @@
+*.map
+*.sass
+*.scss
+.idea/*
+/node_modules/
+
