@@ -97,7 +97,7 @@ const deleteAllStars = () => {
   }
 };
 
-const coloredAllCars = () => {
+const coloredAllCards = () => {
   document.querySelectorAll('.flipper').forEach((element) => {
     element.classList.remove('uncolor');
   });
@@ -107,7 +107,7 @@ const goToHomePage = () => {
   changeRepeatButtonToStart();
   applicationState.isStartGame = false;
   deleteAllStars();
-  coloredAllCars();
+  coloredAllCards();
   errorCounter = 0;
   counter = 0;
   applicationState.correctGame = true;
@@ -139,7 +139,7 @@ const goToTrainPage = (numOfPage) => {
   changeRepeatButtonToStart();
   applicationState.isStartGame = false;
   deleteAllStars();
-  coloredAllCars();
+  coloredAllCards();
   applicationState.correctGame = true;
   counter = 0;
   errorCounter = 0;
@@ -271,7 +271,7 @@ const endGame = () => {
   deleteAllStars();
   applicationState.correctGame = true;
   counter = 0;
-  coloredAllCars();
+  coloredAllCards();
   setTimeout(() => {
     closeWinModal();
     goToHomePage();
@@ -313,7 +313,7 @@ const addCheckboxClickHandler = () => {
     applicationState.isStartGame = false;
     applicationState.correctGame = true;
     deleteAllStars();
-    coloredAllCars();
+    coloredAllCards();
     errorCounter = 0;
     counter = 0;
     if (arrOfSoundSources) randomizeArrOfSoundSources();
@@ -360,4 +360,3 @@ window.onload = function () {
   addCategoriesClickHandler();
   addTrainClickHandler();
 };
-
