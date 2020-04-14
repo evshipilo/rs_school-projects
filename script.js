@@ -245,6 +245,7 @@ const deleteExtraStar = () => {
 const showWinModal = () => {
   document.querySelector('.end-game').classList.remove('disabled-element');
   document.querySelector('.end-game i').innerHTML = 'mood';
+  document.querySelector('.end-game h1').innerHTML = 'ERRORS: 0';
 };
 
 const showLoseModal = () => {
@@ -255,7 +256,6 @@ const showLoseModal = () => {
 
 const closeWinModal = () => {
   document.querySelector('.end-game').classList.add('disabled-element');
-  document.querySelector('.end-game h1').innerHTML = `ERRORS: ${errorCounter}`;
 };
 
 const endGame = () => {
@@ -275,6 +275,7 @@ const endGame = () => {
   setTimeout(() => {
     closeWinModal();
     goToHomePage();
+    lightHomeTegSideMenu();
   }, 4000);
   errorCounter = 0;
 };

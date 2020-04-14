@@ -8295,4 +8295,8 @@ input[type=range]::-ms-thumb {
   font-size: 20vw;
 }
 
+h1 {
+  font-size: 8vw !important;
+}
+
 /*# sourceMappingURL=style.css.map */
