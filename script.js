@@ -186,6 +186,11 @@ const playCorrectSound = () => {
   audio.play();
 };
 
+const playUncorrectSound = () => {
+  const audio = new Audio('audio/error.mp3');
+  audio.play();
+};
+
 const uncolorCard = (numberOfTrainClickedCard) => {
   document.querySelector(`.flipper${numberOfTrainClickedCard + 1}`).classList.add('uncolor');
 };
@@ -198,9 +203,21 @@ const addYellowStar = () => {
   `);
 };
 
+const addGreyStar = () => {
+  document.querySelector('.star-container').insertAdjacentHTML('afterbegin', `
+  <i class="material-icons grey-text star">star</i>
+  `);
+};
+
 const game = (event) => {
   if (getNumberOfTrainClickedCard(event) !== false && applicationState.isStartGame
       && !isUncoloredCard(getNumberOfTrainClickedCard(event))) {
+    if (arrOfSoundSources[counter]
+        !== arrOfSoundSourcesUnsort[getNumberOfTrainClickedCard(event)]){
+      playUncorrectSound();
+      addGreyStar();
+      // deleteExtraStar();
+    }
     if (arrOfSoundSources[counter]
         === arrOfSoundSourcesUnsort[getNumberOfTrainClickedCard(event)]) {
       playCorrectSound();
@@ -210,9 +227,7 @@ const game = (event) => {
       if (counter < 7) {
         counter += 1;
          window.setTimeout(playRandomWord, 1000);
-       // playRandomWord();
-      }
-      // else endGame();
+      }// else { endGame();}
     }
   }
 };
