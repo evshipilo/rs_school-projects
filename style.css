@@ -8109,6 +8109,10 @@ input[type=range]::-ms-thumb {
   font-weight: 400;
   src: local("Material Icons"), local("MaterialIcons-Regular"), url("fonts/MaterialIcons-Regular.ttf") format("truetype");
 }
+* {
+  user-select: none;
+}
+
 .material-icons {
   font-family: "Material Icons";
   font-weight: normal;
