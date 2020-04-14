@@ -192,7 +192,7 @@ export const cards = [
       word: 'sharp',
       translation: 'острый',
       image: 'img/sharp.jpg',
-      audioSrc: 'audiosharp.mp3',
+      audioSrc: 'audio/sharp.mp3',
     },
     {
       word: 'short',

@@ -8,6 +8,8 @@ const applicationState = {
   isFlip: false,
 };
 
+let counter = 0;
+
 const changeStateIsTrain = () => {
   if (document.querySelector('.checkbox').checked) applicationState.isTrain = false;
   else applicationState.isTrain = true;
@@ -86,23 +88,21 @@ const changeStartGameButtonToRepeat = () => {
   startButton.innerHTML = 'REPEAT';
 };
 
-
-const startGameOnClick = (event) => {
-  if (event.target.classList.contains('start-button')) {
-    applicationState.isStartGame = true;
-    changeStartGameButtonToRepeat();
-  }
-};
-
 const goToHomePage = () => {
   changeRepeatButtonToStart();
   applicationState.isStartGame = false;
   applicationState.numOfTrainPage = 0;
+  counter = 0;
   document.querySelector('.categories').classList.remove('disabled-element');
   document.querySelector('.train').classList.add('disabled-element');
 };
 
+let arrOfSoundSources;
+let arrOfSoundSourcesUnsort;
+
 const changeVariablesOfTrainCards = (numOfPage) => {
+  arrOfSoundSources = [];
+  arrOfSoundSourcesUnsort = [];
   document.querySelectorAll('.flipper-container').forEach((element, number) => {
     element.querySelectorAll('.image').forEach((el) => {
       const e = el;
@@ -111,12 +111,15 @@ const changeVariablesOfTrainCards = (numOfPage) => {
     const elem = element;
     elem.querySelector('.word').innerHTML = `${cards[numOfPage][number].word}`;
     elem.querySelector('.translation').innerHTML = `${cards[numOfPage][number].translation}`;
+    arrOfSoundSources.push(`${cards[numOfPage][number].audioSrc}`);
+    arrOfSoundSourcesUnsort.push(`${cards[numOfPage][number].audioSrc}`);
   });
 };
 
 const goToTrainPage = (numOfPage) => {
   changeRepeatButtonToStart();
   applicationState.isStartGame = false;
+  counter = 0;
   applicationState.numOfTrainPage = numOfPage;
   document.querySelector('.categories').classList.add('disabled-element');
   document.querySelector('.train').classList.remove('disabled-element');
@@ -141,12 +144,76 @@ const getNumberOfTrainClickedCard = (event) => {
   for (let i = 0; i <= 7; i += 1) {
     if (event.target.classList.contains(`card${i}`)) return i;
   }
+  return false;
 };
 
 const nameCardOnClick = (event) => {
-  if (!applicationState.isStartGame && !applicationState.isFlip && applicationState.isTrain) {
+  if (!applicationState.isStartGame && !applicationState.isFlip
+      && applicationState.isTrain && getNumberOfTrainClickedCard(event) !== false) {
     const audio = new Audio(`${cards[applicationState.numOfTrainPage][getNumberOfTrainClickedCard(event)].audioSrc}`);
     audio.play();
+  }
+};
+
+const randomizeArrOfSoundSources = () => {
+  function makeRandomArr() {
+    return Math.random() - 0.5;
+  }
+  arrOfSoundSources.sort(makeRandomArr);
+};
+
+function playRandomWord() {
+  const audio = new Audio(`${arrOfSoundSources[counter]}`);
+  audio.play();
+}
+
+// let playRandomWord = setTimeout(() => {
+//   const audio = new Audio(`${arrOfSoundSources[counter]}`);
+//   audio.play();
+// }, 500);
+
+const startGameOnClick = (event) => {
+  if (event.target.classList.contains('start-button') && !applicationState.isStartGame) {
+    applicationState.isStartGame = true;
+    changeStartGameButtonToRepeat();
+    randomizeArrOfSoundSources();
+    playRandomWord();
+  } else if (event.target.classList.contains('start-button') && applicationState.isStartGame) playRandomWord();
+};
+
+const playCorrectSound = () => {
+  const audio = new Audio('audio/correct.mp3');
+  audio.play();
+};
+
+const uncolorCard = (numberOfTrainClickedCard) => {
+  document.querySelector(`.flipper${numberOfTrainClickedCard + 1}`).classList.add('uncolor');
+};
+
+const isUncoloredCard = (numberOfTrainClickedCard) => document.querySelector(`.flipper${numberOfTrainClickedCard + 1}`).classList.contains('uncolor');
+
+const addYellowStar = () => {
+  document.querySelector('.star-container').insertAdjacentHTML('afterbegin', `
+  <i class="material-icons yellow-text star">star</i>
+  `);
+};
+
+const game = (event) => {
+  if (getNumberOfTrainClickedCard(event) !== false && applicationState.isStartGame
+      && !isUncoloredCard(getNumberOfTrainClickedCard(event))) {
+    if (arrOfSoundSources[counter]
+        === arrOfSoundSourcesUnsort[getNumberOfTrainClickedCard(event)]) {
+      playCorrectSound();
+      uncolorCard(getNumberOfTrainClickedCard(event));
+      addYellowStar();
+      // deleteExtraStar();
+      if (counter < 7) {
+        counter += 1;
+         window.setTimeout(playRandomWord, 1000);
+       // playRandomWord();
+      }
+      // else endGame();
+    }
   }
 };
 
@@ -157,6 +224,8 @@ const addCheckboxClickHandler = () => {
     changeTrainCards();
     changeRepeatButtonToStart();
     applicationState.isStartGame = false;
+    counter = 0;
+    if (arrOfSoundSources) randomizeArrOfSoundSources();
   });
 };
 
@@ -189,6 +258,7 @@ const addTrainClickHandler = () => {
     flipOnHelpClick(event);
     nameCardOnClick(event);
     startGameOnClick(event);
+    game(event);
   });
 };
 

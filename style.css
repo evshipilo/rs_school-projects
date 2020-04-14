@@ -8170,6 +8170,10 @@ input[type=range]::-ms-thumb {
   /* ie6-9 */
 }
 
+.uncolor {
+  filter: grayscale(100%) !important;
+}
+
 .card-image {
   padding: 5px;
   font-size: 1.5vw;
