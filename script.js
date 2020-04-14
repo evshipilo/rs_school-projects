@@ -10,12 +10,12 @@ const applicationState = {
 };
 
 let counter = 0;
+let errorCounter = 0;
 
 const changeStateIsTrain = () => {
   if (document.querySelector('.checkbox').checked) applicationState.isTrain = false;
   else applicationState.isTrain = true;
 };
-
 
 const changeColorOfCategoryCards = () => {
   if (applicationState.isTrain) {
@@ -108,9 +108,10 @@ const goToHomePage = () => {
   applicationState.isStartGame = false;
   deleteAllStars();
   coloredAllCars();
+  errorCounter = 0;
+  counter = 0;
   applicationState.correctGame = true;
   applicationState.numOfTrainPage = 0;
-  counter = 0;
   document.querySelector('.categories').classList.remove('disabled-element');
   document.querySelector('.train').classList.add('disabled-element');
 };
@@ -141,6 +142,7 @@ const goToTrainPage = (numOfPage) => {
   coloredAllCars();
   applicationState.correctGame = true;
   counter = 0;
+  errorCounter = 0;
   applicationState.numOfTrainPage = numOfPage;
   document.querySelector('.categories').classList.add('disabled-element');
   document.querySelector('.train').classList.remove('disabled-element');
@@ -230,6 +232,7 @@ const addYellowStar = () => {
 };
 
 const addGreyStar = () => {
+  errorCounter += 1;
   document.querySelector('.star-container').insertAdjacentHTML('beforeend', `
   <i class="material-icons grey-text star">star</i>
   `);
@@ -247,10 +250,12 @@ const showWinModal = () => {
 const showLoseModal = () => {
   document.querySelector('.end-game').classList.remove('disabled-element');
   document.querySelector('.end-game i').innerHTML = 'mood_bad';
+  document.querySelector('.end-game h1').innerHTML = `ERRORS: ${errorCounter}`;
 };
 
 const closeWinModal = () => {
   document.querySelector('.end-game').classList.add('disabled-element');
+  document.querySelector('.end-game h1').innerHTML = `ERRORS: ${errorCounter}`;
 };
 
 const endGame = () => {
@@ -267,9 +272,11 @@ const endGame = () => {
   applicationState.correctGame = true;
   counter = 0;
   coloredAllCars();
-  document.querySelector('.end-game').addEventListener('click', () => {
+  setTimeout(() => {
     closeWinModal();
-  }, { once: true });
+    goToHomePage();
+  }, 4000);
+  errorCounter = 0;
 };
 
 const game = (event) => {
@@ -306,6 +313,7 @@ const addCheckboxClickHandler = () => {
     applicationState.correctGame = true;
     deleteAllStars();
     coloredAllCars();
+    errorCounter = 0;
     counter = 0;
     if (arrOfSoundSources) randomizeArrOfSoundSources();
   });
