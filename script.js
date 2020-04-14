@@ -92,6 +92,7 @@ const changeStartGameButtonToRepeat = () => {
 const goToHomePage = () => {
   changeRepeatButtonToStart();
   applicationState.isStartGame = false;
+  deleteAllStars();
   applicationState.numOfTrainPage = 0;
   counter = 0;
   document.querySelector('.categories').classList.remove('disabled-element');
@@ -120,6 +121,7 @@ const changeVariablesOfTrainCards = (numOfPage) => {
 const goToTrainPage = (numOfPage) => {
   changeRepeatButtonToStart();
   applicationState.isStartGame = false;
+  deleteAllStars();
   counter = 0;
   applicationState.numOfTrainPage = numOfPage;
   document.querySelector('.categories').classList.add('disabled-element');
@@ -168,11 +170,6 @@ function playRandomWord() {
   audio.play();
 }
 
-// let playRandomWord = setTimeout(() => {
-//   const audio = new Audio(`${arrOfSoundSources[counter]}`);
-//   audio.play();
-// }, 500);
-
 const startGameOnClick = (event) => {
   if (event.target.classList.contains('start-button') && !applicationState.isStartGame) {
     applicationState.isStartGame = true;
@@ -211,8 +208,15 @@ const addGreyStar = () => {
 };
 
 const deleteExtraStar = () => {
-  if (document.querySelectorAll('.star-container i').length > 8)
-  { document.querySelectorAll('.star-container i')[0].remove(); }
+  if (document.querySelectorAll('.star-container i').length > 8) { document.querySelectorAll('.star-container i')[0].remove(); }
+};
+
+const deleteAllStars = () => {
+  if (document.querySelectorAll('.star-container i')) {
+    document.querySelectorAll('.star-container i').forEach((element) => {
+      element.remove();
+    });
+  }
 };
 
 const game = (event) => {
@@ -245,6 +249,7 @@ const addCheckboxClickHandler = () => {
     changeTrainCards();
     changeRepeatButtonToStart();
     applicationState.isStartGame = false;
+    deleteAllStars();
     counter = 0;
     if (arrOfSoundSources) randomizeArrOfSoundSources();
   });
