@@ -6,6 +6,7 @@ const applicationState = {
   isStartGame: false,
   numOfTrainPage: 0,
   isFlip: false,
+  correctGame: true,
 };
 
 let counter = 0;
@@ -198,35 +199,40 @@ const uncolorCard = (numberOfTrainClickedCard) => {
 const isUncoloredCard = (numberOfTrainClickedCard) => document.querySelector(`.flipper${numberOfTrainClickedCard + 1}`).classList.contains('uncolor');
 
 const addYellowStar = () => {
-  document.querySelector('.star-container').insertAdjacentHTML('afterbegin', `
+  document.querySelector('.star-container').insertAdjacentHTML('beforeend', `
   <i class="material-icons yellow-text star">star</i>
   `);
 };
 
 const addGreyStar = () => {
-  document.querySelector('.star-container').insertAdjacentHTML('afterbegin', `
+  document.querySelector('.star-container').insertAdjacentHTML('beforeend', `
   <i class="material-icons grey-text star">star</i>
   `);
+};
+
+const deleteExtraStar = () => {
+  if (document.querySelectorAll('.star-container i').length > 8)
+  { document.querySelectorAll('.star-container i')[0].remove(); }
 };
 
 const game = (event) => {
   if (getNumberOfTrainClickedCard(event) !== false && applicationState.isStartGame
       && !isUncoloredCard(getNumberOfTrainClickedCard(event))) {
     if (arrOfSoundSources[counter]
-        !== arrOfSoundSourcesUnsort[getNumberOfTrainClickedCard(event)]){
+        !== arrOfSoundSourcesUnsort[getNumberOfTrainClickedCard(event)]) {
       playUncorrectSound();
       addGreyStar();
-      // deleteExtraStar();
+      deleteExtraStar();
     }
     if (arrOfSoundSources[counter]
         === arrOfSoundSourcesUnsort[getNumberOfTrainClickedCard(event)]) {
       playCorrectSound();
       uncolorCard(getNumberOfTrainClickedCard(event));
       addYellowStar();
-      // deleteExtraStar();
+      deleteExtraStar();
       if (counter < 7) {
         counter += 1;
-         window.setTimeout(playRandomWord, 1000);
+        window.setTimeout(playRandomWord, 1000);
       }// else { endGame();}
     }
   }
