@@ -11,6 +11,47 @@ const applicationState = {
 
 let counter = 0;
 let errorCounter = 0;
+const statisticArr = cards.slice(0);
+
+const completeStatisticArr = () => {
+  for (let i = 1; i <= 8; i += 1) {
+    statisticArr[i].forEach((el) => {
+      const element = el;
+      element.category = statisticArr[0][i - 1];
+      element.trainClick = 0;
+      element.correct = 0;
+      element.uncorrect = 0;
+      element.precentCorrect = 0;
+    });
+  }
+};
+
+completeStatisticArr();
+
+const pushStatisticArrToTable = () => {
+  if (document.querySelectorAll('tbody tr')) {
+    document.querySelectorAll('tbody tr').forEach((element) => {
+      element.remove();
+    });
+  }
+  for (let i = 1; i <= 8; i += 1) {
+    statisticArr[i].forEach((element) => {
+      document.querySelector('tbody').insertAdjacentHTML('beforeend', `
+  <tr>
+<td>${element.category}</td>
+<td>${element.word}</td>
+<td>${element.translation}</td>
+<td>${element.trainClick}</td>
+<td>${element.correct}</td>
+<td>${element.uncorrect}</td>
+<td>${element.precentCorrect}</td>
+</tr>
+  `);
+    });
+  }
+};
+
+pushStatisticArrToTable();
 
 const changeStateIsTrain = () => {
   if (document.querySelector('.checkbox').checked) applicationState.isTrain = false;
@@ -58,7 +99,6 @@ const changeTrainCards = () => {
     });
   }
 };
-
 
 const flipOnHelpClick = (event) => {
   if (event.target.classList.contains('help')) {
@@ -343,7 +383,6 @@ const addSidenavClickHandler = () => {
   });
 };
 
-
 const addTrainClickHandler = () => {
   document.querySelector('.train').addEventListener('click', (event) => {
     flipOnHelpClick(event);
@@ -352,7 +391,6 @@ const addTrainClickHandler = () => {
     game(event);
   });
 };
-
 
 window.onload = function () {
   addCheckboxClickHandler();
