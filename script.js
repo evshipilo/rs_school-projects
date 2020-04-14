@@ -89,10 +89,26 @@ const changeStartGameButtonToRepeat = () => {
   startButton.innerHTML = 'REPEAT';
 };
 
+const deleteAllStars = () => {
+  if (document.querySelectorAll('.star-container i')) {
+    document.querySelectorAll('.star-container i').forEach((element) => {
+      element.remove();
+    });
+  }
+};
+
+const coloredAllCars = () => {
+  document.querySelectorAll('.flipper').forEach((element) => {
+    element.classList.remove('uncolor');
+  });
+};
+
 const goToHomePage = () => {
   changeRepeatButtonToStart();
   applicationState.isStartGame = false;
   deleteAllStars();
+  coloredAllCars();
+  applicationState.correctGame = true;
   applicationState.numOfTrainPage = 0;
   counter = 0;
   document.querySelector('.categories').classList.remove('disabled-element');
@@ -122,6 +138,8 @@ const goToTrainPage = (numOfPage) => {
   changeRepeatButtonToStart();
   applicationState.isStartGame = false;
   deleteAllStars();
+  coloredAllCars();
+  applicationState.correctGame = true;
   counter = 0;
   applicationState.numOfTrainPage = numOfPage;
   document.querySelector('.categories').classList.add('disabled-element');
@@ -189,6 +207,16 @@ const playUncorrectSound = () => {
   audio.play();
 };
 
+const playWinSound = () => {
+  const audio = new Audio('audio/success.mp3');
+  audio.play();
+};
+
+const playLoseSound = () => {
+  const audio = new Audio('audio/failure.mp3');
+  audio.play();
+};
+
 const uncolorCard = (numberOfTrainClickedCard) => {
   document.querySelector(`.flipper${numberOfTrainClickedCard + 1}`).classList.add('uncolor');
 };
@@ -211,12 +239,37 @@ const deleteExtraStar = () => {
   if (document.querySelectorAll('.star-container i').length > 8) { document.querySelectorAll('.star-container i')[0].remove(); }
 };
 
-const deleteAllStars = () => {
-  if (document.querySelectorAll('.star-container i')) {
-    document.querySelectorAll('.star-container i').forEach((element) => {
-      element.remove();
-    });
+const showWinModal = () => {
+  document.querySelector('.end-game').classList.remove('disabled-element');
+  document.querySelector('.end-game i').innerHTML = 'mood';
+};
+
+const showLoseModal = () => {
+  document.querySelector('.end-game').classList.remove('disabled-element');
+  document.querySelector('.end-game i').innerHTML = 'mood_bad';
+};
+
+const closeWinModal = () => {
+  document.querySelector('.end-game').classList.add('disabled-element');
+};
+
+const endGame = () => {
+  if (applicationState.correctGame) {
+    showWinModal();
+    playWinSound();
+  } else {
+    showLoseModal();
+    playLoseSound();
   }
+  changeRepeatButtonToStart();
+  applicationState.isStartGame = false;
+  deleteAllStars();
+  applicationState.correctGame = true;
+  counter = 0;
+  coloredAllCars();
+  document.querySelector('.end-game').addEventListener('click', () => {
+    closeWinModal();
+  }, { once: true });
 };
 
 const game = (event) => {
@@ -227,6 +280,7 @@ const game = (event) => {
       playUncorrectSound();
       addGreyStar();
       deleteExtraStar();
+      applicationState.correctGame = false;
     }
     if (arrOfSoundSources[counter]
         === arrOfSoundSourcesUnsort[getNumberOfTrainClickedCard(event)]) {
@@ -237,7 +291,7 @@ const game = (event) => {
       if (counter < 7) {
         counter += 1;
         window.setTimeout(playRandomWord, 1000);
-      }// else { endGame();}
+      } else { window.setTimeout(endGame, 1000); }
     }
   }
 };
@@ -249,7 +303,9 @@ const addCheckboxClickHandler = () => {
     changeTrainCards();
     changeRepeatButtonToStart();
     applicationState.isStartGame = false;
+    applicationState.correctGame = true;
     deleteAllStars();
+    coloredAllCars();
     counter = 0;
     if (arrOfSoundSources) randomizeArrOfSoundSources();
   });

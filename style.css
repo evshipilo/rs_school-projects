@@ -8283,4 +8283,16 @@ input[type=range]::-ms-thumb {
   margin-bottom: 40px;
 }
 
+.end-game {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 1001;
+}
+.end-game i {
+  display: inline-block;
+  margin-top: 50px;
+  font-size: 20vw;
+}
+
 /*# sourceMappingURL=style.css.map */
