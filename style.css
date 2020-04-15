@@ -8317,7 +8317,11 @@ h1 {
 
 .sort {
   display: inline-block;
-  width: 200px;
+  width: 250px;
+}
+
+.renew, .close-statistic, .sort {
+  margin-bottom: 10px;
 }
 
 /*# sourceMappingURL=style.css.map */
