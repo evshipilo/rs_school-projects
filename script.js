@@ -35,6 +35,7 @@ const initStatisticArr = () => {
 initStatisticArr();
 
 const pushStatisticArrToTable = () => {
+  document.querySelector('select').value = 's';
   if (document.querySelectorAll('tbody tr')) {
     document.querySelectorAll('tbody tr').forEach((element) => {
       element.remove();
@@ -419,6 +420,7 @@ const addTrainClickHandler = () => {
 
 const addRenewHandler = () => {
   document.querySelector('.renew').addEventListener('click', () => {
+    document.querySelector('select').value = 's';
     statisticArr = cards.slice(0);
     for (let i = 1; i <= 8; i += 1) {
       for (let j = 0; j < 8; j += 1) {
@@ -440,18 +442,32 @@ const sort = (event) => {
     if (event.target.value === `${i}` && targetValue !== event.target.value) {
       targetValue = event.target.value;
       const table = document.querySelector('table');
-      const sortedRows = Array.from(table.rows)
-        .slice(1)
-        .sort((rowA, rowB) => (rowA.cells[i].innerHTML > rowB.cells[i].innerHTML ? 1 : -1));
-      table.tBodies[0].append(...sortedRows);
+      if (i < 3) {
+        const sortedRows = Array.from(table.rows)
+          .slice(1)
+          .sort((rowA, rowB) => (rowA.cells[i].innerHTML > rowB.cells[i].innerHTML ? 1 : -1));
+        table.tBodies[0].append(...sortedRows);
+      } else {
+        const sortedRows = Array.from(table.rows)
+          .slice(1)
+          .sort((rowA, rowB) => (+rowA.cells[i].innerHTML > +rowB.cells[i].innerHTML ? 1 : -1));
+        table.tBodies[0].append(...sortedRows);
+      }
     }
     if (event.target.value === `${i}${i}` && targetValue !== event.target.value) {
       targetValue = event.target.value;
       const table = document.querySelector('table');
-      const sortedRows = Array.from(table.rows)
-        .slice(1)
-        .sort((rowA, rowB) => (rowA.cells[i].innerHTML < rowB.cells[i].innerHTML ? 1 : -1));
-      table.tBodies[0].append(...sortedRows);
+      if (i < 3) {
+        const sortedRows = Array.from(table.rows)
+          .slice(1)
+          .sort((rowA, rowB) => (rowA.cells[i].innerHTML < rowB.cells[i].innerHTML ? 1 : -1));
+        table.tBodies[0].append(...sortedRows);
+      } else {
+        const sortedRows = Array.from(table.rows)
+          .slice(1)
+          .sort((rowA, rowB) => (+rowA.cells[i].innerHTML < +rowB.cells[i].innerHTML ? 1 : -1));
+        table.tBodies[0].append(...sortedRows);
+      }
     }
   }
 };
