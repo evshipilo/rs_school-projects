@@ -50,7 +50,7 @@ const pushStatisticArrToTable = () => {
 <td>${element.trainClick}</td>
 <td>${element.correct}</td>
 <td>${element.uncorrect}</td>
-<td>${element.precentCorrect}</td>
+<td>${element.correct ? Math.round((element.correct * 100) / (element.correct + element.uncorrect)) : element.precentCorrect}</td>
 </tr>
   `);
     });
@@ -348,6 +348,8 @@ const game = (event) => {
       playUncorrectSound();
       addGreyStar();
       deleteExtraStar();
+      statisticArr[applicationState.numOfTrainPage][getNumberOfTrainClickedCard(event)]
+        .uncorrect += 1;
       applicationState.correctGame = false;
     }
     if (arrOfSoundSources[counter]
@@ -356,6 +358,8 @@ const game = (event) => {
       uncolorCard(getNumberOfTrainClickedCard(event));
       addYellowStar();
       deleteExtraStar();
+      statisticArr[applicationState.numOfTrainPage][getNumberOfTrainClickedCard(event)]
+        .correct += 1;
       if (counter < 7) {
         counter += 1;
         window.setTimeout(playRandomWord, 1000);
@@ -413,9 +417,26 @@ const addTrainClickHandler = () => {
   });
 };
 
+const addRenewHandler = () => {
+  document.querySelector('.renew').addEventListener('click', () => {
+    statisticArr = cards.slice(0);
+    for (let i = 1; i <= 8; i += 1) {
+      for (let j = 0; j < 8; j += 1) {
+        statisticArr[i][j].category = statisticArr[0][i - 1];
+        statisticArr[i][j].trainClick = 0;
+        statisticArr[i][j].correct = 0;
+        statisticArr[i][j].uncorrect = 0;
+        statisticArr[i][j].precentCorrect = 0;
+      }
+    }
+    pushStatisticArrToTable();
+  });
+};
+
 window.onload = function () {
   addCheckboxClickHandler();
   addSidenavClickHandler();
   addCategoriesClickHandler();
   addTrainClickHandler();
+  addRenewHandler();
 };
