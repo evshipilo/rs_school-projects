@@ -1,5 +1,5 @@
 export const cards = [
-  ['Action (set A)', 'Action (set B)', 'Action (set B)', 'Adjective', 'Animal' +
+  ['Action (set A)', 'Action (set B)', 'Action (set C)', 'Adjective', 'Animal' +
   ' (set A)', 'Animal (set B)', 'Clothes', 'Emotions'],
   [
     {

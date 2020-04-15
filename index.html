@@ -22,11 +22,22 @@
 	<a class="waves-effect waves-light btn red renew"><i
 			class=" material-icons">autorenew
 	</i></a>
-	<select class="browser-default btn blue sort">
+	<select class=" btn blue sort">
 		<option value="" disabled selected>Statistic Sort</option>
-		<option value="1">Option 1</option>
-		<option value="2">Option 2</option>
-		<option value="3">Option 3</option>
+		<option value="0" class="sort-0">Category A-Z</option>
+		<option value="00" class="sort-00">Category Z-A</option>
+		<option value="1" class="sort-1">Word A-Z</option>
+		<option value="11" class="sort-11">Word Z-A</option>
+		<option value="2" class="sort-2">Translation А-Я</option>
+		<option value="22" class="sort-22">Translation Я-А</option>
+		<option value="3" class="sort-3">Train clicked Min-Max</option>
+		<option value="33" class="sort-33">Train clicked Max-Min</option>
+		<option value="4" class="sort-4">Correct Min-Max</option>
+		<option value="44" class="sort-44">Correct Max-Min</option>
+		<option value="5" class="sort-5">Incorrect Min-Max</option>
+		<option value="55" class="sort-55">Incorrect Max-Min</option>
+		<option value="6" class="sort-6">% correct Min-Max</option>
+		<option value="66" class="sort-66">% correct Max-Min</option>
 	</select>
 <!--	<a class="waves-effect waves-light btn red sort ">sort</a>-->
 	<table class="responsive-table highlight">
@@ -37,7 +48,7 @@
 			<th>Translation</th>
 			<th>Train clicked</th>
 			<th>Correct</th>
-			<th>Uncorrect</th>
+			<th>Incorrect</th>
 			<th>% correct</th>
 		</tr>
 		</thead>

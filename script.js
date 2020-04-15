@@ -433,14 +433,32 @@ const addRenewHandler = () => {
   });
 };
 
+let targetValue;
+
+const sort = (event) => {
+  for (let i = 0; i <= 6; i += 1) {
+    if (event.target.value === `${i}` && targetValue !== event.target.value) {
+      targetValue = event.target.value;
+      const table = document.querySelector('table');
+      const sortedRows = Array.from(table.rows)
+        .slice(1)
+        .sort((rowA, rowB) => (rowA.cells[i].innerHTML > rowB.cells[i].innerHTML ? 1 : -1));
+      table.tBodies[0].append(...sortedRows);
+    }
+    if (event.target.value === `${i}${i}` && targetValue !== event.target.value) {
+      targetValue = event.target.value;
+      const table = document.querySelector('table');
+      const sortedRows = Array.from(table.rows)
+        .slice(1)
+        .sort((rowA, rowB) => (rowA.cells[i].innerHTML < rowB.cells[i].innerHTML ? 1 : -1));
+      table.tBodies[0].append(...sortedRows);
+    }
+  }
+};
+
 const addSortHandler = () => {
-  document.querySelector('.sort').addEventListener('click', () => {
-    console.log('ksdjncksdjcksdjnc');
-    const table = document.querySelector('table');
-    const sortedRows = Array.from(table.rows)
-      .slice(1)
-      .sort((rowA, rowB) => (rowA.cells[1].innerHTML > rowB.cells[1].innerHTML ? 1 : -1));
-    table.tBodies[0].append(...sortedRows);
+  document.querySelector('select').addEventListener('click', (e) => {
+    sort(e);
   });
 };
 
