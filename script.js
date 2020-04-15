@@ -21,14 +21,13 @@ const initStatisticArr = () => {
   if (!localStorage.getItem('savedStatisticArr')) {
     statisticArr = cards.slice(0);
     for (let i = 1; i <= 8; i += 1) {
-      statisticArr[i].forEach((el) => {
-        const element = el;
-        element.category = statisticArr[0][i - 1];
-        element.trainClick = 0;
-        element.correct = 0;
-        element.uncorrect = 0;
-        element.precentCorrect = 0;
-      });
+      for (let j = 0; j < 8; j += 1) {
+        statisticArr[i][j].category = statisticArr[0][i - 1];
+        statisticArr[i][j].trainClick = 0;
+        statisticArr[i][j].correct = 0;
+        statisticArr[i][j].uncorrect = 0;
+        statisticArr[i][j].precentCorrect = 0;
+      }
     }
   } else statisticArr = JSON.parse(localStorage.getItem('savedStatisticArr'));
 };
@@ -58,7 +57,15 @@ const pushStatisticArrToTable = () => {
   }
 };
 
-pushStatisticArrToTable();
+const showStatisticPage = (event) => {
+  if (event.target.classList.contains('statistic')) {
+    pushStatisticArrToTable();
+    document.querySelector('.statistic-page').classList.remove('disabled-element');
+    document.querySelector('.close-statistic').addEventListener('click', () => {
+      document.querySelector('.statistic-page').classList.add('disabled-element');
+    }, { once: true });
+  }
+};
 
 const changeStateIsTrain = () => {
   if (document.querySelector('.checkbox').checked) applicationState.isTrain = false;
@@ -217,9 +224,15 @@ const getNumberOfTrainClickedCard = (event) => {
   return false;
 };
 
+// const writeCorrectAnswerToStatisicArr = (numOfCard) => {
+//   statisticArr[applicationState.numOfTrainPage][getNumberOfTrainClickedCard(event)].correct += 1;
+// };
+
 const nameCardOnClick = (event) => {
   if (!applicationState.isStartGame && !applicationState.isFlip
       && applicationState.isTrain && getNumberOfTrainClickedCard(event) !== false) {
+    statisticArr[applicationState.numOfTrainPage][getNumberOfTrainClickedCard(event)]
+      .trainClick += 1;
     const audio = new Audio(`${cards[applicationState.numOfTrainPage][getNumberOfTrainClickedCard(event)].audioSrc}`);
     audio.play();
   }
@@ -382,6 +395,7 @@ const addSidenavClickHandler = () => {
     if (event.target.classList.contains('set0')) {
       goToHomePage(); lightHomeTegSideMenu();
     }
+    showStatisticPage(event);
     for (let i = 1; i <= 8; i += 1) {
       if (event.target.classList.contains(`set${i}`)) {
         goToTrainPage(i); lightActiveTegSideMenu(i);
