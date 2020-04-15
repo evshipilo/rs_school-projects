@@ -8315,4 +8315,10 @@ h1 {
   z-index: 1002;
 }
 
+.sort {
+  display: inline-block;
+  width: 300px;
+  margin-top: 10px;
+}
+
 /*# sourceMappingURL=style.css.map */

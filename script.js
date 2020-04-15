@@ -433,10 +433,23 @@ const addRenewHandler = () => {
   });
 };
 
+const addSortHandler = () => {
+  document.querySelector('.sort').addEventListener('click', () => {
+    console.log('ksdjncksdjcksdjnc');
+    const table = document.querySelector('table');
+    const sortedRows = Array.from(table.rows)
+      .slice(1)
+      .sort((rowA, rowB) => (rowA.cells[1].innerHTML > rowB.cells[1].innerHTML ? 1 : -1));
+    table.tBodies[0].append(...sortedRows);
+  });
+};
+
+
 window.onload = function () {
   addCheckboxClickHandler();
   addSidenavClickHandler();
   addCategoriesClickHandler();
   addTrainClickHandler();
   addRenewHandler();
+  addSortHandler();
 };
