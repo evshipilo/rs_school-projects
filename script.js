@@ -11,22 +11,29 @@ const applicationState = {
 
 let counter = 0;
 let errorCounter = 0;
-const statisticArr = cards.slice(0);
+let statisticArr;
 
-const completeStatisticArr = () => {
-  for (let i = 1; i <= 8; i += 1) {
-    statisticArr[i].forEach((el) => {
-      const element = el;
-      element.category = statisticArr[0][i - 1];
-      element.trainClick = 0;
-      element.correct = 0;
-      element.uncorrect = 0;
-      element.precentCorrect = 0;
-    });
-  }
+window.addEventListener('unload', () => {
+  localStorage.setItem('savedStatisticArr', JSON.stringify(statisticArr));
+});
+
+const initStatisticArr = () => {
+  if (!localStorage.getItem('savedStatisticArr')) {
+    statisticArr = cards.slice(0);
+    for (let i = 1; i <= 8; i += 1) {
+      statisticArr[i].forEach((el) => {
+        const element = el;
+        element.category = statisticArr[0][i - 1];
+        element.trainClick = 0;
+        element.correct = 0;
+        element.uncorrect = 0;
+        element.precentCorrect = 0;
+      });
+    }
+  } else statisticArr = JSON.parse(localStorage.getItem('savedStatisticArr'));
 };
 
-completeStatisticArr();
+initStatisticArr();
 
 const pushStatisticArrToTable = () => {
   if (document.querySelectorAll('tbody tr')) {
