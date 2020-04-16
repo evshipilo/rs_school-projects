@@ -1,4 +1,16 @@
-import { cards } from './js/Cards.js';
+import M from 'materialize-css/dist/js/materialize.min';
+import { cards } from './js/Cards';
+
+document.addEventListener('DOMContentLoaded', () => {
+  const elems = document.querySelectorAll('.sidenav');
+  M.Sidenav.init(elems, {
+    edge: 'left',
+    draggable: 'true',
+    preventScrolling: 'true',
+    inDuration: 500,
+    outDuration: 500,
+  });
+});
 
 const applicationState = {
   isTrain: true,
@@ -224,10 +236,6 @@ const getNumberOfTrainClickedCard = (event) => {
   }
   return false;
 };
-
-// const writeCorrectAnswerToStatisicArr = (numOfCard) => {
-//   statisticArr[applicationState.numOfTrainPage][getNumberOfTrainClickedCard(event)].correct += 1;
-// };
 
 const nameCardOnClick = (event) => {
   if (!applicationState.isStartGame && !applicationState.isFlip
