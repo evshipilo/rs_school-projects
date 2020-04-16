@@ -8309,6 +8309,7 @@ h1 {
 }
 
 .statistic-page {
+  padding: 5px;
   position: absolute;
   width: 100%;
   min-height: 5000px;
