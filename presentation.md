@@ -2,5 +2,5 @@
  --------------------------------------------------------
  [Netlify presentation link](https://evshipilo-presentation.netlify.app)
  ----------------------------------------------------------------------
- [you tube presentation link](https://youtu.be/xfP9suc7FWI)
+ [GoogleDocs presentation transcript link](https://docs.google.com/document/d/19t58tQAHslCa7KGKcvLAxA5TKguLUzSGJ-kGOkY4MKs/edit?usp=sharing)
  -------------------------------------------------------------
