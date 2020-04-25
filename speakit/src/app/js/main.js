@@ -6,10 +6,12 @@ import { sumMy } from './module/sum'
 
 const applicationState = {
   difficulty: 0,
-  gameMode: false
+  gameMode: false,
+  matchCounter: 0
 }
 
 let arrayOfWordsRandom = []
+let arrayOfRecognizedWords = []
 
 window.onload = function () {
   renderCards(applicationState.difficulty, getRandomPageNumber())
@@ -20,11 +22,13 @@ window.onload = function () {
 
 function addSpeakClickHandler() {
   document.querySelector('.speak').addEventListener('click', (evt) => {
-    lightSelectedCard(evt)
-    applicationState.gameMode = true
-    document.querySelector('.mic').classList.remove('disable')
-    document.querySelector('.transcription').innerHTML = 'Speak please'
-    speechToText()
+    if (!applicationState.gameMode) {
+      applicationState.gameMode = true
+      lightSelectedCard(evt)
+      document.querySelector('.mic').classList.remove('disable')
+      document.querySelector('.transcription').innerHTML = 'Speak please'
+      speechToText()
+    }
   })
 }
 
@@ -50,17 +54,62 @@ function speechToText() {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
   const recognition = new SpeechRecognition()
   recognition.continuous = true
-  recognition.lang = 'en-EN'
-  // recognition.interimResults = false
-  recognition.maxAlternatives = 5
+  recognition.lang = 'en-US'
+  recognition.interimResults = false
+  recognition.maxAlternatives = 10
   recognition.start()
-  recognition.onaudiostart = function() {
-    console.log('starting')
+  recognition.onend = function () {
+    recognition.start()
   }
+
   recognition.onresult = function (event) {
-    console.log(event.results[event.results.length-1][0].transcript)
-    //console.log(event.results.length)
+    arrayOfRecognizedWords = []
+    for (let i = 0; i < event.results[event.results.length -
+    1].length; i += 1) {
+      arrayOfRecognizedWords.push(event.results[event.results.length -
+      1][i].transcript)
+    }
+    console.log(arrayOfRecognizedWords)
+    showResultOfMatch(getTheMatchNumber())
+    if (applicationState.matchCounter === 10) {
+      showCongratulation()
+    }
   }
+}
+
+function showCongratulation() {
+  applicationState.matchCounter = 0
+  document.querySelector('.transcription').innerHTML = 'CONGRATULATIONS!!!'
+  document.querySelectorAll('.word-card').forEach((item, num) => {
+    item.classList.remove('blue')
+    item.classList.add('red')
+  })
+}
+
+function getTheMatchNumber() {
+  for (let i = 0; i < 10; i += 1) {
+    for (let j = 0; j < arrayOfRecognizedWords.length; j += 1) {
+      if (arrayOfWordsRandom[i].word == arrayOfRecognizedWords[j].toLowerCase().replace(/\s/g, '')) {
+        console.log(`i${i}j${j}`)
+        return i
+      }
+    }
+  }
+  return 100
+}
+
+function showResultOfMatch(num) {
+  if (num !== 100) {
+    getTranslation(arrayOfWordsRandom[num])
+    showImage(arrayOfWordsRandom[num].image)
+    lightMatchCard(num)
+    applicationState.matchCounter += 1
+  } else document.querySelector('.transcription').innerHTML = 'no matches try again'
+}
+
+function lightMatchCard(num) {
+  document.querySelector(`.card${num}`).classList.add('blue')
+  document.querySelector(`.card${num}`).classList.add('lighten-4')
 }
 
 async function showImage(item) {
