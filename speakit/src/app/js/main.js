@@ -5,7 +5,8 @@ import { sumMy } from './module/sum'
 // console.log(`welcome from module: ${sumMy(3)(7)}`)
 
 const applicationState = {
-  difficulty: 0
+  difficulty: 0,
+  transcription:''
 }
 
 let arrayOfWordsRandom = []
@@ -27,9 +28,19 @@ function addDifficultyClickHandler() {
 function addCardsClickHandler() {
   document.querySelector('.cards-container').addEventListener('click', (evt) => {
     lightSelectedCard(evt)
-    // showTranslation()
+    showClickedWord(evt)
     // showImage()
     // playSound()
+  })
+}
+
+function showClickedWord(evt) {
+  document.querySelectorAll('.word-card').forEach((item, num) => {
+    item.querySelectorAll('*').forEach((it) => {
+      if (evt.target === it) {
+        getTranslation(arrayOfWordsRandom[num])
+      }
+    })
   })
 }
 
@@ -72,7 +83,7 @@ async function renderCards(difficulty, pageNumber) {
   const res = await fetch(url)
   const json = await res.json()
   arrayOfWordsRandom = getArrayOfWordsRandom(Array.from(json))
-  //console.log(arrayOfWordsRandom)
+  console.log(arrayOfWordsRandom)
   insertTextInCards()
 }
 
@@ -83,9 +94,10 @@ function insertTextInCards() {
   }
 }
 
-async function getTranslation (item, num) {
+async function getTranslation (item) {
   const url = `https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20200423T131720Z.5b6ec330d739656c.c9086fb5348e50291ba432745fd8571fc4c5ecdc&text= ${item.word} &lang=en-ru`
   const res = await fetch(url)
   const json = await res.json()
-  item.translation = json.text[0]
+  document.querySelector('.transcription').innerHTML = json.text[0]
+
 }
