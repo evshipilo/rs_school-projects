@@ -5,7 +5,8 @@ import { sumMy } from './module/sum'
 // console.log(`welcome from module: ${sumMy(3)(7)}`)
 
 const applicationState = {
-  difficulty: 0
+  difficulty: 0,
+  gameMode: false
 }
 
 let arrayOfWordsRandom = []
@@ -13,8 +14,18 @@ let arrayOfWordsRandom = []
 window.onload = function () {
   renderCards(applicationState.difficulty, getRandomPageNumber())
   addCardsClickHandler()
-  // addButtonsClickHandler()
+  addSpeakClickHandler()
   addDifficultyClickHandler()
+}
+
+function addSpeakClickHandler() {
+  document.querySelector('.speak').addEventListener('click', (evt) => {
+    lightSelectedCard(evt)
+    applicationState.gameMode = true
+    document.querySelector('.mic').classList.remove('disable')
+    document.querySelector('.transcription').innerHTML = 'Speak please'
+    speechToText()
+  })
 }
 
 function addDifficultyClickHandler() {
@@ -28,10 +39,28 @@ function addDifficultyClickHandler() {
 
 function addCardsClickHandler() {
   document.querySelector('.cards-container').addEventListener('click', (evt) => {
-    lightSelectedCard(evt)
-    showClickedWord(evt)
-    // playSound()
+    if (!applicationState.gameMode) {
+      lightSelectedCard(evt)
+      showClickedWord(evt)
+    }
   })
+}
+
+function speechToText() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  const recognition = new SpeechRecognition()
+  recognition.continuous = true
+  recognition.lang = 'en-EN'
+  // recognition.interimResults = false
+  recognition.maxAlternatives = 5
+  recognition.start()
+  recognition.onaudiostart = function() {
+    console.log('starting')
+  }
+  recognition.onresult = function (event) {
+    console.log(event.results[event.results.length-1][0].transcript)
+    //console.log(event.results.length)
+  }
 }
 
 async function showImage(item) {
@@ -46,21 +75,10 @@ async function showImage(item) {
   document.querySelector('.card-image img').replaceWith(newImg)
 }
 
-// async function playSound(item) {
-//   const prom = new Promise((resolve) => {
-//     const [, fileName] = item.split('/')
-//     const newAudio = new Audio(`https://raw.githubusercontent.com/evshipilo/rslang-data/master/data/${fileName}`)
-//     newAudio.addEventListener('load', () => {
-//       resolve(newAudio) })
-//   })
-//   const newAudio = await prom
-//   newAudio.play()
-// }
-
-function playSound(item){
-  if(document.querySelector('audio'))document.querySelector('audio').remove()
+function playSound(item) {
+  if (document.querySelector('audio'))document.querySelector('audio').remove()
   const [, fileName] = item.split('/')
-  document.querySelector("body").insertAdjacentHTML('beforeend',`
+  document.querySelector('body').insertAdjacentHTML('beforeend', `
   <audio src="https://raw.githubusercontent.com/evshipilo/rslang-data/master/data/${fileName}" autoplay></audio>
   `)
 }
