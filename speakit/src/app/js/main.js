@@ -5,8 +5,7 @@ import { sumMy } from './module/sum'
 // console.log(`welcome from module: ${sumMy(3)(7)}`)
 
 const applicationState = {
-  difficulty: 0,
-  transcription:''
+  difficulty: 0
 }
 
 let arrayOfWordsRandom = []
@@ -20,6 +19,8 @@ window.onload = function () {
 
 function addDifficultyClickHandler() {
   document.querySelector('.pagination').addEventListener('click', (evt) => {
+    document.querySelector('.transcription').innerHTML = 'SpeakIt!'
+    lightSelectedCard(evt)
     lightSelectedDifficulty(evt)
     renderCards(applicationState.difficulty, getRandomPageNumber())
   })
@@ -29,9 +30,39 @@ function addCardsClickHandler() {
   document.querySelector('.cards-container').addEventListener('click', (evt) => {
     lightSelectedCard(evt)
     showClickedWord(evt)
-    // showImage()
     // playSound()
   })
+}
+
+async function showImage(item) {
+  const prom = new Promise((resolve) => {
+    const newImg = new Image()
+    const [, fileName] = item.split('/')
+    newImg.src = `https://raw.githubusercontent.com/evshipilo/rslang-data/master/data/${fileName}`
+    newImg.classList.add('responsive-img')
+    newImg.addEventListener('load', () => { resolve(newImg) })
+  })
+  const newImg = await prom
+  document.querySelector('.card-image img').replaceWith(newImg)
+}
+
+// async function playSound(item) {
+//   const prom = new Promise((resolve) => {
+//     const [, fileName] = item.split('/')
+//     const newAudio = new Audio(`https://raw.githubusercontent.com/evshipilo/rslang-data/master/data/${fileName}`)
+//     newAudio.addEventListener('load', () => {
+//       resolve(newAudio) })
+//   })
+//   const newAudio = await prom
+//   newAudio.play()
+// }
+
+function playSound(item){
+  if(document.querySelector('audio'))document.querySelector('audio').remove()
+  const [, fileName] = item.split('/')
+  document.querySelector("body").insertAdjacentHTML('beforeend',`
+  <audio src="https://raw.githubusercontent.com/evshipilo/rslang-data/master/data/${fileName}" autoplay></audio>
+  `)
 }
 
 function showClickedWord(evt) {
@@ -39,6 +70,8 @@ function showClickedWord(evt) {
     item.querySelectorAll('*').forEach((it) => {
       if (evt.target === it) {
         getTranslation(arrayOfWordsRandom[num])
+        showImage(arrayOfWordsRandom[num].image)
+        playSound(arrayOfWordsRandom[num].audio)
       }
     })
   })
@@ -99,5 +132,4 @@ async function getTranslation (item) {
   const res = await fetch(url)
   const json = await res.json()
   document.querySelector('.transcription').innerHTML = json.text[0]
-
 }
