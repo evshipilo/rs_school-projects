@@ -12,30 +12,40 @@ const applicationState = {
 
 let arrayOfWordsRandom = []
 let arrayOfRecognizedWords = []
+const SpeechRecognition = window.SpeechRecognition ||
+  window.webkitSpeechRecognition
+const recognition = new SpeechRecognition()
+recognition.continuous = true
+recognition.lang = 'en-US'
+recognition.interimResults = false
+recognition.maxAlternatives = 10
 
 window.onload = function () {
   renderCards(applicationState.difficulty, getRandomPageNumber())
   addCardsClickHandler()
   addSpeakClickHandler()
+  addListenClickHandler()
   addDifficultyClickHandler()
+}
+
+function addListenClickHandler() {
+  document.querySelector('.listen').addEventListener('click', () => {
+    stopRecognition()
+    endSpeak()
+  })
 }
 
 function addSpeakClickHandler() {
   document.querySelector('.speak').addEventListener('click', (evt) => {
-    if (!applicationState.gameMode) {
-      applicationState.gameMode = true
-      lightSelectedCard(evt)
-      document.querySelector('.mic').classList.remove('disable')
-      document.querySelector('.transcription').innerHTML = 'Speak please'
-      speechToText()
-    }
+    startSpeak()
+    speechToText()
   })
 }
 
 function addDifficultyClickHandler() {
   document.querySelector('.pagination').addEventListener('click', (evt) => {
-    document.querySelector('.transcription').innerHTML = 'SpeakIt!'
-    lightSelectedCard(evt)
+    stopRecognition()
+    endSpeak()
     lightSelectedDifficulty(evt)
     renderCards(applicationState.difficulty, getRandomPageNumber())
   })
@@ -50,18 +60,36 @@ function addCardsClickHandler() {
   })
 }
 
+function endSpeak() {
+  applicationState.gameMode = false
+  applicationState.matchCounter = 0
+  document.querySelector('.mic').classList.add('disable')
+  document.querySelector('.listen').classList.add('disable')
+  document.querySelector('.speak').classList.remove('disable')
+  document.querySelector('.transcription').innerHTML = 'Listen please'
+  unlightCards()
+}
+function startSpeak() {
+  applicationState.gameMode = true
+  applicationState.matchCounter = 0
+  document.querySelector('.mic').classList.remove('disable')
+  document.querySelector('.listen').classList.remove('disable')
+  document.querySelector('.speak').classList.add('disable')
+  document.querySelector('.transcription').innerHTML = 'Speak please'
+  unlightCards()
+}
+function unlightCards() {
+  document.querySelectorAll('.word-card').forEach((item, num) => {
+    item.classList.remove('blue')
+    item.classList.remove('red')
+  })
+}
+
 function speechToText() {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-  const recognition = new SpeechRecognition()
-  recognition.continuous = true
-  recognition.lang = 'en-US'
-  recognition.interimResults = false
-  recognition.maxAlternatives = 10
   recognition.start()
   recognition.onend = function () {
     recognition.start()
   }
-
   recognition.onresult = function (event) {
     arrayOfRecognizedWords = []
     for (let i = 0; i < event.results[event.results.length -
@@ -69,20 +97,30 @@ function speechToText() {
       arrayOfRecognizedWords.push(event.results[event.results.length -
       1][i].transcript)
     }
-    console.log(arrayOfRecognizedWords)
+    // console.log(arrayOfRecognizedWords)
     showResultOfMatch(getTheMatchNumber())
     if (applicationState.matchCounter === 10) {
+      stopRecognition()
       showCongratulation()
     }
   }
 }
 
+function stopRecognition() {
+  if (recognition) {
+    recognition.stop()
+    recognition.onend = function() { recognition.stop() }
+  }
+}
+
 function showCongratulation() {
-  applicationState.matchCounter = 0
-  document.querySelector('.transcription').innerHTML = 'CONGRATULATIONS!!!'
+  setTimeout(() => { document.querySelector('.transcription').innerHTML = 'CONGRATULATIONS!!!' }, 2000)
   document.querySelectorAll('.word-card').forEach((item, num) => {
     item.classList.remove('blue')
     item.classList.add('red')
+    document.querySelector('.listen').classList.remove('disable')
+    document.querySelector('.speak').classList.remove('disable')
+    document.querySelector('.mic').classList.add('disable')
   })
 }
 
@@ -90,7 +128,7 @@ function getTheMatchNumber() {
   for (let i = 0; i < 10; i += 1) {
     for (let j = 0; j < arrayOfRecognizedWords.length; j += 1) {
       if (arrayOfWordsRandom[i].word == arrayOfRecognizedWords[j].toLowerCase().replace(/\s/g, '')) {
-        console.log(`i${i}j${j}`)
+        // console.log(`i${i}j${j}`)
         return i
       }
     }
@@ -147,11 +185,9 @@ function showClickedWord(evt) {
 function lightSelectedCard(evt) {
   document.querySelectorAll('.word-card').forEach((item, num) => {
     item.classList.remove('blue')
-    item.classList.remove('lighten-4')
     item.querySelectorAll('*').forEach((it) => {
       if (evt.target === it) {
         item.classList.add('blue')
-        item.classList.add('lighten-4')
       }
     })
   })
@@ -183,7 +219,7 @@ async function renderCards(difficulty, pageNumber) {
   const res = await fetch(url)
   const json = await res.json()
   arrayOfWordsRandom = getArrayOfWordsRandom(Array.from(json))
-  console.log(arrayOfWordsRandom)
+  // console.log(arrayOfWordsRandom)
   insertTextInCards()
 }
 
