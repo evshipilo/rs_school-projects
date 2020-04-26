@@ -19,18 +19,19 @@
 }
 
 .word-card{
-  width: 300px !important;
+  width: 160px !important;
   font-size: 25px !important;
   margin: 10px !important;
   cursor: pointer;
   user-select: none;
-  i{
-    font-size: 35px !important;
+  i{margin-left: -5px;
+    font-size: 25px !important;
   }
   .row{
     margin: 0;
   }
   p{
+    font-size: 15px;
     margin: 5px 0;
   }
 }
@@ -45,3 +46,22 @@
   margin: 0!important;
 }
 
+.section{
+  padding: 0;
+}
+.card .card-content{
+  padding: 10px;
+}
+
+.trans{
+  font-size:20px;
+ padding-top: 5px;
+}
+
+.mic i{
+  font-size: 25px;
+}
+.main-card{
+  width: 300px;
+  margin: 0 auto;
+}

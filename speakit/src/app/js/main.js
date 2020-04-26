@@ -102,7 +102,7 @@ function speechToText() {
     }
     // console.log(arrayOfRecognizedWords)
     showResultOfMatch(getTheMatchNumber())
-    if (applicationState.matchCounter === 2) {
+    if (applicationState.matchCounter === 10) {
       stopRecognition()
       showCongratulation()
     }
