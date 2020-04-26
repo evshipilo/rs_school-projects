@@ -159,6 +159,7 @@ async function showImage(item) {
     const [, fileName] = item.split('/')
     newImg.src = `https://raw.githubusercontent.com/evshipilo/rslang-data/master/data/${fileName}`
     newImg.classList.add('responsive-img')
+    newImg.classList.add('main-image')
     newImg.addEventListener('load', () => { resolve(newImg) })
   })
   const newImg = await prom
