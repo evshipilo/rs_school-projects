@@ -1,6 +1,6 @@
 import '../css/style.scss'
 import M from 'materialize-css/dist/js/materialize.min'
-import { sumMy } from './module/sum'
+//import { sumMy } from './module/sum'
 
 // console.log(`welcome from module: ${sumMy(3)(7)}`)
 
@@ -67,6 +67,7 @@ function endSpeak() {
   document.querySelector('.listen').classList.add('disable')
   document.querySelector('.speak').classList.remove('disable')
   document.querySelector('.transcription').innerHTML = 'Listen please'
+  document.querySelectorAll('.speaker').forEach((it) => { it.innerHTML = 'volume_up' })
   unlightCards()
 }
 function startSpeak() {
@@ -76,6 +77,8 @@ function startSpeak() {
   document.querySelector('.listen').classList.remove('disable')
   document.querySelector('.speak').classList.add('disable')
   document.querySelector('.transcription').innerHTML = 'Speak please'
+  document.querySelectorAll('.speaker').forEach((it) => { it.innerHTML = 'volume_off' })
+
   unlightCards()
 }
 function unlightCards() {
@@ -99,7 +102,7 @@ function speechToText() {
     }
     // console.log(arrayOfRecognizedWords)
     showResultOfMatch(getTheMatchNumber())
-    if (applicationState.matchCounter === 10) {
+    if (applicationState.matchCounter === 2) {
       stopRecognition()
       showCongratulation()
     }
