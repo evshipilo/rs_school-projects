@@ -12,9 +12,22 @@
   padding-top: 2px;
 }
 .progress{
+  display: none;
   height: 2px;
   background-color: white;
   top: -9px;
   margin: 0;
+}
+.delete{
+  cursor: pointer;
+  position: absolute;
+  top: 17px;
+  right: 15px;
+  &:hover{
+    transform: scale(1.2);
+  }
+}
+.input-field{
+  padding-right: 35px !important;
 }
 
