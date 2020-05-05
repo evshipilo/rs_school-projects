@@ -141,7 +141,7 @@
 .swiper-button-prev,
 .swiper-button-next {
   position: absolute;
-  top: 50%;
+  top: calc(50% - 15px);
   width: calc(var(--swiper-navigation-size) / 44 * 27);
   height: var(--swiper-navigation-size);
   margin-top: calc(-1 * var(--swiper-navigation-size) / 2);
@@ -192,7 +192,7 @@
 }
 .swiper-button-prev.swiper-button-black,
 .swiper-button-next.swiper-button-black {
-  --swiper-navigation-color: #000000;
+  --swiper-navigation-color: #000999;
 }
 .swiper-button-lock {
   display: none;
@@ -339,7 +339,7 @@ button.swiper-pagination-bullet {
   --swiper-pagination-color: #ffffff;
 }
 .swiper-pagination-black {
-  --swiper-pagination-color: #000000;
+  --swiper-pagination-color: #000999;
 }
 .swiper-pagination-lock {
   display: none;
