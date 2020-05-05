@@ -26,16 +26,33 @@ const appState = {
 };
 const formSearch = document.forms[0];
 
-function addFindClickHandler() {
-  document.querySelector('form').onsubmit = function (event) {
-    event.preventDefault();
-    appState.searchValue = formSearch.elements.search.value;
-    console.log(appState.searchValue);
-  };
-}
-
-
 window.onload = function () {
   document.querySelector('.search').focus();
   addFindClickHandler();
 };
+
+function addFindClickHandler() {
+  document.querySelector('form').onsubmit = function (event) {
+    event.preventDefault();
+    appState.searchValue = formSearch.elements.search.value;
+    if (appState.searchValue) {
+      showProgress();
+    }
+  };
+}
+
+function showProgress() {
+  if (isWating) document.querySelector('.progress').classList.remove('hidden');
+}
+
+function hideProgress() {
+  document.querySelector('.progress').classList.add('hidden');
+}
+
+function typeMessage(message){
+  document.querySelector('.massage').innerHTML=message;
+}
+
+function isRussianLetters() {
+  return !( appState.searchValue.search(/[А-яЁё]/) === -1 )
+}

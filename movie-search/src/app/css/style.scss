@@ -15,7 +15,6 @@
   padding-top: 2px;
 }
 .progress{
-  display: none;
   height: 2px;
   background-color: white;
   top: -9px;
@@ -41,7 +40,6 @@
   padding-right: 35px !important;
 }
 
-
 .swiper-container {
   width: 80%;
   height: 100px;
@@ -58,6 +56,13 @@
 .section .row{
   margin-bottom: 0px;
   margin-top: 0px;
-padding-bottom: 0px;
+  padding-bottom: 0px;
   padding-top: 0px;
+}
+
+.disable{
+  display: none;
+}
+.hidden{
+  opacity: 0;
 }
