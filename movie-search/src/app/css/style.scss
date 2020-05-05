@@ -32,6 +32,10 @@
     transition: 0.3s;
     opacity: 1;
   }
+  &:active{
+    transition: 0.2s;
+    color: blue !important;
+  }
 }
 .input-field{
   padding-right: 35px !important;
@@ -39,7 +43,21 @@
 
 
 .swiper-container {
-  width: 800px;
+  width: 80%;
   height: 100px;
   padding-bottom: 30px;
+}
+
+.submit{
+  transition: 0.2s;
+  &:active{
+    transition: 0.2s;
+    background-color: blue;
+  }
+}
+.section .row{
+  margin-bottom: 0px;
+  margin-top: 0px;
+padding-bottom: 0px;
+  padding-top: 0px;
 }
