@@ -20,11 +20,11 @@ const swiper = new Swiper('.swiper-container', {
   },
 });
 
-// const appState = {
-//   searchValue: '',
-//   translation: '',
-// };
+const appState = {
+  query: '',
+};
 const formSearch = document.forms[0];
+
 
 window.onload = function () {
   document.querySelector('.search').focus();
@@ -41,22 +41,6 @@ function addClearClickHandler() {
 function addFindClickHandler() {
   document.querySelector('form').onsubmit = function (event) {
     event.preventDefault();
-    // appState.searchValue = formSearch.elements.search.value;
-    // if (appState.searchValue) {
-    //   showProgress();
-    //   if (isRussianLetters(appState.searchValue)) {
-    //     typeMessage('Trying to translate...');
-    //     getTranslation(appState.searchValue);
-    //   } else {
-    //     appState.translation = appState.searchValue;
-    //     typeMessage(`Looking for "${appState.translation}"`);
-    //     console.log('1');
-    //     const rr = getMovieTitle(1, appState.translation);
-    //     console.log(rr);
-    //   }
-    // } else {
-    //   typeMessage('Empty query, type movie title and press FIND!');
-    // }
     const searchValue = formSearch.elements.search.value;
     showFilms(searchValue);
   };
@@ -69,24 +53,45 @@ async function showFilms(searchQuery) {
     if (isRussianLetters(searchQuery)) {
       typeMessage('Trying to translate...');
       let translation = await getTranslation(searchQuery);
-      if(translation){
-        translation=deleteSpaces(translation);
-        typeMessage(`Looking for "${translation}"`);
-        const filmData = await getMovieTitle(1, translation);
-        // if(filmData){
-        //
-        // }
+      if (translation) {
+        translation = deleteSpaces(translation);
+        appState.query = translation;
+        insertDataInHtml(appState.query, 1);
       }
     } else {
-      typeMessage(`Looking for "${searchQuery}"`);
-      const filmData = await getMovieTitle(1, searchQuery);
-      // if(filmData){
-      //
-      // }
+      appState.query = searchQuery;
+      insertDataInHtml(appState.query, 1);
     }
   } else {
     typeMessage('Empty query, type movie title and press FIND!');
   }
+}
+
+async function insertDataInHtml(query, page) {
+  typeMessage(`Looking for "${query}"`);
+  const filmData = await getMovieTitle(page, query);
+  if (filmData) {
+    const arrOfRatings = await Promise.allSettled(getArrayOfPromises(filmData));
+    console.log(arrOfRatings);
+  }
+}
+
+
+const getRating = async function (item) {
+  const url = `https://www.omdbapi.com/?i=${item.imdbID}&apikey=50a9f9f4`;
+  let res;
+  try {
+    res = await fetch(url);
+  } catch (e) {
+    return {};
+  }
+  const data = await res.json();
+  return data;
+};
+
+function getArrayOfPromises(filmData) {
+  const arr = filmData.Search.map((item) => getRating(item));
+  return arr;
 }
 
 function deleteSpaces(word) {
