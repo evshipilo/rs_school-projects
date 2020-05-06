@@ -71,10 +71,24 @@ async function insertDataInHtml(query, page) {
   typeMessage(`Looking for "${query}"`);
   const filmData = await getMovieTitle(page, query);
   if (filmData) {
-    const arrOfRatings = await Promise.allSettled(getArrayOfPromises(filmData));
-    console.log(arrOfRatings);
+    const arrOfRatings = await Promise.allSettled(getArrayOfRatingPromises(filmData.Search));
+    const arrOfPosters = await Promise.allSettled(getArrayOfPosterPromises(filmData.Search));
+    console.log(arrOfRatings, filmData, arrOfPosters);
   }
 }
+
+const getPoster = async function (item) {
+  let response;
+  try {
+    response = await fetch(item.Poster);
+  } catch (e) {
+    return false;
+  }
+  const blob = await response.blob();
+  const image = new Image(300, 450);
+  image.src = URL.createObjectURL(blob);
+  return image;
+};
 
 
 const getRating = async function (item) {
@@ -83,14 +97,19 @@ const getRating = async function (item) {
   try {
     res = await fetch(url);
   } catch (e) {
-    return {};
+    return false;
   }
   const data = await res.json();
   return data;
 };
 
-function getArrayOfPromises(filmData) {
-  const arr = filmData.Search.map((item) => getRating(item));
+function getArrayOfRatingPromises(filmData) {
+  const arr = filmData.map((item) => getRating(item));
+  return arr;
+}
+
+function getArrayOfPosterPromises(filmData) {
+  const arr = filmData.map((item) => getPoster(item));
   return arr;
 }
 
