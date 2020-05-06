@@ -74,7 +74,14 @@ async function insertDataInHtml(query, page) {
     const arrOfRatings = await Promise.allSettled(getArrayOfRatingPromises(filmData.Search));
     const arrOfPosters = await Promise.allSettled(getArrayOfPosterPromises(filmData.Search));
     console.log(arrOfRatings, filmData, arrOfPosters);
+    showData(arrOfPosters);
   }
+}
+
+function showData(postersArr) {
+  document.querySelector('.swiper-wrapper').insertAdjacentHTML('afterbegin',
+    `<div class="swiper-slide" style="background-image: url(${postersArr[0].value});
+background-origin: border-box; background-repeat: no-repeat;"></div>`);
 }
 
 const getPoster = async function (item) {
@@ -85,9 +92,9 @@ const getPoster = async function (item) {
     return false;
   }
   const blob = await response.blob();
-  const image = new Image(300, 450);
+  const image = new Image();
   image.src = URL.createObjectURL(blob);
-  return image;
+  return image.src;
 };
 
 
