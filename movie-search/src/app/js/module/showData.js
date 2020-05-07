@@ -1,43 +1,49 @@
 export function showData(filmDataArr, arrOfPosters, filmFullDataArr) {
-  document.querySelector('.swiper-wrapper').insertAdjacentHTML('afterbegin',
-    `<div class="swiper-slide grey lighten-5">
+  for (let i = 0; i < filmDataArr.length; i += 1) {
+    document.querySelector('.swiper-wrapper').insertAdjacentHTML('beforeend',
+      `<div class="swiper-slide grey lighten-5">
 <div class="title-container center truncate">
-<a class="slide-title " href="https://www.imdb.com/title/${filmDataArr[0].imdbID}/videogallery/" target="_blank">
-${filmDataArr[0].Title}</a>
+<a class="slide-title " href="https://www.imdb.com/title/${filmDataArr[i].imdbID}/videogallery/" target="_blank">
+${filmDataArr[i].Title}</a>
 </div>
 <div class="poster-container">
 <div class="no-poster center">
 <h5>NO POSTER</h5>
 <i class="material-icons  large red-text">event_busy</i>
 </div>
-<img src="${arrOfPosters[0].value}" alt="" class="poster">
+<img src="${arrOfPosters[i].value}" alt="" class="poster">
 </div>
 <div class="slide-footer">
-<span>${filmDataArr[0].Year} year.</span>
+<span>${filmDataArr[i].Year} year.</span>
 <i class="material-icons yellow-text star">star</i>
-<span>${filmFullDataArr[0].value.imdbRating}</span>
+<span>${filmFullDataArr[i].value.imdbRating}</span>
 </div>
 <div class="center more-info">
-<a class="waves-effect waves-light btn-small modal-trigger" href="#modal1">More info</a>
-<div id="modal1" class="modal">
+<a class="waves-effect waves-light btn-small modal-trigger" href="#modal${i}">More info</a>
+
+</div>
+</div>`);
+
+    document.querySelector('.modal-info').insertAdjacentHTML('beforeend', `
+    <div id="modal${i}" class="modal">
     <div class="modal-content left-align">
-      <p><u>Title:</u> ${filmFullDataArr[0].value.Title}</p>
-      <p><u>Actors:</u> ${filmFullDataArr[0].value.Actors}</p>
-      <p><u>Awards:</u> ${filmFullDataArr[0].value.Awards}</p>
-      <p><u>BoxOffice:</u> ${filmFullDataArr[0].value.BoxOffice}</p>
-      <p><u>Country:</u> ${filmFullDataArr[0].value.Country}</p>
-      <p><u>Director:</u> ${filmFullDataArr[0].value.Director}</p>
-      <p><u>Genre:</u> ${filmFullDataArr[0].value.Genre}</p>
-      <p><u>Plot:</u> ${filmFullDataArr[0].value.Plot}</p>
-      <p><u>Production:</u> ${filmFullDataArr[0].value.Production}</p>
-      <p><u>Rated:</u> ${filmFullDataArr[0].value.Rated}</p>
-      <p><u>Runtime:</u> ${filmFullDataArr[0].value.Runtime}</p>
-      <p><u>Website:</u> ${filmFullDataArr[0].value.Website}</p>
+      <p><u>Title:</u> ${filmFullDataArr[i].value.Title}</p>
+      <p><u>Actors:</u> ${filmFullDataArr[i].value.Actors}</p>
+      <p><u>Awards:</u> ${filmFullDataArr[i].value.Awards}</p>
+      <p><u>BoxOffice:</u> ${filmFullDataArr[i].value.BoxOffice}</p>
+      <p><u>Country:</u> ${filmFullDataArr[i].value.Country}</p>
+      <p><u>Director:</u> ${filmFullDataArr[i].value.Director}</p>
+      <p><u>Genre:</u> ${filmFullDataArr[i].value.Genre}</p>
+      <p><u>Plot:</u> ${filmFullDataArr[i].value.Plot}</p>
+      <p><u>Production:</u> ${filmFullDataArr[i].value.Production}</p>
+      <p><u>Rated:</u> ${filmFullDataArr[i].value.Rated}</p>
+      <p><u>Runtime:</u> ${filmFullDataArr[i].value.Runtime}</p>
+      <p><u>Website:</u> ${filmFullDataArr[i].value.Website}</p>
     </div>
     <div class="modal-footer">
       <a href="#!" class="modal-close waves-effect waves-green btn ">OK</a>
     </div>
   </div>
-</div>
-</div>`);
+    `);
+  }
 }

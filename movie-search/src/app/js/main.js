@@ -1,9 +1,17 @@
 import '../css/style.scss';
 import Swiper from 'swiper';
-import { showData } from './module/showData';
 import M from 'materialize-css/dist/js/materialize.min';
-// import { sumMy } from './module/sum';
-// console.log(`welcome from module: ${sumMy(3)(7)}`);
+import { showData } from './module/showData';
+
+const appState = {
+  query: '',
+  currentPage: 1,
+  numOfPages: 1,
+  filmData: false,
+  arrOfRatings: [],
+  arrOfPosters: [],
+};
+const formSearch = document.forms[0];
 
 const swiper = new Swiper('.swiper-container', {
   slidesPerView: 4,
@@ -18,13 +26,12 @@ const swiper = new Swiper('.swiper-container', {
     dynamicBullets: true,
     dynamicMainBullets: 3,
   },
+  on: {
+    slideChange() {
+      console.log(swiper.activeIndex);
+    },
+  },
 });
-
-const appState = {
-  query: '',
-};
-const formSearch = document.forms[0];
-
 
 window.onload = function () {
   document.querySelector('.search').focus();
@@ -56,11 +63,11 @@ async function showFilms(searchQuery) {
       if (translation) {
         translation = deleteSpaces(translation);
         appState.query = translation;
-        insertDataInHtml(appState.query, 1);
+        insertDataInHtml(appState.query, appState.currentPage);
       }
     } else {
       appState.query = searchQuery;
-      insertDataInHtml(appState.query, 1);
+      insertDataInHtml(appState.query, appState.currentPage);
     }
   } else {
     typeMessage('Empty query, type movie title and press FIND!');
@@ -68,14 +75,28 @@ async function showFilms(searchQuery) {
 }
 
 async function insertDataInHtml(query, page) {
-  typeMessage(`Looking for "${query}"`);
-  const filmData = await getMovieTitle(page, query);
-  if (filmData) {
-    const arrOfRatings = await Promise.allSettled(getArrayOfRatingPromises(filmData.Search));
-    const arrOfPosters = await Promise.allSettled(getArrayOfPosterPromises(filmData.Search));
-    console.log(arrOfRatings, filmData, arrOfPosters);
-    showData(filmData.Search, arrOfPosters, arrOfRatings);
+  if (page === 1)typeMessage(`Looking for "${query}"`);
+  appState.filmData = await getMovieTitle(page, query);
+  if (appState.filmData) {
+    appState.arrOfRatings = await Promise.allSettled(getArrayOfRatingPromises(appState.filmData.Search));
+    appState.arrOfPosters = await Promise.allSettled(getArrayOfPosterPromises(appState.filmData.Search));
+    console.log(appState.arrOfRatings, appState.filmData, appState.arrOfPosters);
+    if (page === 1)clearSlider();
+    showData(appState.filmData.Search, appState.arrOfPosters, appState.arrOfRatings);
+    hideProgress();
+    typeMessage(`Results for "${query}"`);
     initModal();
+  }
+}
+
+function clearSlider() {
+  const element = document.querySelector('.modal-info');
+  while (element.firstChild) {
+    element.removeChild(element.firstChild);
+  }
+  const element1 = document.querySelector('.swiper-wrapper');
+  while (element1.firstChild) {
+    element1.removeChild(element1.firstChild);
   }
 }
 
