@@ -6,7 +6,7 @@ import M from 'materialize-css/dist/js/materialize.min';
 // console.log(`welcome from module: ${sumMy(3)(7)}`);
 
 const swiper = new Swiper('.swiper-container', {
-  slidesPerView: 3,
+  slidesPerView: 4,
   spaceBetween: 20,
   navigation: {
     nextEl: '.swiper-button-next',
@@ -74,15 +74,29 @@ async function insertDataInHtml(query, page) {
     const arrOfRatings = await Promise.allSettled(getArrayOfRatingPromises(filmData.Search));
     const arrOfPosters = await Promise.allSettled(getArrayOfPosterPromises(filmData.Search));
     console.log(arrOfRatings, filmData, arrOfPosters);
-    showData(arrOfPosters);
+    showData(filmData.Search,arrOfPosters);
   }
 }
 
-function showData(postersArr) {
+function showData(filmDataArr,arrOfPosters) {
   document.querySelector('.swiper-wrapper').insertAdjacentHTML('afterbegin',
-    `<div class="swiper-slide" style="background-image: url(${postersArr[0].value});
-background-origin: border-box; background-repeat: no-repeat;"></div>`);
+    `<div class="swiper-slide grey">
+<div class="title-container">
+<a href="https://www.imdb.com/title/${filmDataArr[0].imdbID}/videogallery/" target="_blank">
+${filmDataArr[0].Title}</a>
+</div>
+<div class="poster-container">
+<div class="no-poster center">
+<h5>NO POSTER</h5>
+<i class="material-icons  large red-text">event_busy</i>
+</div>
+<img src="${arrOfPosters[0].dvalue}" alt="" class="poster">
+</div>
+</div>`);
 }
+
+//<div class="poster" style="background-image:
+// url(${arrOfPosters[0].value})";></div>
 
 const getPoster = async function (item) {
   let response;

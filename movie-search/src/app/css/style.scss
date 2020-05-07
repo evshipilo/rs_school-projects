@@ -6,37 +6,42 @@
 @import 'mixin';
 @import 'fonts';
 
-.page-footer{
+.page-footer {
   padding-top: 5px;
 }
 
-.fa-film{
+.fa-film {
   font-size: 30px;
   padding-top: 2px;
 }
-.progress{
+
+.progress {
   height: 2px;
   background-color: white;
   top: -9px;
   margin: 0;
 }
-.delete{
+
+.delete {
   opacity: 0.6;
   cursor: pointer;
   position: absolute;
-  top: 17px;
-  right: 15px;
+  top: 13px;
+  right: 10px;
   transition: 0.3s;
-  &:hover{
+
+  &:hover {
     transition: 0.3s;
     opacity: 1;
   }
-  &:active{
+
+  &:active {
     transition: 0.2s;
     color: blue !important;
   }
 }
-.input-field{
+
+.input-field {
   padding-right: 35px !important;
 }
 
@@ -46,26 +51,56 @@
   padding-bottom: 30px;
 }
 
-.submit{
+.submit {
   transition: 0.2s;
-  &:active{
+
+  &:active {
     transition: 0.2s;
     background-color: blue;
   }
 }
-.section .row{
+
+.section .row {
   margin-bottom: 0px;
   margin-top: 0px;
   padding-bottom: 0px;
   padding-top: 0px;
 }
 
-.disable{
+.disable {
   display: none;
 }
-.hidden{
+
+.hidden {
   opacity: 0;
 }
-.message{
+
+.message {
   height: 25px;
+}
+
+.poster {
+  border-radius: 5px;
+  // background-origin: border-box;
+  // background-repeat: no-repeat;
+  width: inherit;
+  height: auto;
+}
+
+.poster-container {
+  position: relative;
+  height: 310px;
+  width: inherit;
+  overflow: hidden;
+}
+
+.no-poster {
+  position: absolute;
+  top: calc(50% - 75px);
+  left: calc(50% - 65px);
+  z-index: -10;
+}
+
+.title-container {
+  height: 40px;
 }
