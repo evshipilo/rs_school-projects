@@ -4,7 +4,7 @@ import M from 'materialize-css/dist/js/materialize.min';
 import { showData } from './module/showData';
 
 const appState = {
-  query: '',
+  query: 'sun',
   currentPage: 1,
   numOfPages: 1,
   filmData: false,
@@ -29,6 +29,11 @@ const swiper = new Swiper('.swiper-container', {
   on: {
     slideChange() {
       console.log(swiper.activeIndex);
+      if ((appState.currentPage * 10 - swiper.activeIndex) < 8
+        && appState.currentPage < appState.numOfPages) {
+        appState.currentPage += 1;
+        insertDataInHtml(appState.query, appState.currentPage);
+      }
     },
   },
 });
@@ -37,6 +42,7 @@ window.onload = function () {
   document.querySelector('.search').focus();
   addFindClickHandler();
   addClearClickHandler();
+  insertDataInHtml(appState.query, appState.currentPage);
 };
 
 function addClearClickHandler() {
@@ -63,10 +69,12 @@ async function showFilms(searchQuery) {
       if (translation) {
         translation = deleteSpaces(translation);
         appState.query = translation;
+        appState.currentPage = 1;
         insertDataInHtml(appState.query, appState.currentPage);
       }
     } else {
       appState.query = searchQuery;
+      appState.currentPage = 1;
       insertDataInHtml(appState.query, appState.currentPage);
     }
   } else {
@@ -75,17 +83,20 @@ async function showFilms(searchQuery) {
 }
 
 async function insertDataInHtml(query, page) {
-  if (page === 1)typeMessage(`Looking for "${query}"`);
+  typeMessage(`Looking for "${query}"`);
   appState.filmData = await getMovieTitle(page, query);
   if (appState.filmData) {
+    appState.numOfPages = Math.ceil(appState.filmData.totalResults / 10);
+    console.log(appState.numOfPages);
     appState.arrOfRatings = await Promise.allSettled(getArrayOfRatingPromises(appState.filmData.Search));
     appState.arrOfPosters = await Promise.allSettled(getArrayOfPosterPromises(appState.filmData.Search));
     console.log(appState.arrOfRatings, appState.filmData, appState.arrOfPosters);
     if (page === 1)clearSlider();
-    showData(appState.filmData.Search, appState.arrOfPosters, appState.arrOfRatings);
+    showData(appState.filmData.Search, appState.arrOfPosters, appState.arrOfRatings, page);
     hideProgress();
     typeMessage(`Results for "${query}"`);
     initModal();
+    swiper.update();
   }
 }
 
