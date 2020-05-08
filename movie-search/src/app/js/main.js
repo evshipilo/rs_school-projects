@@ -66,9 +66,9 @@ window.onload = function () {
 
 window.onresize = () => {
   setHeightOfSlider();
-  //swiper.update();
+  // swiper.update();
   setHeightOfPoster();
- // swiper.update();
+  // swiper.update();
 };
 
 function addClearClickHandler() {
@@ -105,13 +105,13 @@ async function showFilms(searchQuery) {
       typeMessage('Trying to translate...');
       let translation = await getTranslation(searchQuery);
       if (translation) {
-        translation = deleteSpaces(translation);
-        appState.query = translation;
+        translation = deleteSpaces(translation).toLowerCase();
+        appState.query = deleteThe(translation);
         appState.currentPage = 1;
         insertDataInHtml(appState.query, appState.currentPage);
       }
     } else {
-      appState.query = searchQuery;
+      appState.query = deleteSpaces(searchQuery).toLowerCase();
       appState.currentPage = 1;
       insertDataInHtml(appState.query, appState.currentPage);
     }
@@ -137,7 +137,7 @@ async function insertDataInHtml(query, page) {
     if (page === 1)animateSlidesOpacity();
     swiper.update();
     setHeightOfPoster();
-    //swiper.update();
+    // swiper.update();
   }
 }
 
@@ -207,7 +207,11 @@ function getArrayOfPosterPromises(filmData) {
 }
 
 function deleteSpaces(word) {
-  return word.replace(/^\s/, '').replace(/\s$/, '');
+  return word.replace(/^\s+/, '').replace(/\s+$/, '');
+}
+
+function deleteThe(word) {
+  return word.replace(/^the\s+/, '');
 }
 
 async function getTranslation(item) {
