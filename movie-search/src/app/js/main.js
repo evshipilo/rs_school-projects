@@ -21,7 +21,7 @@ const swiper = new Swiper('.swiper-container', {
       slidesPerView: 1,
     },
     // when window width is >= 600px
-    601: {
+    550: {
       slidesPerView: 2,
       spaceBetween: 20,
     },
@@ -47,7 +47,6 @@ const swiper = new Swiper('.swiper-container', {
   },
   on: {
     slideChange() {
-      // console.log(swiper.activeIndex);
       if ((appState.currentPage * 10 - swiper.activeIndex) < 8
         && appState.currentPage < appState.numOfPages) {
         appState.currentPage += 1;
@@ -86,7 +85,6 @@ function setHeightOfSlider() {
 function setHeightOfPoster() {
   const [slideWidth] = getComputedStyle(document.querySelector('.swiper-slide')).width.split('px');
   document.querySelectorAll('.poster-container').forEach((it) => {
-    console.log('+++');
     const item = it;
     item.style.height = `${+slideWidth * 1.53}px`;
   });
@@ -127,16 +125,12 @@ async function insertDataInHtml(query, page) {
   appState.filmData = await getMovieTitle(page, query);
   if (appState.filmData) {
     appState.numOfPages = Math.ceil(appState.filmData.totalResults / 10);
-    // console.log(appState.numOfPages);
     appState.arrOfRatings = await Promise
       .allSettled(getArrayOfRatingPromises(appState.filmData.Search));
     appState.arrOfPosters = await Promise
       .allSettled(getArrayOfPosterPromises(appState.filmData.Search));
-    // console.log(appState.arrOfRatings, appState.filmData,
-    // appState.arrOfPosters);
     if (page === 1)clearSlider();
     showData(appState.filmData.Search, appState.arrOfPosters, appState.arrOfRatings, page);
-    // setHeightOfSlide();
     hideProgress();
     typeMessage(`Results for "${query}"`);
     initModal();
