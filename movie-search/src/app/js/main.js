@@ -12,20 +12,19 @@ const appState = {
   arrOfPosters: [],
 };
 const formSearch = document.forms[0];
+
 const swiper = new Swiper('.swiper-container', {
   slidesPerView: 4,
   spaceBetween: 20,
+  centerInsufficientSlides: true,
   breakpoints: {
-    // when window width is >= 300px
     300: {
       slidesPerView: 1,
     },
-    // when window width is >= 600px
     550: {
       slidesPerView: 2,
       spaceBetween: 20,
     },
-    // when window width is >= 900px
     900: {
       slidesPerView: 3,
       spaceBetween: 20,
