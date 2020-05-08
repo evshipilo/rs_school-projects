@@ -6,10 +6,35 @@
 @import 'mixin';
 @import 'fonts';
 
-@mixin media-1800{
-  @media (max-width: 1800px) {
+@mixin media-900{
+  @media (max-width: 900px) {
     @content;
   }
+}
+
+@mixin media-600{
+  @media (max-width: 600px) {
+    @content;
+  }
+}
+
+.swiper-container {
+  width: 90%;
+  height: 570px;
+  padding-bottom: 30px;
+  @include media-900{
+    width: 85%;
+  }
+  @include media-600{
+    width: 75%;
+  }
+}
+
+.poster-container {
+  position: relative;
+  height: 420px;
+  width: inherit;
+  overflow: hidden;
 }
 
 .page-footer {
@@ -86,22 +111,6 @@
 }
 .swiper-slide{
   border-radius: 5px;
-}
-
-.swiper-container {
-  width: 90%;
-  height: 570px;
-  padding-bottom: 30px;
-  //@include media-1800{
-  //  height: 550px;
-  //}
-}
-
-.poster-container {
-  position: relative;
-  height: 420px;
-  width: inherit;
-  overflow: hidden;
 }
 
 .no-poster {

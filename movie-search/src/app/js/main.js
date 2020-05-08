@@ -12,34 +12,53 @@ const appState = {
   arrOfPosters: [],
 };
 const formSearch = document.forms[0];
-let swiper;
+const swiper = new Swiper('.swiper-container', {
+  slidesPerView: 4,
+  spaceBetween: 20,
+  breakpoints: {
+    // when window width is >= 300px
+    300: {
+      slidesPerView: 1,
+    },
+    // when window width is >= 600px
+    601: {
+      slidesPerView: 2,
+      spaceBetween: 20,
+    },
+    // when window width is >= 900px
+    900: {
+      slidesPerView: 3,
+      spaceBetween: 20,
+    },
+    1200: {
+      slidesPerView: 4,
+      spaceBetween: 20,
+    },
+  },
+  navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+  },
+  pagination: {
+    el: '.swiper-pagination',
+    clickable: true,
+    dynamicBullets: true,
+    dynamicMainBullets: 3,
+  },
+  on: {
+    slideChange() {
+      console.log(swiper.activeIndex);
+      if ((appState.currentPage * 10 - swiper.activeIndex) < 8
+        && appState.currentPage < appState.numOfPages) {
+        appState.currentPage += 1;
+        insertDataInHtml(appState.query, appState.currentPage);
+      }
+    },
+  },
+});
 // setHeightOfSlide();
 
 window.onload = function () {
-  swiper = new Swiper('.swiper-container', {
-    slidesPerView: 4,
-    spaceBetween: 20,
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    },
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true,
-      dynamicBullets: true,
-      dynamicMainBullets: 3,
-    },
-    on: {
-      slideChange() {
-        console.log(swiper.activeIndex);
-        if ((appState.currentPage * 10 - swiper.activeIndex) < 8
-          && appState.currentPage < appState.numOfPages) {
-          appState.currentPage += 1;
-          insertDataInHtml(appState.query, appState.currentPage);
-        }
-      },
-    },
-  });
   document.querySelector('.search').focus();
   addFindClickHandler();
   addClearClickHandler();
@@ -47,9 +66,9 @@ window.onload = function () {
   // setHeightOfSlide();
 };
 
-window.onresize = () => {
-  // setHeightOfSlide();
-};
+// window.onresize = () => {
+//   // setHeightOfSlide();
+// };
 
 function addClearClickHandler() {
   document.querySelector('.delete').addEventListener('click', () => {
@@ -57,14 +76,14 @@ function addClearClickHandler() {
   });
 }
 
-function setHeightOfSlide() {
-  const [slideWidth] = getComputedStyle(document.querySelector('.swiper-slide')).width.split('px');
-  console.log(slideWidth);
-  swiper.height = `${+slideWidth * 2.087912}px`;
-  // document.querySelector('.swiper-container').style.height =
-  // `${+slideWidth * 2.087912}px`;
-  document.querySelectorAll('.poster-container').forEach((it) => { it.style.height = `${+slideWidth * 1.538462}px`; });
-}
+// function setHeightOfSlide() {
+//   const [slideWidth] = getComputedStyle(document.querySelector('.swiper-slide')).width.split('px');
+//   console.log(slideWidth);
+//   swiper.height = `${+slideWidth * 2.087912}px`;
+//   // document.querySelector('.swiper-container').style.height =
+//   // `${+slideWidth * 2.087912}px`;
+//   document.querySelectorAll('.poster-container').forEach((it) => { it.style.height = `${+slideWidth * 1.538462}px`; });
+// }
 
 function addFindClickHandler() {
   document.querySelector('form').onsubmit = function (event) {
