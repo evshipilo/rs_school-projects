@@ -47,7 +47,7 @@ const swiper = new Swiper('.swiper-container', {
   },
   on: {
     slideChange() {
-      console.log(swiper.activeIndex);
+      //console.log(swiper.activeIndex);
       if ((appState.currentPage * 10 - swiper.activeIndex) < 8
         && appState.currentPage < appState.numOfPages) {
         appState.currentPage += 1;
@@ -56,14 +56,13 @@ const swiper = new Swiper('.swiper-container', {
     },
   },
 });
-// setHeightOfSlide();
+setHeightOfSlide();
 
 window.onload = function () {
   document.querySelector('.search').focus();
   addFindClickHandler();
   addClearClickHandler();
   insertDataInHtml(appState.query, appState.currentPage);
-  // setHeightOfSlide();
 };
 
 // window.onresize = () => {
@@ -76,14 +75,18 @@ function addClearClickHandler() {
   });
 }
 
-// function setHeightOfSlide() {
-//   const [slideWidth] = getComputedStyle(document.querySelector('.swiper-slide')).width.split('px');
-//   console.log(slideWidth);
-//   swiper.height = `${+slideWidth * 2.087912}px`;
-//   // document.querySelector('.swiper-container').style.height =
-//   // `${+slideWidth * 2.087912}px`;
-//   document.querySelectorAll('.poster-container').forEach((it) => { it.style.height = `${+slideWidth * 1.538462}px`; });
-// }
+function setHeightOfSlide() {
+  const [slideWidth] = getComputedStyle(document.querySelector('.swiper-slide')).width.split('px');
+  console.log(slideWidth);
+  // swiper.height = `${+slideWidth * 2.087912}px`;
+  document.querySelector('.swiper-container').style.height = `${+slideWidth * 2.2}px`;
+  console.log(document.querySelector('.swiper-container').style.height);
+  document.querySelectorAll('.poster-container').forEach((it) => {
+    console.log('+++');
+    const item = it;
+    item.style.height = `${+slideWidth * 2.087912}px`;
+  });
+}
 
 function addFindClickHandler() {
   document.querySelector('form').onsubmit = function (event) {
@@ -130,10 +133,11 @@ async function insertDataInHtml(query, page) {
     if (page === 1)clearSlider();
     showData(appState.filmData.Search, appState.arrOfPosters, appState.arrOfRatings, page);
     // setHeightOfSlide();
-    if (page === 1)animateSlidesOpacity();
     hideProgress();
     typeMessage(`Results for "${query}"`);
     initModal();
+    if (page === 1)animateSlidesOpacity();
+    //setHeightOfSlide();
     swiper.update();
   }
 }
@@ -145,7 +149,7 @@ function animateSlidesOpacity() {
       { opacity: '1' },
     ], {
       duration: 2000,
-      easing: 'linear',
+      easing: 'ease-in',
       fill: 'forwards',
     });
   });

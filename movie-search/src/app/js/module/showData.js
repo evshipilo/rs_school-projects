@@ -21,7 +21,6 @@ ${filmDataArr[i].Title}</a>
 </div>
 <div class="center more-info">
 <a class="waves-effect waves-light btn-small modal-trigger" href="#modal${i}${page}">More info</a>
-
 </div>
 </div>`);
     if (!data.value.Type) data.value.Type = 'N/A';
