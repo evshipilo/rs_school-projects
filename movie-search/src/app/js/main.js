@@ -47,7 +47,7 @@ const swiper = new Swiper('.swiper-container', {
   },
   on: {
     slideChange() {
-      //console.log(swiper.activeIndex);
+      // console.log(swiper.activeIndex);
       if ((appState.currentPage * 10 - swiper.activeIndex) < 8
         && appState.currentPage < appState.numOfPages) {
         appState.currentPage += 1;
@@ -56,7 +56,7 @@ const swiper = new Swiper('.swiper-container', {
     },
   },
 });
-setHeightOfSlide();
+setHeightOfSlider();
 
 window.onload = function () {
   document.querySelector('.search').focus();
@@ -65,9 +65,12 @@ window.onload = function () {
   insertDataInHtml(appState.query, appState.currentPage);
 };
 
-// window.onresize = () => {
-//   // setHeightOfSlide();
-// };
+window.onresize = () => {
+  setHeightOfSlider();
+  swiper.update();
+  setHeightOfPoster();
+  swiper.update();
+};
 
 function addClearClickHandler() {
   document.querySelector('.delete').addEventListener('click', () => {
@@ -75,16 +78,17 @@ function addClearClickHandler() {
   });
 }
 
-function setHeightOfSlide() {
+function setHeightOfSlider() {
   const [slideWidth] = getComputedStyle(document.querySelector('.swiper-slide')).width.split('px');
-  console.log(slideWidth);
-  // swiper.height = `${+slideWidth * 2.087912}px`;
-  document.querySelector('.swiper-container').style.height = `${+slideWidth * 2.2}px`;
-  console.log(document.querySelector('.swiper-container').style.height);
+  document.querySelector('.swiper-container').style.height = `${+slideWidth * (1.75 + 100 / (+slideWidth * 0.9))}px`;
+}
+
+function setHeightOfPoster() {
+  const [slideWidth] = getComputedStyle(document.querySelector('.swiper-slide')).width.split('px');
   document.querySelectorAll('.poster-container').forEach((it) => {
     console.log('+++');
     const item = it;
-    item.style.height = `${+slideWidth * 2.087912}px`;
+    item.style.height = `${+slideWidth * 1.53}px`;
   });
 }
 
@@ -137,7 +141,8 @@ async function insertDataInHtml(query, page) {
     typeMessage(`Results for "${query}"`);
     initModal();
     if (page === 1)animateSlidesOpacity();
-    //setHeightOfSlide();
+    swiper.update();
+    setHeightOfPoster();
     swiper.update();
   }
 }
