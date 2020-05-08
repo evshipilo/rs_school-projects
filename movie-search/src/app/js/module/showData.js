@@ -24,6 +24,19 @@ ${filmDataArr[i].Title}</a>
 </div>
 </div>`);
 
+    if (!filmFullDataArr[i].value.Type) filmFullDataArr[i].value.Type = 'N/A';
+    if (!filmFullDataArr[i].value.Actors) filmFullDataArr[i].value.Actors = 'N/A';
+    if (!filmFullDataArr[i].value.Awards) filmFullDataArr[i].value.Awards = 'N/A';
+    if (!filmFullDataArr[i].value.BoxOffice) filmFullDataArr[i].value.BoxOffice = 'N/A';
+    if (!filmFullDataArr[i].value.Country) filmFullDataArr[i].value.Country = 'N/A';
+    if (!filmFullDataArr[i].value.Director) filmFullDataArr[i].value.Director = 'N/A';
+    if (!filmFullDataArr[i].value.Genre) filmFullDataArr[i].value.Genre = 'N/A';
+    if (!filmFullDataArr[i].value.Plot) filmFullDataArr[i].value.Plot = 'N/A';
+    if (!filmFullDataArr[i].value.Production) filmFullDataArr[i].value.Production = 'N/A';
+    if (!filmFullDataArr[i].value.Rated) filmFullDataArr[i].value.Rated = 'N/A';
+    if (!filmFullDataArr[i].value.Released) filmFullDataArr[i].value.Released = 'N/A';
+    if (!filmFullDataArr[i].value.Website) filmFullDataArr[i].value.Website = 'N/A';
+
     document.querySelector('.modal-info').insertAdjacentHTML('beforeend', `
     <div id="modal${i}${page}" class="modal">
     <div class="modal-content left-align">
