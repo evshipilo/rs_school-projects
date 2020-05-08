@@ -1,6 +1,6 @@
 export function showData(filmDataArr, arrOfPosters, filmFullDataArr, page) {
   for (let i = 0; i < filmDataArr.length; i += 1) {
-    const data=filmFullDataArr[i];
+    const data = filmFullDataArr[i];
     document.querySelector('.swiper-wrapper').insertAdjacentHTML('beforeend',
       `<div class="swiper-slide">
 <div class="title-container center truncate">

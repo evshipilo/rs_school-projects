@@ -6,6 +6,12 @@
 @import 'mixin';
 @import 'fonts';
 
+@mixin media-1800{
+  @media (max-width: 1800px) {
+    @content;
+  }
+}
+
 .page-footer {
   padding-top: 5px;
 }
@@ -45,12 +51,6 @@
   padding-right: 35px !important;
 }
 
-.swiper-container {
-  width: 850px;
-  height: 450px;
-  padding-bottom: 30px;
-}
-
 .submit {
   transition: 0.2s;
 
@@ -88,9 +88,18 @@
   border-radius: 5px;
 }
 
+.swiper-container {
+  width: 90%;
+  height: 570px;
+  padding-bottom: 30px;
+  //@include media-1800{
+  //  height: 550px;
+  //}
+}
+
 .poster-container {
   position: relative;
-  height: 310px;
+  height: 420px;
   width: inherit;
   overflow: hidden;
 }
