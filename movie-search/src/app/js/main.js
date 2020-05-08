@@ -66,9 +66,9 @@ window.onload = function () {
 
 window.onresize = () => {
   setHeightOfSlider();
-  swiper.update();
+  //swiper.update();
   setHeightOfPoster();
-  swiper.update();
+ // swiper.update();
 };
 
 function addClearClickHandler() {
@@ -137,7 +137,7 @@ async function insertDataInHtml(query, page) {
     if (page === 1)animateSlidesOpacity();
     swiper.update();
     setHeightOfPoster();
-    swiper.update();
+    //swiper.update();
   }
 }
 
