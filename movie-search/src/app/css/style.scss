@@ -5,6 +5,7 @@
 @import 'var';
 @import 'mixin';
 @import 'fonts';
+@import 'keyboard';
 
 @mixin media-900{
   @media (max-width: 900px) {

@@ -2,6 +2,7 @@ import '../css/style.scss';
 import Swiper from 'swiper';
 import M from 'materialize-css/dist/js/materialize.min';
 import { showData } from './module/showData';
+import * as Keyboard from './module/keyboard';
 
 const appState = {
   query: 'sun',
@@ -60,6 +61,7 @@ window.onload = function () {
   document.querySelector('.search').focus();
   addFindClickHandler();
   addClearClickHandler();
+  addKeyboardBtnClickHandler();
   insertDataInHtml(appState.query, appState.currentPage);
 };
 
@@ -69,6 +71,15 @@ window.onresize = () => {
   setHeightOfPoster();
   // swiper.update();
 };
+
+function addKeyboardBtnClickHandler() {
+  document.querySelector('.keyboard-btn').addEventListener('click', () => {
+    document.querySelector('.keyboard').classList.toggle('disable');
+    if (document.querySelector('.keyboard').classList.contains('disable')) {
+      document.querySelector('.keyboard-btn-icon').innerHTML = 'keyboard';
+    } else document.querySelector('.keyboard-btn-icon').innerHTML = 'close';
+  });
+}
 
 function addClearClickHandler() {
   document.querySelector('.delete').addEventListener('click', () => {
