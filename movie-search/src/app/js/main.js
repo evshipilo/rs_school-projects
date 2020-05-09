@@ -62,15 +62,23 @@ window.onload = function () {
   addFindClickHandler();
   addClearClickHandler();
   addKeyboardBtnClickHandler();
+  addVirtualEnterClickHandler();
   insertDataInHtml(appState.query, appState.currentPage);
 };
 
 window.onresize = () => {
   setHeightOfSlider();
-  // swiper.update();
   setHeightOfPoster();
-  // swiper.update();
 };
+
+function addVirtualEnterClickHandler() {
+  document.querySelector('.keyboard__keys').addEventListener('click',(event)=>{
+    if (event.target.id === 'Enter') {
+      const searchValue = document.forms[0].elements.search.value;
+      showFilms(searchValue);
+    }
+  });
+}
 
 function addKeyboardBtnClickHandler() {
   document.querySelector('.keyboard-btn').addEventListener('click', () => {
@@ -147,7 +155,6 @@ async function insertDataInHtml(query, page) {
     if (page === 1)animateSlidesOpacity();
     swiper.update();
     setHeightOfPoster();
-    // swiper.update();
   }
 }
 

@@ -511,9 +511,6 @@ const keysValuesArr = [
 const textarea = document.querySelector('.search');
 const keysArr = [];
 let isPressingOnShift = false;
-let isPressingOnShiftPhysics = false;
-let isPressingOnCapsLockPhysics = false;
-let isPressingOnCtrlShiftPhysics = false;
 
 // create Array of objects Key Class type
 keysValuesArr.forEach((item) => {
@@ -621,13 +618,6 @@ keyboardDiv.addEventListener('click', (event) => {
     textarea.value = textareaValueArr.join('');
     textarea.setSelectionRange(caretPosition, caretPosition);
   }
-  if (event.target.id === 'Enter') {
-    const textareaValueArr = (textarea.value).split('');
-    const caretPosition = textarea.selectionStart;
-    textareaValueArr.splice(caretPosition, 0, '\n');
-    textarea.value = textareaValueArr.join('');
-    textarea.setSelectionRange(caretPosition + 1, caretPosition + 1);
-  }
   if (event.target.id === 'ArrowUp') {
     textarea.setSelectionRange(0, 0);
   }
@@ -669,108 +659,7 @@ keyboardDiv.addEventListener('mouseup', () => {
     insertButtonsValues();
   }
 });
-// ----------------------key events-----------------------
 
-document.addEventListener('keydown', (event) => {
-  textarea.focus();
-  if (event.code === 'Tab') {
-    event.preventDefault();
-    const textareaValueArr = (textarea.value).split('');
-    const caretPosition = textarea.selectionStart;
-    textareaValueArr.splice(caretPosition, 0, '    ');
-    textarea.value = textareaValueArr.join('');
-    textarea.setSelectionRange(caretPosition + 4, caretPosition + 4);
-  }
-  if (event.code === 'CapsLock' && isPressingOnCapsLockPhysics === false) {
-    // prevent sticking
-    isPressingOnCapsLockPhysics = true;
-    capsLockToggle();
-    insertButtonsValues();
-  }
-  if ((event.code === 'ShiftLeft' || event.code === 'ShiftRight')
-    && isPressingOnShiftPhysics === false && !event.ctrlKey) {
-    isPressingOnShiftPhysics = true;
-    capsLockToggle();
-    insertButtonsValues();
-  }
-  if ((event.code === 'ShiftLeft' || event.code === 'ShiftRight') && isPressingOnShiftPhysics === false
-    && event.ctrlKey) {
-    isPressingOnCtrlShiftPhysics = true;
-    isPressingOnShiftPhysics = true;
-    languageToggle();
-    insertButtonsValues();
-  }
-  if (event.altKey) {
-    event.preventDefault();
-    document.getElementById('Alt').classList.add('keyboard__key--active');
-  }
-  for (let i = 0; i < keysArr.length; i += 1) {
-    const object = keysArr[i];
-    if (event.code === object.eventCode) {
-      document.getElementById(event.code).classList.add('keyboard__key--active');
-      break;
-    }
-  }
-});
-
-document.addEventListener('keyup', (event) => {
-  if (event.code === 'CapsLock') {
-    isPressingOnCapsLockPhysics = false;
-  }
-  if ((event.code === 'ShiftLeft' || event.code === 'ShiftRight')
-    && !isPressingOnCtrlShiftPhysics) {
-    isPressingOnShiftPhysics = false;
-    capsLockToggle();
-    insertButtonsValues();
-  }
-  if ((event.code === 'ShiftLeft' || event.code === 'ShiftRight') && isPressingOnCtrlShiftPhysics) {
-    isPressingOnShiftPhysics = false;
-    isPressingOnCtrlShiftPhysics = false;
-  }
-  if (!event.altKey) {
-    document.getElementById('Alt').classList.remove('keyboard__key--active');
-  }
-  for (let i = 0; i < keysArr.length; i += 1) {
-    const object = keysArr[i];
-    if (event.code === object.eventCode) {
-      document.getElementById(event.code).classList.remove('keyboard__key--active');
-      break;
-    }
-  }
-});
-// type from physic buttons virtual chars
-document.addEventListener('keydown', (event) => {
-  if (event.code !== 'CapsLock'
-    && event.code !== 'ContextMenu'
-    && event.code !== 'Backspace'
-    && event.code !== 'Enter'
-    && event.code !== 'Tab'
-    && event.code !== 'ControlLeft'
-    && event.code !== 'ControlRight'
-    && event.code !== 'ShiftLeft'
-    && event.code !== 'ShiftRight'
-    && event.code !== 'Delete'
-    && event.code !== 'Alt'
-    && event.code !== 'ArrowDown'
-    && event.code !== 'ArrowUp'
-    && event.code !== 'ArrowLeft'
-    && event.code !== 'ArrowRight'
-  ) {
-    for (let i = 0; i < keysArr.length; i += 1) {
-      const object = keysArr[i];
-      if (event.code === object.eventCode) {
-        event.preventDefault();
-        const textareaValueArr = (textarea.value).split('');
-        const caretPosition = textarea.selectionStart;
-        textareaValueArr.splice(caretPosition, 0, object.currentChar);
-        textarea.value = textareaValueArr.join('');
-        textarea.focus();
-        textarea.setSelectionRange(caretPosition + 1, caretPosition + 1);
-        break;
-      }
-    }
-  }
-});
 // save currentChar
 window.addEventListener('unload', () => {
   localStorage.setItem('savedLetter', keysArr[15].currentChar);
