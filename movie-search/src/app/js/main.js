@@ -55,7 +55,6 @@ const swiper = new Swiper('.swiper-container', {
     },
   },
 });
-setHeightOfSlider();
 
 window.onload = function () {
   document.querySelector('.search').focus();
@@ -153,8 +152,9 @@ async function insertDataInHtml(query, page) {
     typeMessage(`Results for "${query}"`);
     initModal();
     swiper.update();
-    if (page === 1)animateSlidesOpacity();
+    setHeightOfSlider();
     setHeightOfPoster();
+    if (page === 1)animateSlidesOpacity();
   }
 }
 
