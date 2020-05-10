@@ -47,7 +47,6 @@ const swiper = new Swiper('.swiper-container', {
   },
   on: {
     slideChange() {
-      console.log(swiper.activeIndex);
       if ((appState.currentPage * 10 - swiper.activeIndex) < 8
         && appState.currentPage < appState.numOfPages) {
         appState.currentPage += 1;
