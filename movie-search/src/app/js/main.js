@@ -1,7 +1,7 @@
 import '../css/style.scss';
 import Swiper from 'swiper';
 import M from 'materialize-css/dist/js/materialize.min';
-import { showData } from './module/showData';
+import showData from './module/showData';
 import * as Keyboard from './module/keyboard';
 
 const appState = {
@@ -57,6 +57,8 @@ const swiper = new Swiper('.swiper-container', {
 });
 setHeightOfSlider();
 
+Keyboard.dummy = 1;
+
 window.onload = function () {
   document.querySelector('.search').focus();
   addFindClickHandler();
@@ -72,7 +74,7 @@ window.onresize = () => {
 };
 
 function addVirtualEnterClickHandler() {
-  document.querySelector('.keyboard__keys').addEventListener('click',(event)=>{
+  document.querySelector('.keyboard__keys').addEventListener('click', (event) => {
     if (event.target.id === 'Enter') {
       const searchValue = document.forms[0].elements.search.value;
       showFilms(searchValue);

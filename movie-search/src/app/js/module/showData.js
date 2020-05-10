@@ -1,4 +1,4 @@
-export function showData(filmDataArr, arrOfPosters, filmFullDataArr, page) {
+export default function showData(filmDataArr, arrOfPosters, filmFullDataArr, page) {
   for (let i = 0; i < filmDataArr.length; i += 1) {
     const data = filmFullDataArr[i];
     const data1 = filmDataArr[i];

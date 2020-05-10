@@ -21,7 +21,7 @@ class Key {
 
   static insertTextareaAndKeyboardDivToDOM() {
     const body = document.querySelector('.keyboard-container');
-    body.insertAdjacentHTML('afterbegin', `<div class="keyboard disable"><div class="keyboard__keys"></div></div>`);
+    body.insertAdjacentHTML('afterbegin', '<div class="keyboard disable"><div class="keyboard__keys"></div></div>');
   }
 
   addWideClass() {
