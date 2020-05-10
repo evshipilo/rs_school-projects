@@ -57,8 +57,6 @@ const swiper = new Swiper('.swiper-container', {
 });
 setHeightOfSlider();
 
-Keyboard.dummy = 1;
-
 window.onload = function () {
   document.querySelector('.search').focus();
   addFindClickHandler();
