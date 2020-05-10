@@ -47,6 +47,7 @@ const swiper = new Swiper('.swiper-container', {
   },
   on: {
     slideChange() {
+      console.log(swiper.activeIndex);
       if ((appState.currentPage * 10 - swiper.activeIndex) < 8
         && appState.currentPage < appState.numOfPages) {
         appState.currentPage += 1;
@@ -147,13 +148,13 @@ async function insertDataInHtml(query, page) {
       .allSettled(getArrayOfRatingPromises(appState.filmData.Search));
     appState.arrOfPosters = await Promise
       .allSettled(getArrayOfPosterPromises(appState.filmData.Search));
-    if (page === 1)clearSlider();
+    if (page === 1) { clearSlider(); swiper.update(); swiper.activeIndex = 0; }
     showData(appState.filmData.Search, appState.arrOfPosters, appState.arrOfRatings, page);
     hideProgress();
     typeMessage(`Results for "${query}"`);
     initModal();
-    if (page === 1)animateSlidesOpacity();
     swiper.update();
+    if (page === 1)animateSlidesOpacity();
     setHeightOfPoster();
   }
 }
