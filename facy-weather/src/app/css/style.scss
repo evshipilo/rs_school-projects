@@ -1,0 +1,15 @@
+@import "./node_modules/materialize-css/sass/materialize";
+@import 'var';
+@import 'mixin';
+@import 'fonts';
+
+@mixin media-1200{
+  @media (max-width: 1200px) {
+    @content;
+  }
+}
+
+.container{
+ max-width: 1200px;
+   width: 100%;
+}
