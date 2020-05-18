@@ -30,6 +30,7 @@ const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const webpack = require('webpack');
 require('dotenv').config()
@@ -151,6 +152,13 @@ const config = {
     new MiniCssExtractPlugin({
       filename: 'style.css',
     }),
+    new CopyPlugin([
+      {
+        from: 'src/img/*',
+        to: 'img/',
+        flatten: true,
+      },
+    ]),
     new HtmlWebPackPlugin({
       template: './src/index.html',
       filename: './index.html',
