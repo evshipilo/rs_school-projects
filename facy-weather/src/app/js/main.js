@@ -5,6 +5,7 @@ import M from 'materialize-css/dist/js/materialize.min'
 import ChangeBackgroundButton from './module/changeBackgroundButton'
 import ChangeLanguageButton from './module/changeLanguageButton'
 import Preloader from './module/preloader'
+import LocationInfo from './module/locationInfo'
 import '../css/style.scss'
 
 /* eslint class-methods-use-this: ["error", { "exceptMethods": ["render"] }] */
@@ -16,18 +17,20 @@ class App extends React.Component {
       dayTime: 'day',
       yearTime: 'summer',
       backgroundImgSrc: null,
-      isLoad: true,
+      load: false,
       currentLocation: null,
-      currentLanguage: 'En',
-      height: window.innerHeight
+      currentLocationName: null,
+      currentLanguage: 'en'
     }
     this.setBackgroundImage = this.setBackgroundImage.bind(this)
     this.getCurrentLocation = this.getCurrentLocation.bind(this)
-    this.updateHeight = this.updateHeight.bind(this)
+    this.setLanguage = this.setLanguage.bind(this)
+    this.getCurrentLocationName = this.getCurrentLocationName.bind(this)
   }
 
-  updateHeight() {
-    this.setState({ height: window.innerHeight })
+  async setLanguage(language) {
+    this.setState({ currentLanguage: language })
+    await this.getCurrentLocationName(language)
   }
 
   async setBackgroundImage () {
@@ -46,13 +49,29 @@ class App extends React.Component {
       this.setState({ backgroundImgSrc: 'img/backgroundDefault.jpg' })
       console.log('cant fetch data from unsplash.com', e)
     }
-    // this.setState({ isLoad: false })
+    // this.setState({ load: false })
+  }
+
+  async getCurrentLocationName(language) {
+    const [lat, long] = this.state.currentLocation.split(',')
+    const url =
+    `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${long}&language=${language}&key=32701a01f2f8492cbefb817597782a12`
+    try {
+      const res = await fetch(url)
+      const data = await res.json()
+      const location = data.results[0].formatted
+      const [country, region, city] = location.split(',')
+      const cleanCity = city.replace(/\d/g, '')
+      const cleanLocation = `${cleanCity}, ${region}, ${country}`
+      this.setState({ currentLocationName: cleanLocation })
+    } catch (e) {
+      this.setState({ currentLocationName: null })
+      console.log('cant fetch data from api.opencagedata.com', e)
+    }
   }
 
   async getCurrentLocation() {
     const url = 'https://ipinfo.io/json?token=fa1d1815d7ab5c'
-    // const url =
-    // 'https://api.opencagedata.com/geocode/v1/json?q=55.1904+30.2049&key=32701a01f2f8492cbefb817597782a12'
     try {
       const res = await fetch(url)
       const data = await res.json()
@@ -65,8 +84,8 @@ class App extends React.Component {
   }
 
   async componentDidMount() {
-    window.addEventListener('resize', this.updateHeight)
     await this.getCurrentLocation()
+    await this.getCurrentLocationName(this.state.currentLanguage)
     await this.setBackgroundImage()
     // this.setState({ isLoad: false })
     M.AutoInit()
@@ -78,14 +97,23 @@ class App extends React.Component {
         className='container'
         style={{ backgroundImage: `url(${this.state.backgroundImgSrc})` }}
       >
-        <Preloader isLoad={this.state.isLoad} loaderHeight={this.state.height}/>
+        <Preloader load={this.state.load}/>
         <div className='background-black'>
           <div className="row navigation">
             <div className="col m6 s12 buttons center">
               <ChangeBackgroundButton changeBackground={this.setBackgroundImage}/>
-              <ChangeLanguageButton/>
+              <ChangeLanguageButton setLanguage={this.setLanguage}
+                currentLanguage={this.state.currentLanguage}/>
             </div>
             <div className="col m6 s12 search center">6-columns (one-half)</div>
+          </div>
+          <div className='row'>
+            <div className='col m6 s12 center'>
+              <LocationInfo currentLocationName={this.state.currentLocationName}/>
+            </div>
+            <div className='col m6 s12 center'>
+              sdfsdf
+            </div>
           </div>
         </div>
       </div>

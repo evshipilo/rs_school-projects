@@ -44,7 +44,15 @@ border: 1px solid rgba(255,255,255,0.7);
 .preloader-wrapper{
   position: absolute;
   left: calc(50% - 25px);
-  top: calc(50% - 25px);
+  top: 200px;
+}
+
+.loader-wrapper{
+  position: absolute;
+  background-color: rgba(0,0,0,0.2);
+  width: 100%;
+  height: 100%;
+  z-index: 100;
 }
 
 .change-lang-wrapper{
@@ -55,9 +63,3 @@ border: 1px solid rgba(255,255,255,0.7);
   border-radius: 5px;
 }
 
-.loader-wrapper{
-  position: fixed;
-  background-color: rgba(0,0,0,0.2);
-  width: 100%;
-  z-index: 100;
-}

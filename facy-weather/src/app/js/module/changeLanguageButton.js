@@ -11,9 +11,12 @@ class ChangeLanguageButton extends React.Component {
           Language ({this.props.currentLanguage})
         </a>
         <ul id='dropdown1' className='dropdown-content'>
-          <li><a href="#!">English</a></li>
-          <li><a href="#!">Русский</a></li>
-          <li><a href="#!">Белорусский</a></li>
+          <li><a href="#!" value={'en'} onClick={() => this.props.setLanguage('en')}>
+            English</a></li>
+          <li><a href="#!" value={'ru'} onClick={() => this.props.setLanguage('ru')}>
+            Русский</a></li>
+          <li><a href="#!" value={'be'} onClick={() => this.props.setLanguage('be')}>
+            Беларуская</a></li>
         </ul>
       </div>
     )
@@ -21,7 +24,9 @@ class ChangeLanguageButton extends React.Component {
 }
 
 ChangeLanguageButton.propTypes = {
-  changeBackground: PropTypes.func
+  changeBackground: PropTypes.func,
+  setLanguage: PropTypes.func,
+  currentLanguage: PropTypes.string
 }
 
 export default ChangeLanguageButton

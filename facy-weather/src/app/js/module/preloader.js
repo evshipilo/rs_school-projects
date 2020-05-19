@@ -3,10 +3,9 @@ import PropTypes from 'prop-types'
 
 class Preloader extends React.Component {
   render() {
-    if (this.props.isLoad) {
-      const loaderHeight = `${this.props.loaderHeight}px`
+    if (this.props.load) {
       return (
-        <div className='loader-wrapper' style={{ height: loaderHeight }}
+        <div className='loader-wrapper'
         >
           <div className="preloader-wrapper active">
             <div className="spinner-layer spinner-red-only">
@@ -28,8 +27,7 @@ class Preloader extends React.Component {
 }
 
 Preloader.propTypes = {
-  isLoad: PropTypes.boolean,
-  loaderHeight: PropTypes.number
+  load: PropTypes.bool
 }
 
 export default Preloader
