@@ -2,6 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import M from 'materialize-css/dist/js/materialize.min'
+import ChangeBackgroundButton from './module/changeBackgroundButton'
+import Preloader from './module/preloader'
 import '../css/style.scss'
 
 /* eslint class-methods-use-this: ["error", { "exceptMethods": ["render"] }] */
@@ -12,13 +14,14 @@ class App extends React.Component {
     this.state = {
       dayTime: 'day',
       yearTime: 'summer',
-      backgroundImgSrc: null
+      backgroundImgSrc: null,
+      isLoad: true
     }
     this.setBackgroundImage = this.setBackgroundImage.bind(this)
   }
 
   async setBackgroundImage () {
-    const url = `https://api.unsplash.com/photos/random?orientation=landscape&per_page=1&query=${this.state.dayTime},${this.state.yearTime}&client_id=36fevMXWtK0E8TRgKchz8t-R_jmbo9kmBVuf8pD-2mk`
+    const url = `https://appi.unsplash.com/photos/random?orientation=landscape&per_page=1&query=${this.state.dayTime},${this.state.yearTime}&client_id=36fevMXWtK0E8TRgKchz8t-R_jmbo9kmBVuf8pD-2mk`
     try {
       const res = await fetch(url)
       const data = await res.json()
@@ -44,21 +47,16 @@ class App extends React.Component {
         className='container'
         style={{ backgroundImage: `url(${this.state.backgroundImgSrc})` }}
       >
-        <ChangeBackgroundButton changeBackground={this.setBackgroundImage}/>
+        <Preloader isLoad={this.state.isLoad}/>
+        <div className='background-black'>
+          <div className="row navigation">
+            <div className="col m6 s12 buttons center">
+              <ChangeBackgroundButton changeBackground={this.setBackgroundImage}/>
+            </div>
+            <div className="col m6 s12 search center">6-columns (one-half)</div>
+          </div>
+        </div>
       </div>
-    )
-  }
-}
-
-class ChangeBackgroundButton extends React.Component {
-  render() {
-    return (
-      <button
-        className='btn'
-        onClick={() => this.props.changeBackground()}
-      >
-        <i className="material-icons">refresh</i>
-      </button>
     )
   }
 }
