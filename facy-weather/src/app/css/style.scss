@@ -31,11 +31,33 @@
 }
 
 .btn-flat{
-border: 1px solid white;
+border: 1px solid rgba(255,255,255,0.7);
+  background-color: rgba(255,255,255,0.3) !important;
+  margin-left: 5px;
+  transition: 0.3s;
+  &:hover{
+    background-color: rgba(255,255,255,0) !important;
+    transition: 0.3s;
+  }
 }
 
 .preloader-wrapper{
   position: absolute;
   left: calc(50% - 25px);
-  top: 200px;
+  top: calc(50% - 25px);
+}
+
+.change-lang-wrapper{
+  display: inline-block;
+}
+
+.dropdown-content{
+  border-radius: 5px;
+}
+
+.loader-wrapper{
+  position: fixed;
+  background-color: rgba(0,0,0,0.2);
+  width: 100%;
+  z-index: 100;
 }
