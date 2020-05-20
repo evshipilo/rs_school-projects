@@ -7,6 +7,7 @@ import ChangeLanguageButton from './module/changeLanguageButton'
 import Preloader from './module/preloader'
 import LocationInfo from './module/locationInfo'
 import '../css/style.scss'
+import TimeInfo from './module/timeInfo'
 
 /* eslint class-methods-use-this: ["error", { "exceptMethods": ["render"] }] */
 
@@ -17,10 +18,11 @@ class App extends React.Component {
       dayTime: 'day',
       yearTime: 'summer',
       backgroundImgSrc: null,
-      load: false,
+      load: true,
       currentLocation: null,
       currentLocationName: null,
-      currentLanguage: 'en'
+      currentLanguage: 'en',
+      timeOffsetSec: 0
     }
     this.setBackgroundImage = this.setBackgroundImage.bind(this)
     this.getCurrentLocation = this.getCurrentLocation.bind(this)
@@ -49,7 +51,7 @@ class App extends React.Component {
       this.setState({ backgroundImgSrc: 'img/backgroundDefault.jpg' })
       console.log('cant fetch data from unsplash.com', e)
     }
-    // this.setState({ load: false })
+    this.setState({ load: false })
   }
 
   async getCurrentLocationName(language) {
@@ -59,11 +61,13 @@ class App extends React.Component {
     try {
       const res = await fetch(url)
       const data = await res.json()
+      console.log('-> data', data.results[0].annotations.timezone.offset_sec)
       const location = data.results[0].formatted
       const [country, , city] = location.split(',')
       const cleanCity = city.replace(/\d/g, '')
       const cleanLocation = `${cleanCity}, ${country}`
       this.setState({ currentLocationName: cleanLocation })
+      this.setState({ timeOffsetSec: data.results[0].annotations.timezone.offset_sec })
     } catch (e) {
       this.setState({ currentLocationName: null })
       console.log('cant fetch data from api.opencagedata.com', e)
@@ -84,10 +88,10 @@ class App extends React.Component {
   }
 
   async componentDidMount() {
+    this.setState({ load: true })
     await this.getCurrentLocation()
     await this.getCurrentLocationName(this.state.currentLanguage)
     await this.setBackgroundImage()
-    // this.setState({ isLoad: false })
     M.AutoInit()
   }
 
@@ -109,7 +113,9 @@ class App extends React.Component {
           </div>
           <div className='row'>
             <div className='col m6 s12 left-column'>
-              <LocationInfo currentLocationName={this.state.currentLocationName}/>
+              <LocationInfo currentLocationName={this.state.currentLocationName}
+                currentLanguage={this.state.currentLanguage}/>
+              <TimeInfo timeOffsetSec={this.state.timeOffsetSec}/>
             </div>
             <div className='col m6 s12 center'>
               sdfsdf
