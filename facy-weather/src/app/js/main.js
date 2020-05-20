@@ -35,7 +35,7 @@ class App extends React.Component {
 
   async setBackgroundImage () {
   //  this.setState({ isLoad: true })
-    const url = `https://api.unsplash.com/photos/random?orientation=landscape&per_page=1&query=${this.state.dayTime},${this.state.yearTime}&client_id=36fevMXWtK0E8TRgKchz8t-R_jmbo9kmBVuf8pD-2mk`
+    const url = `https://api..unsplash.com/photos/random?orientation=landscape&per_page=1&query=${this.state.dayTime},${this.state.yearTime}&client_id=36fevMXWtK0E8TRgKchz8t-R_jmbo9kmBVuf8pD-2mk`
     try {
       const res = await fetch(url)
       const data = await res.json()
