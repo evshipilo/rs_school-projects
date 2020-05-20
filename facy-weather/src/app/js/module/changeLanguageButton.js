@@ -5,10 +5,10 @@ class ChangeLanguageButton extends React.Component {
   render() {
     return (
       <div className='change-lang-wrapper'>
-        <a className='dropdown-trigger waves-effect waves-teal btn-flat white-text'
+        <a className='dropdown-trigger waves-effect waves-light btn-flat white-text btn-change-lang'
           href='#'
           data-target='dropdown1'>
-          Language ({this.props.currentLanguage})
+           {this.props.currentLanguage} <img src="img/VectorStroke.png" alt=""/>
         </a>
         <ul id='dropdown1' className='dropdown-content'>
           <li><a href="#!" value={'en'} onClick={() => this.props.setLanguage('en')}>

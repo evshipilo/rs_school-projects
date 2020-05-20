@@ -60,9 +60,9 @@ class App extends React.Component {
       const res = await fetch(url)
       const data = await res.json()
       const location = data.results[0].formatted
-      const [country, region, city] = location.split(',')
+      const [country, , city] = location.split(',')
       const cleanCity = city.replace(/\d/g, '')
-      const cleanLocation = `${cleanCity}, ${region}, ${country}`
+      const cleanLocation = `${cleanCity}, ${country}`
       this.setState({ currentLocationName: cleanLocation })
     } catch (e) {
       this.setState({ currentLocationName: null })
@@ -100,7 +100,7 @@ class App extends React.Component {
         <Preloader load={this.state.load}/>
         <div className='background-black'>
           <div className="row navigation">
-            <div className="col m6 s12 buttons center">
+            <div className="col m6 s12 buttons">
               <ChangeBackgroundButton changeBackground={this.setBackgroundImage}/>
               <ChangeLanguageButton setLanguage={this.setLanguage}
                 currentLanguage={this.state.currentLanguage}/>
@@ -108,7 +108,7 @@ class App extends React.Component {
             <div className="col m6 s12 search center">6-columns (one-half)</div>
           </div>
           <div className='row'>
-            <div className='col m6 s12 center'>
+            <div className='col m6 s12 left-column'>
               <LocationInfo currentLocationName={this.state.currentLocationName}/>
             </div>
             <div className='col m6 s12 center'>

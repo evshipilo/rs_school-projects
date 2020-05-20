@@ -4,9 +4,9 @@ import PropTypes from 'prop-types'
 class LocationInfo extends React.Component {
   render() {
     return (
-      <h4 className='white-text'>
+      <h3 className='white-text location-info'>
         {this.props.currentLocationName}
-      </h4>
+      </h3>
     )
   }
 }
