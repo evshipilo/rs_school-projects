@@ -28,6 +28,7 @@ class App extends React.Component {
     this.getCurrentLocation = this.getCurrentLocation.bind(this)
     this.setLanguage = this.setLanguage.bind(this)
     this.getCurrentLocationName = this.getCurrentLocationName.bind(this)
+    this.setDaytimeAndYeartime = this.setDaytimeAndYeartime.bind(this)
   }
 
   async setLanguage(language) {
@@ -35,9 +36,26 @@ class App extends React.Component {
     await this.getCurrentLocationName(language)
   }
 
+  setDaytimeAndYeartime() {
+    const d = new Date()
+    const utc = d.getTime() + (d.getTimezoneOffset() * 60000)
+    const nd = new Date(utc + (1000 * this.state.timeOffsetSec))
+    const month = nd.getMonth()
+    const hour = nd.getHours()
+    console.log('-> month,hour', month, hour)
+    if (month === 11 || month === 0 || month === 1) this.setState({ yearTime: 'winter' })
+    if (month === 2 || month === 3 || month === 4) this.setState({ yearTime: 'spring' })
+    if (month === 5 || month === 6 || month === 7) this.setState({ yearTime: 'summer' })
+    if (month === 8 || month === 9 || month === 10) this.setState({ yearTime: 'autumn' })
+    if (hour >= 6 && hour < 10) this.setState({ dayTime: 'morning' })
+    if (hour >= 10 && hour < 18) this.setState({ dayTime: 'day' })
+    if (hour >= 18 && hour <= 23) this.setState({ dayTime: 'evening' })
+    if (hour >= 0 && hour < 6) this.setState({ dayTime: 'night' })
+  }
+
   async setBackgroundImage () {
-  //  this.setState({ isLoad: true })
-    const url = `https://api..unsplash.com/photos/random?orientation=landscape&per_page=1&query=${this.state.dayTime},${this.state.yearTime}&client_id=36fevMXWtK0E8TRgKchz8t-R_jmbo9kmBVuf8pD-2mk`
+    this.setDaytimeAndYeartime()
+    const url = `https://api.unsplash.com/photos/random?orientation=landscape&per_page=1&query=${this.state.dayTime},${this.state.yearTime}&client_id=36fevMXWtK0E8TRgKchz8t-R_jmbo9kmBVuf8pD-2mk`
     try {
       const res = await fetch(url)
       const data = await res.json()
@@ -61,9 +79,9 @@ class App extends React.Component {
     try {
       const res = await fetch(url)
       const data = await res.json()
-      console.log('-> data', data.results[0].annotations.timezone.offset_sec)
       const location = data.results[0].formatted
-      const [country, , city] = location.split(',')
+      let [country, city, city1] = location.split(',')
+      if (city1.search(/[\d]/) !== -1) city = city1
       const cleanCity = city.replace(/\d/g, '')
       const cleanLocation = `${cleanCity}, ${country}`
       this.setState({ currentLocationName: cleanLocation })
