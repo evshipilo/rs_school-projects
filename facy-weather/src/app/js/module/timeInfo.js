@@ -2,8 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const dayEn = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-const dayRu = ['Пнд', 'Втр', 'Срд', 'Чтв', 'Птн', 'Сбт', 'Вск']
-const dayBe = ['Пнд', 'Аўт', 'Сер', 'Чцв', 'Пят', 'Суб', 'Няд']
+const dayRu = ['Вск', 'Пнд', 'Втр', 'Срд', 'Чтв', 'Птн', 'Сбт']
+const dayBe = ['Няд', 'Пнд', 'Аўт', 'Сер', 'Чцв', 'Пят', 'Суб']
+const monthEn = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+const monthRu = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря']
+const monthBe = ['Студзеня', 'Лютага', 'Сакавiка', 'Красавiка', 'Мая', 'Чэрвеня', 'Лiпеня', 'Жнiвеня', 'Верасня', 'Кастрычнiка', 'Лiстапада', 'Снежня']
 
 class TimeInfo extends React.Component {
   constructor(props) {
@@ -31,19 +34,32 @@ class TimeInfo extends React.Component {
   }
 
   render() {
-    console.log('-> dayEn[this.state.date.getDay()]', dayEn[this.state.date.getDay()])
-    // let day
-    // switch (this.props.currentLanguage) {
-    //   case 'en': day = dayEn[this.state.date.getDay()]
-    //     break
-    // }
+    let day
+    switch (this.props.currentLanguage) {
+      case 'ru': day = dayRu[this.state.date.getDay()]
+        break
+      case 'be': day = dayBe[this.state.date.getDay()]
+        break
+      default: day = dayEn[this.state.date.getDay()]
+    }
+    let month
+    switch (this.props.currentLanguage) {
+      case 'ru': month = monthRu[this.state.date.getMonth()]
+        break
+      case 'be': month = monthBe[this.state.date.getMonth()]
+        break
+      default: month = monthEn[this.state.date.getMonth()]
+    }
 
-    const day = dayEn[this.state.date.getDay()]
-    console.log('-> this.state.date.getDay()', this.state.date.getDay())
     return (
-      <div>{day}
-        <h2 className='white-text'>{this.state.date.toLocaleTimeString()}</h2>
+
+      <div className='time-info'>
+        <span>{day}</span>
+        <span>{this.state.date.getDate()}</span>
+        <span>{month}</span>
+        <span className='time'>{this.state.date.toLocaleTimeString()}</span>
       </div>
+
     )
   }
 }

@@ -13,6 +13,7 @@ html {
   font-family: Montserrat !important;
   font-style: normal;
   font-weight: bold;
+  color: #ffffff;
 }
 
 .container {
@@ -105,5 +106,17 @@ html {
   font-size: 44px;
   text-transform: uppercase;
   padding-top: 11px;
+  margin-bottom: 4px;
 }
 
+.time-info{
+  font-weight: 600;
+  font-size: 24px;
+  & span{
+    padding-right: 6px;
+  }
+}
+
+.time{
+  padding-left: 6px;
+}

@@ -114,8 +114,9 @@ class App extends React.Component {
           <div className='row'>
             <div className='col m6 s12 left-column'>
               <LocationInfo currentLocationName={this.state.currentLocationName}
+              />
+              <TimeInfo timeOffsetSec={this.state.timeOffsetSec}
                 currentLanguage={this.state.currentLanguage}/>
-              <TimeInfo timeOffsetSec={this.state.timeOffsetSec}/>
             </div>
             <div className='col m6 s12 center'>
               sdfsdf
