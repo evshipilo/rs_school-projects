@@ -40,8 +40,8 @@ class App extends React.Component {
     this.getCurrentPosition = this.getCurrentPosition.bind(this)
   }
 
-  async getWeather3Days(lang) {
-    const url = `https://api....weatherbit.io/v2.0/forecast/daily?&lat=${this.state.latitude}&lon=${this.state.longitude}&lang=${lang}&days=4&units=M&key=6a2809c12d8c4c5a8a8c623e5ff254ea`
+  async getWeather3Days() {
+    const url = `https://api....weatherbit.io/v2.0/forecast/daily?&lat=${this.state.latitude}&lon=${this.state.longitude}&lang=${this.state.currentLanguage}&days=4&units=M&key=6a2809c12d8c4c5a8a8c623e5ff254ea`
     try {
       const res = await fetch(url)
       const data = await res.json()
@@ -68,7 +68,6 @@ class App extends React.Component {
     this.setState({ currentLanguage: language })
     await this.getCurrentLocationName(language)
     await this.getWeatherCurrent(language)
-    await this.getWeather3Days(language)
   }
 
   setDaytimeAndYeartime() {
