@@ -53,14 +53,16 @@ class CurrentWeather extends React.Component {
     }
     if (this.props.currentWeather) {
       return (
-        <div className='current-weather'>
-          <img src={src} alt="svg"/>
-          <div>{temp}°</div>
-          <div>
-            <p>{desc}</p>
-            <p>{feel} {appTemp}°</p>
-            <p>{wind} {windSpd} {ms}</p>
-            <p>{hum} {rh}%</p>
+        <div className='current-weather-wrapper'>
+          <div className='current-weather'>
+            <img className='current-weather-img' src={src} alt="svg"/>
+            <div><p className='cur-temp'>{temp}</p><p className='cur-temp-deg'>°</p></div>
+            <div className='current-weather-info'>
+              <p>{desc}</p>
+              <p>{feel} {appTemp}°</p>
+              <p>{wind} {windSpd} {ms}</p>
+              <p>{hum} {rh}%</p>
+            </div>
           </div>
         </div>
       )
