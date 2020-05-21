@@ -6,6 +6,8 @@ import ChangeBackgroundButton from './module/changeBackgroundButton'
 import ChangeLanguageButton from './module/changeLanguageButton'
 import Preloader from './module/preloader'
 import LocationInfo from './module/locationInfo'
+import CurrentWeather from './module/currentWeather'
+import Weather3day from './module/weather3day'
 import '../css/style.scss'
 import TimeInfo from './module/timeInfo'
 
@@ -15,11 +17,15 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      dayTime: 'day',
-      yearTime: 'summer',
+      dayTime: null,
+      yearTime: null,
       backgroundImgSrc: null,
       load: true,
-      currentLocation: null,
+      latitude: null,
+      longitude: null,
+      currentWeather: null,
+      weather3day: null,
+      currentLocationCity: null,
       currentLocationName: null,
       currentLanguage: 'en',
       timeOffsetSec: 0
@@ -29,6 +35,33 @@ class App extends React.Component {
     this.setLanguage = this.setLanguage.bind(this)
     this.getCurrentLocationName = this.getCurrentLocationName.bind(this)
     this.setDaytimeAndYeartime = this.setDaytimeAndYeartime.bind(this)
+    this.getWeather3Days = this.getWeather3Days.bind(this)
+    this.getWeatherCurrent = this.getWeatherCurrent.bind(this)
+    this.getCurrentPosition = this.getCurrentPosition.bind(this)
+  }
+
+  async getWeather3Days() {
+    const url = `https://api.weatherbit.io/v2.0/forecast/daily?&lat=${this.state.latitude}&lon=${this.state.longitude}&lang=${this.state.currentLanguage}&days=4&units=M&key=6a2809c12d8c4c5a8a8c623e5ff254ea`
+    try {
+      const res = await fetch(url)
+      const data = await res.json()
+      this.setState({ weather3day: data })
+      console.log('-> data', data)
+    } catch (e) {
+      console.log('cant fetch data from openweathermap.org', e)
+    }
+  }
+
+  async getWeatherCurrent() {
+    const url = `https://api.weatherbit.io/v2.0/current?&lat=${this.state.latitude}&lon=${this.state.longitude}&lang=${this.state.currentLanguage}&units=M&key=6a2809c12d8c4c5a8a8c623e5ff254ea`
+    try {
+      const res = await fetch(url)
+      const data = await res.json()
+      this.setState({ currentWeather: data })
+      console.log('-> data', data)
+    } catch (e) {
+      console.log('cant fetch data from openweathermap.org', e)
+    }
   }
 
   async setLanguage(language) {
@@ -42,7 +75,6 @@ class App extends React.Component {
     const nd = new Date(utc + (1000 * this.state.timeOffsetSec))
     const month = nd.getMonth()
     const hour = nd.getHours()
-    console.log('-> month,hour', month, hour)
     if (month === 11 || month === 0 || month === 1) this.setState({ yearTime: 'winter' })
     if (month === 2 || month === 3 || month === 4) this.setState({ yearTime: 'spring' })
     if (month === 5 || month === 6 || month === 7) this.setState({ yearTime: 'summer' })
@@ -56,6 +88,7 @@ class App extends React.Component {
   async setBackgroundImage () {
     this.setDaytimeAndYeartime()
     const url = `https://api.unsplash.com/photos/random?orientation=landscape&per_page=1&query=${this.state.dayTime},${this.state.yearTime}&client_id=36fevMXWtK0E8TRgKchz8t-R_jmbo9kmBVuf8pD-2mk`
+    console.log('-> url', url)
     try {
       const res = await fetch(url)
       const data = await res.json()
@@ -73,41 +106,53 @@ class App extends React.Component {
   }
 
   async getCurrentLocationName(language) {
-    const [lat, long] = this.state.currentLocation.split(',')
     const url =
-    `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${long}&language=${language}&key=32701a01f2f8492cbefb817597782a12`
+    `https://api.opencagedata.com/geocode/v1/json?q=${this.state.latitude}+${this.state.longitude}&language=${language}&key=32701a01f2f8492cbefb817597782a12`
     try {
       const res = await fetch(url)
       const data = await res.json()
       const location = data.results[0].formatted
       let [country, city, city1] = location.split(',')
       if (city1.search(/[\d]/) !== -1) city = city1
-      const cleanCity = city.replace(/\d/g, '')
+      const cleanCity = city.replace(/[\d\s]/g, '')
       const cleanLocation = `${cleanCity}, ${country}`
+      this.setState({ currentLocationCity: cleanCity })
       this.setState({ currentLocationName: cleanLocation })
       this.setState({ timeOffsetSec: data.results[0].annotations.timezone.offset_sec })
     } catch (e) {
-      this.setState({ currentLocationName: null })
+      this.setState({ currentLocationName: 'location not found' })
       console.log('cant fetch data from api.opencagedata.com', e)
     }
   }
 
+  getCurrentPosition() {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject)
+    })
+  }
+
   async getCurrentLocation() {
-    const url = 'https://ipinfo.io/json?token=fa1d1815d7ab5c'
+    // const url = 'https://ipinfo..io/json?token=fa1d1815d7ab5c'
     try {
-      const res = await fetch(url)
-      const data = await res.json()
-      const currentLocation = data.loc
-      this.setState({ currentLocation })
+      // const res = await fetch(url)
+      // const data = await res.json()
+      // const currentLocation = data.loc
+      // const [lat, long] = currentLocation.split(',')
+      // this.setState({ latitude: lat })
+      // this.setState({ longitude: long })
+      const { coords } = await this.getCurrentPosition()
+      this.setState({ latitude: coords.latitude })
+      this.setState({ longitude: coords.longitude })
     } catch (e) {
-      this.setState({ currentLocation: 'Cant find current location' })
-      console.log('cant fetch data from ipinfo.io', e)
+      console.log('cant get geolocation', e)
     }
   }
 
   async componentDidMount() {
     this.setState({ load: true })
     await this.getCurrentLocation()
+    await this.getWeather3Days()
+    await this.getWeatherCurrent()
     await this.getCurrentLocationName(this.state.currentLanguage)
     await this.setBackgroundImage()
     M.AutoInit()
@@ -135,6 +180,14 @@ class App extends React.Component {
               />
               <TimeInfo timeOffsetSec={this.state.timeOffsetSec}
                 currentLanguage={this.state.currentLanguage}/>
+              <CurrentWeather
+                currentWeather={this.state.currentWeather}
+                currentLanguage={this.state.currentLanguage}
+              />
+              <Weather3day
+                weather3day={this.state.weather3day}
+                currentLanguage={this.state.currentLanguage}
+              />
             </div>
             <div className='col m6 s12 center'>
               sdfsdf
