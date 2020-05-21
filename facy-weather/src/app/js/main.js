@@ -40,33 +40,35 @@ class App extends React.Component {
     this.getCurrentPosition = this.getCurrentPosition.bind(this)
   }
 
-  async getWeather3Days() {
-    const url = `https://api.weatherbit.io/v2.0/forecast/daily?&lat=${this.state.latitude}&lon=${this.state.longitude}&lang=${this.state.currentLanguage}&days=4&units=M&key=6a2809c12d8c4c5a8a8c623e5ff254ea`
+  async getWeather3Days(lang) {
+    const url = `https://api....weatherbit.io/v2.0/forecast/daily?&lat=${this.state.latitude}&lon=${this.state.longitude}&lang=${lang}&days=4&units=M&key=6a2809c12d8c4c5a8a8c623e5ff254ea`
     try {
       const res = await fetch(url)
       const data = await res.json()
       this.setState({ weather3day: data })
       console.log('-> data', data)
     } catch (e) {
-      console.log('cant fetch data from openweathermap.org', e)
+      console.log('cant fetch data from weatherbit.io', e)
     }
   }
 
-  async getWeatherCurrent() {
-    const url = `https://api.weatherbit.io/v2.0/current?&lat=${this.state.latitude}&lon=${this.state.longitude}&lang=${this.state.currentLanguage}&units=M&key=6a2809c12d8c4c5a8a8c623e5ff254ea`
+  async getWeatherCurrent(lang) {
+    const url = `https://api.weatherbit.io/v2.0/current?&lat=${this.state.latitude}&lon=${this.state.longitude}&lang=${lang}&units=M&key=6a2809c12d8c4c5a8a8c623e5ff254ea`
     try {
       const res = await fetch(url)
       const data = await res.json()
       this.setState({ currentWeather: data })
       console.log('-> data', data)
     } catch (e) {
-      console.log('cant fetch data from openweathermap.org', e)
+      console.log('cant fetch data from weatherbit.io', e)
     }
   }
 
   async setLanguage(language) {
     this.setState({ currentLanguage: language })
     await this.getCurrentLocationName(language)
+    await this.getWeatherCurrent(language)
+    await this.getWeather3Days(language)
   }
 
   setDaytimeAndYeartime() {
@@ -151,12 +153,13 @@ class App extends React.Component {
   async componentDidMount() {
     this.setState({ load: true })
     await this.getCurrentLocation()
-    await this.getWeather3Days()
-    await this.getWeatherCurrent()
+    await this.getWeather3Days(this.state.currentLanguage)
+    await this.getWeatherCurrent(this.state.currentLanguage)
     await this.getCurrentLocationName(this.state.currentLanguage)
     await this.setBackgroundImage()
     M.AutoInit()
   }
+
 
   render() {
     return (

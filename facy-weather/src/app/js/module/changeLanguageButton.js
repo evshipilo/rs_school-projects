@@ -8,7 +8,7 @@ class ChangeLanguageButton extends React.Component {
         <a className='dropdown-trigger waves-effect waves-light btn-flat white-text btn-change-lang'
           href='#'
           data-target='dropdown1'>
-           {this.props.currentLanguage} <img src="img/VectorStroke.png" alt=""/>
+          {this.props.currentLanguage} <img src="img/VectorStroke.png" alt=""/>
         </a>
         <ul id='dropdown1' className='dropdown-content'>
           <li><a href="#!" value={'en'} onClick={() => this.props.setLanguage('en')}>
@@ -24,7 +24,6 @@ class ChangeLanguageButton extends React.Component {
 }
 
 ChangeLanguageButton.propTypes = {
-  changeBackground: PropTypes.func,
   setLanguage: PropTypes.func,
   currentLanguage: PropTypes.string
 }

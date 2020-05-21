@@ -28,7 +28,7 @@ class CurrentWeather extends React.Component {
     if (this.props.currentWeather) {
       temp = Math.round(this.props.currentWeather.data[0].temp)
       appTemp = Math.round(this.props.currentWeather.data[0].app_temp)
-      desc = this.props.currentWeather.data[0].weather.description
+      desc = this.props.currentWeather.data[0].weather.description.toUpperCase()
       windSpd = Math.round(this.props.currentWeather.data[0].wind_spd)
       rh = Math.round(this.props.currentWeather.data[0].rh)
       icon = this.props.currentWeather.data[0].weather.icon
