@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Description from './description'
 
 const enW = ['FEELS LIKE:', 'WIND:', 'm/s', 'HUMIDITY:']
 const ruW = ['ЧУВСТВУЕТСЯ КАК:', 'ВЕТЕР:', 'м/с', 'ВЛАЖНОСТЬ:']
@@ -17,18 +18,29 @@ class CurrentWeather extends React.Component {
       windSpd,
       rh,
       icon,
-      src
+      src,
+      code,
+      num
     switch (this.props.currentLanguage) {
-      case 'ru': [feel, wind, ms, hum] = ruW
+      case 'ru':
+        [feel, wind, ms, hum] = ruW
+        num = 1
         break
-      case 'be': [feel, wind, ms, hum] = beW
+      case 'be':
+        [feel, wind, ms, hum] = beW
+        num = 2
         break
-      default: [feel, wind, ms, hum] = enW
+      default:
+        [feel, wind, ms, hum] = enW
+        num = 0
     }
     if (this.props.currentWeather) {
+      code = this.props.currentWeather.data[0].weather.code
+      desc = Description[code][num].toUpperCase()
       temp = Math.round(this.props.currentWeather.data[0].temp)
       appTemp = Math.round(this.props.currentWeather.data[0].app_temp)
-      desc = this.props.currentWeather.data[0].weather.description.toUpperCase()
+      // desc =
+      // this.props.currentWeather.data[0].weather.description.toUpperCase()
       windSpd = Math.round(this.props.currentWeather.data[0].wind_spd)
       rh = Math.round(this.props.currentWeather.data[0].rh)
       icon = this.props.currentWeather.data[0].weather.icon

@@ -58,7 +58,7 @@ class App extends React.Component {
     try {
       const res = await fetch(url)
       const data = await res.json()
-      console.log("-> data", data);
+      console.log('-> data', data)
       this.setState({ currentWeather: data })
     } catch (e) {
       console.log('cant fetch data from weatherbit.io', e)
@@ -68,7 +68,7 @@ class App extends React.Component {
   async setLanguage(language) {
     this.setState({ currentLanguage: language })
     await this.getCurrentLocationName(language)
-    await this.getWeatherCurrent(language)
+   // await this.getWeatherCurrent(language)
   }
 
   setDaytimeAndYeartime() {
@@ -178,7 +178,7 @@ class App extends React.Component {
             <div className="col m6 s12 search center">6-columns (one-half)</div>
           </div>
           <div className='row'>
-            <div className='col m6 s12 left-column'>
+            <div className='col m7 s12 left-column'>
               <LocationInfo currentLocationName={this.state.currentLocationName}
               />
               <TimeInfo timeOffsetSec={this.state.timeOffsetSec}
@@ -193,7 +193,7 @@ class App extends React.Component {
                 dayOfWeek={this.state.dayOfWeek}
               />
             </div>
-            <div className='col m6 s12 center'>
+            <div className='col m5 s12 center'>
               sdfsdf
             </div>
           </div>
