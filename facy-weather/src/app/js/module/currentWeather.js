@@ -71,7 +71,6 @@ class CurrentWeather extends React.Component {
 }
 
 CurrentWeather.propTypes = {
-  currentLocationName: PropTypes.string,
   currentWeather: PropTypes.object,
   currentLanguage: PropTypes.string
 }

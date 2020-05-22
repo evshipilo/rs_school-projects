@@ -1,68 +1,77 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const daysEn = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY']
-const daysRu = ['ВОСКРЕСЕНЬЕ', 'ПОНЕДЕЛЬНИК', 'ВТОРНИК', 'СРЕДА', 'ЧЕТВЕРГ', 'ПЯТНИЦА', 'СУББОТА']
-const daysBe = ['НЯДЗЕЛЯ', 'ПАНЯДЗЕЛАК', 'АЎТОРАК', 'СЕРАДА', 'ЧАЦВЕР', 'ПЯТНIЦА', 'СУБОТА']
+const daysEn = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY', 'MONDAY', 'TUESDAY']
+const daysRu = ['ВОСКРЕСЕНЬЕ', 'ПОНЕДЕЛЬНИК', 'ВТОРНИК', 'СРЕДА', 'ЧЕТВЕРГ', 'ПЯТНИЦА', 'СУББОТА', 'ВОСКРЕСЕНЬЕ', 'ПОНЕДЕЛЬНИК', 'ВТОРНИК']
+const daysBe = ['НЯДЗЕЛЯ', 'ПАНЯДЗЕЛАК', 'АЎТОРАК', 'СЕРАДА', 'ЧАЦВЕР', 'ПЯТНIЦА', 'СУБОТА', 'НЯДЗЕЛЯ', 'ПАНЯДЗЕЛАК', 'АЎТОРАК']
 
 class Weather3day extends React.Component {
+  constructor(props) {
+    super(props)
+    this.getIcon = this.getIcon.bind(this)
+  }
+
+  getIcon(num) {
+    const { icon } = this.props.weather3day.data[num].weather
+    if (icon === 'c01d') return 'img/day.svg'
+    if (icon === 'c01n') return 'img/night.svg'
+    if (icon === 'c02d') return 'img/cloudy-day-1.svg'
+    if (icon === 'c02n') return 'img/cloudy-night-1.svg'
+    if (icon === 'c03d') return 'img/cloudy-day-3.svg'
+    if (icon === 'c03n') return 'img/cloudy-night-3.svg'
+    if (icon === 'c04d') return 'img/cloudy.svg'
+    if (icon === 'c04n') return 'img/cloudy.svg'
+    if (icon[0] === 't') return 'img/thunder.svg'
+    if (icon[0] === 'd') return 'img/rainy-7.svg'
+    if (icon[0] === 'u') return 'img/cloudy.svg'
+    if (icon[0] === 'a') return 'img/cloudy.svg'
+    if (icon[0] === 'r' && icon[3] === 'd') return 'img/rainy-3.svg'
+    if (icon[0] === 'r' && icon[3] === 'n') return 'img/rainy-6.svg'
+    if (icon[0] === 'f' && icon[3] === 'd') return 'img/rainy-3.svg'
+    if (icon[0] === 'f' && icon[3] === 'n') return 'img/rainy-6.svg'
+    if (icon[0] === 's' && icon[3] === 'd') return 'img/snowy-3.svg'
+    if (icon[0] === 's' && icon[3] === 'n') return 'img/snowy-6.svg'
+    return null
+  }
+
   render() {
-    let feel,
-      wind,
-      ms,
-      hum,
-      temp,
-      appTemp,
-      desc,
-      windSpd,
-      rh,
-      icon,
-      src
-    switch (this.props.currentLanguage) {
-      case 'ru': [feel, wind, ms, hum] = ruW
-        break
-      case 'be': [feel, wind, ms, hum] = beW
-        break
-      default: [feel, wind, ms, hum] = enW
+    let
+      temp1,
+      temp2,
+      temp3,
+      icon1,
+      icon2,
+      icon3,
+      currentArray
+
+    if (this.props.weather3day) {
+      temp1 = Math.round(this.props.weather3day.data[1].temp)
+      temp2 = Math.round(this.props.weather3day.data[2].temp)
+      temp3 = Math.round(this.props.weather3day.data[3].temp)
+      icon1 = this.getIcon(1)
+      icon2 = this.getIcon(2)
+      icon3 = this.getIcon(3)
+      if (this.props.currentLanguage === 'ru') currentArray = daysRu
+      if (this.props.currentLanguage === 'en') currentArray = daysEn
+      if (this.props.currentLanguage === 'be') currentArray = daysBe
     }
-    if (this.props.Weather3day) {
-      temp = Math.round(this.props.Weather3day.data[0].temp)
-      appTemp = Math.round(this.props.Weather3day.data[0].app_temp)
-      desc = this.props.Weather3day.data[0].weather.description.toUpperCase()
-      windSpd = Math.round(this.props.Weather3day.data[0].wind_spd)
-      rh = Math.round(this.props.Weather3day.data[0].rh)
-      icon = this.props.Weather3day.data[0].weather.icon
-      if (icon === 'c01d') src = 'img/day.svg'
-      if (icon === 'c01n') src = 'img/night.svg'
-      if (icon === 'c02d') src = 'img/cloudy-day-1.svg'
-      if (icon === 'c02n') src = 'img/cloudy-night-1.svg'
-      if (icon === 'c03d') src = 'img/cloudy-day-3.svg'
-      if (icon === 'c03n') src = 'img/cloudy-night-3.svg'
-      if (icon === 'c04d') src = 'img/cloudy.svg'
-      if (icon === 'c04n') src = 'img/cloudy.svg'
-      if (icon[0] === 't') src = 'img/thunder.svg'
-      if (icon[0] === 'd') src = 'img/rainy-7.svg'
-      if (icon[0] === 'u') src = 'img/cloudy.svg'
-      if (icon[0] === 'a') src = 'img/cloudy.svg'
-      if (icon[0] === 'r' && icon[3] === 'd') src = 'img/rainy-3.svg'
-      if (icon[0] === 'r' && icon[3] === 'n') src = 'img/rainy-6.svg'
-      if (icon[0] === 'f' && icon[3] === 'd') src = 'img/rainy-3.svg'
-      if (icon[0] === 'f' && icon[3] === 'n') src = 'img/rainy-6.svg'
-      if (icon[0] === 's' && icon[3] === 'd') src = 'img/snowy-3.svg'
-      if (icon[0] === 's' && icon[3] === 'n') src = 'img/snowy-6.svg'
-    }
-    if (this.props.Weather3day) {
+    if (this.props.weather3day) {
       return (
-        <div className='current-weather-wrapper'>
-          <div className='current-weather'>
-            <img className='current-weather-img' src={src} alt="svg"/>
-            <div><p className='cur-temp'>{temp}</p><p className='cur-temp-deg'>°</p></div>
-            <div className='current-weather-info'>
-              <p>{desc}</p>
-              <p>{feel} {appTemp}°</p>
-              <p>{wind} {windSpd} {ms}</p>
-              <p>{hum} {rh}%</p>
-            </div>
+        <div className='weather-3day-wrapper'>
+          <div className="weather-3day">
+            <p className='weather-3day-day'>{currentArray[this.props.dayOfWeek + 1]}</p>
+            <p className='weather-3day-temp'>{temp1}°</p>
+            <img src={icon1} alt="icon"/>
+          </div>
+          <div className="weather-3day">
+            <p className='weather-3day-day'>{currentArray[this.props.dayOfWeek + 2]}</p>
+            <p className='weather-3day-temp'>{temp2}°</p>
+            <img src={icon2} alt="icon"/>
+          </div>
+          <div className="weather-3day">
+            <p className='weather-3day-day'>{currentArray[this.props.dayOfWeek + 3]}</p>
+            <p className='weather-3day-temp'>{temp3}°</p>
+            <img src={icon3} alt="icon"/>
           </div>
         </div>
       )
@@ -71,9 +80,9 @@ class Weather3day extends React.Component {
 }
 
 Weather3day.propTypes = {
-  currentLocationName: PropTypes.string,
-  Weather3day: PropTypes.object,
-  currentLanguage: PropTypes.string
+  weather3day: PropTypes.object,
+  currentLanguage: PropTypes.string,
+  dayOfWeek: PropTypes.number
 }
 
 export default Weather3day

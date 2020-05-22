@@ -129,13 +129,15 @@ html {
   position: absolute;
   width: 265px;
   top: -80px;
-  right: 90px;
+  right: 20px;
+  z-index: 4;
 }
 .cur-temp{
   margin: 0;
   font-size: 300px;
   line-height: 350px;
   display: inline-block;
+  z-index: 5;
 }
 
 .cur-temp-deg{
@@ -143,6 +145,7 @@ html {
   display: inline-block;
   margin: 30px 0 0 0;
   vertical-align: top;
+  z-index: 5;
 }
 
 .current-weather{
@@ -154,7 +157,39 @@ html {
 .current-weather-info{
   align-self: center;
   font-size: 22px;
+  z-index: 5;
+  margin-top: 100px;
   & p{
     margin: 5px;
+  }
+}
+
+.weather-3day-wrapper{
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.weather-3day-day{
+  font-size: 22px;
+}
+
+.weather-3day-temp{
+  font-size: 80px;
+  margin: 0;
+  display: inline-block;
+  line-height: 45px;
+  z-index: 5;
+
+}
+
+.weather-3day{
+  position: relative;
+  width: 33%;
+  & img{
+    position: absolute;
+    width: 120px;
+    right: 0px;
+    top: 25px;
+    z-index: 4;
   }
 }

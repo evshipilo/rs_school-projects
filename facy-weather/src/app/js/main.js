@@ -17,6 +17,7 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      dayOfWeek: null,
       dayTime: null,
       yearTime: null,
       backgroundImgSrc: null,
@@ -41,7 +42,7 @@ class App extends React.Component {
   }
 
   async getWeather3Days() {
-    const url = `https://api....weatherbit.io/v2.0/forecast/daily?&lat=${this.state.latitude}&lon=${this.state.longitude}&lang=${this.state.currentLanguage}&days=4&units=M&key=6a2809c12d8c4c5a8a8c623e5ff254ea`
+    const url = `https://api.weatherbit.io/v2.0/forecast/daily?&lat=${this.state.latitude}&lon=${this.state.longitude}&lang=${this.state.currentLanguage}&days=4&units=M&key=6a2809c12d8c4c5a8a8c623e5ff254ea`
     try {
       const res = await fetch(url)
       const data = await res.json()
@@ -57,8 +58,8 @@ class App extends React.Component {
     try {
       const res = await fetch(url)
       const data = await res.json()
+      console.log("-> data", data);
       this.setState({ currentWeather: data })
-      console.log('-> data', data)
     } catch (e) {
       console.log('cant fetch data from weatherbit.io', e)
     }
@@ -76,6 +77,7 @@ class App extends React.Component {
     const nd = new Date(utc + (1000 * this.state.timeOffsetSec))
     const month = nd.getMonth()
     const hour = nd.getHours()
+    this.setState({ dayOfWeek: nd.getDay() })
     if (month === 11 || month === 0 || month === 1) this.setState({ yearTime: 'winter' })
     if (month === 2 || month === 3 || month === 4) this.setState({ yearTime: 'spring' })
     if (month === 5 || month === 6 || month === 7) this.setState({ yearTime: 'summer' })
@@ -159,7 +161,6 @@ class App extends React.Component {
     M.AutoInit()
   }
 
-
   render() {
     return (
       <div
@@ -189,6 +190,7 @@ class App extends React.Component {
               <Weather3day
                 weather3day={this.state.weather3day}
                 currentLanguage={this.state.currentLanguage}
+                dayOfWeek={this.state.dayOfWeek}
               />
             </div>
             <div className='col m6 s12 center'>
