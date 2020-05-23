@@ -45,9 +45,12 @@ class Weather3day extends React.Component {
       currentArray
 
     if (this.props.weather3day) {
-      temp1 = Math.round(this.props.weather3day.data[1].temp)
-      temp2 = Math.round(this.props.weather3day.data[2].temp)
-      temp3 = Math.round(this.props.weather3day.data[3].temp)
+      temp1 = this.props.celsius ? Math.round(this.props.weather3day.data[1].temp)
+        : Math.round(this.props.weather3day.data[1].temp * 9 / 5 + 32)
+      temp2 = this.props.celsius ? Math.round(this.props.weather3day.data[2].temp)
+        : Math.round(this.props.weather3day.data[2].temp * 9 / 5 + 32)
+      temp3 = this.props.celsius ? Math.round(this.props.weather3day.data[3].temp)
+        : Math.round(this.props.weather3day.data[3].temp * 9 / 5 + 32)
       icon1 = this.getIcon(1)
       icon2 = this.getIcon(2)
       icon3 = this.getIcon(3)
@@ -82,7 +85,8 @@ class Weather3day extends React.Component {
 Weather3day.propTypes = {
   weather3day: PropTypes.object,
   currentLanguage: PropTypes.string,
-  dayOfWeek: PropTypes.number
+  dayOfWeek: PropTypes.number,
+  celsius: PropTypes.number
 }
 
 export default Weather3day

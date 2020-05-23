@@ -182,7 +182,6 @@ class App extends React.Component {
                 currentLanguage={this.state.currentLanguage}/>
               <SwitcherCF
                 tempToggle={this.tempToggle}
-                celsius={this.state.celsius}
               />
             </div>
             <div className="col m6 s12 search center">6-columns (one-half)</div>
@@ -196,11 +195,13 @@ class App extends React.Component {
               <CurrentWeather
                 currentWeather={this.state.currentWeather}
                 currentLanguage={this.state.currentLanguage}
+                celsius={this.state.celsius}
               />
               <Weather3day
                 weather3day={this.state.weather3day}
                 currentLanguage={this.state.currentLanguage}
                 dayOfWeek={this.state.dayOfWeek}
+                celsius={this.state.celsius}
               />
             </div>
             <div className='col m5 s12 center'>

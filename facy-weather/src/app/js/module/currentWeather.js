@@ -37,8 +37,10 @@ class CurrentWeather extends React.Component {
     if (this.props.currentWeather) {
       code = this.props.currentWeather.data[0].weather.code
       desc = Description[code][num].toUpperCase()
-      temp = Math.round(this.props.currentWeather.data[0].temp)
-      appTemp = Math.round(this.props.currentWeather.data[0].app_temp)
+      temp = this.props.celsius ? Math.round(this.props.currentWeather.data[0].temp)
+        : Math.round(this.props.currentWeather.data[0].temp * 9 / 5 + 32)
+      appTemp = this.props.celsius ? Math.round(this.props.currentWeather.data[0].app_temp)
+        : Math.round(this.props.currentWeather.data[0].app_temp * 9 / 5 + 32)
       windSpd = Math.round(this.props.currentWeather.data[0].wind_spd)
       rh = Math.round(this.props.currentWeather.data[0].rh)
       icon = this.props.currentWeather.data[0].weather.icon
@@ -82,7 +84,8 @@ class CurrentWeather extends React.Component {
 
 CurrentWeather.propTypes = {
   currentWeather: PropTypes.object,
-  currentLanguage: PropTypes.string
+  currentLanguage: PropTypes.string,
+  celsius: PropTypes.number
 }
 
 export default CurrentWeather
