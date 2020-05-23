@@ -193,3 +193,47 @@ html {
     z-index: 4;
   }
 }
+
+.btn-switcher{
+  font-family: Montserrat;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 10px;
+  overflow: hidden;
+  position: relative;
+  width: 88px;
+  height: 44px;
+  border-radius: 5px;
+  transition: 0.3s;
+  color: white;
+  background: rgba(0,0,0,0.1);
+  font-size: 16px;
+  font-weight: bold;
+  &:hover {
+    transition: 0.3s;
+    filter: invert(20%);
+  }
+}
+
+.switcher-background{
+  display: inline-block;
+  position: absolute;
+  height: 44px;
+  width: 44px;
+  left: 0;
+  top: 0;
+  transition: 0.3s;
+  background: rgba(174, 181, 185, 0.5);
+  z-index: -1;
+}
+
+.on{
+  left: 50% !important;
+  transition: 0.3s;
+}
+
+.empty{
+  display: inline-block;
+  width: 27px;
+}
+

@@ -10,6 +10,7 @@ import CurrentWeather from './module/currentWeather'
 import Weather3day from './module/weather3day'
 import '../css/style.scss'
 import TimeInfo from './module/timeInfo'
+import SwitcherCF from './module/switcherCF'
 
 /* eslint class-methods-use-this: ["error", { "exceptMethods": ["render"] }] */
 
@@ -17,6 +18,7 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      celsius: true,
       dayOfWeek: null,
       dayTime: null,
       yearTime: null,
@@ -39,6 +41,11 @@ class App extends React.Component {
     this.getWeather3Days = this.getWeather3Days.bind(this)
     this.getWeatherCurrent = this.getWeatherCurrent.bind(this)
     this.getCurrentPosition = this.getCurrentPosition.bind(this)
+    this.tempToggle = this.tempToggle.bind(this)
+  }
+
+  tempToggle() {
+    this.setState({ celsius: !this.state.celsius })
   }
 
   async getWeather3Days() {
@@ -68,7 +75,6 @@ class App extends React.Component {
   async setLanguage(language) {
     this.setState({ currentLanguage: language })
     await this.getCurrentLocationName(language)
-   // await this.getWeatherCurrent(language)
   }
 
   setDaytimeAndYeartime() {
@@ -174,6 +180,10 @@ class App extends React.Component {
               <ChangeBackgroundButton changeBackground={this.setBackgroundImage}/>
               <ChangeLanguageButton setLanguage={this.setLanguage}
                 currentLanguage={this.state.currentLanguage}/>
+              <SwitcherCF
+                tempToggle={this.tempToggle}
+                celsius={this.state.celsius}
+              />
             </div>
             <div className="col m6 s12 search center">6-columns (one-half)</div>
           </div>
