@@ -128,13 +128,13 @@ html {
 .current-weather-img{
   position: absolute;
   width: 265px;
-  top: -80px;
-  right: 70px;
+  top: -205px;
+  right: -50px;
   z-index: 4;
 }
 .cur-temp{
   margin: 0;
-  font-size: 300px;
+  font-size: 280px;
   line-height: 350px;
   display: inline-block;
   z-index: 5;
@@ -155,6 +155,7 @@ html {
 }
 
 .current-weather-info{
+  position: relative;
   align-self: center;
   font-size: 22px;
   z-index: 5;

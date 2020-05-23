@@ -67,9 +67,9 @@ class CurrentWeather extends React.Component {
       return (
         <div className='current-weather-wrapper'>
           <div className='current-weather'>
-            <img className='current-weather-img' src={src} alt="svg"/>
             <div><p className='cur-temp'>{temp}</p><p className='cur-temp-deg'>°</p></div>
             <div className='current-weather-info'>
+              <img className='current-weather-img' src={src} alt="svg"/>
               <p>{desc}</p>
               <p>{feel} {appTemp}°</p>
               <p>{wind} {windSpd} {ms}</p>
