@@ -52,26 +52,30 @@ class App extends React.Component {
   }
 
   async getWeather3Days() {
-    const url = `https://api.weatherbit.io/v2.0/forecast/daily?&lat=${this.state.latitude}&lon=${this.state.longitude}&lang=${this.state.currentLanguage}&days=4&units=M&key=6a2809c12d8c4c5a8a8c623e5ff254ea`
-    try {
-      const res = await fetch(url)
-      const data = await res.json()
-      this.setState({ weather3day: data })
-      console.log('-> data', data)
-    } catch (e) {
-      console.log('cant fetch data from weatherbit.io', e)
+    if (this.state.latitude) {
+      const url = `https://api.weatherbit.io/v2.0/forecast/daily?&lat=${this.state.latitude}&lon=${this.state.longitude}&lang=${this.state.currentLanguage}&days=4&units=M&key=6a2809c12d8c4c5a8a8c623e5ff254ea`
+      try {
+        const res = await fetch(url)
+        const data = await res.json()
+        this.setState({ weather3day: data })
+        console.log('-> data', data)
+      } catch (e) {
+        console.log('cant fetch data from weatherbit.io', e)
+      }
     }
   }
 
   async getWeatherCurrent(lang) {
-    const url = `https://api.weatherbit.io/v2.0/current?&lat=${this.state.latitude}&lon=${this.state.longitude}&lang=${lang}&units=M&key=6a2809c12d8c4c5a8a8c623e5ff254ea`
-    try {
-      const res = await fetch(url)
-      const data = await res.json()
-      console.log('-> data', data)
-      this.setState({ currentWeather: data })
-    } catch (e) {
-      console.log('cant fetch data from weatherbit.io', e)
+    if (this.state.latitude) {
+      const url = `https://api.weatherbit.io/v2.0/current?&lat=${this.state.latitude}&lon=${this.state.longitude}&lang=${lang}&units=M&key=6a2809c12d8c4c5a8a8c623e5ff254ea`
+      try {
+        const res = await fetch(url)
+        const data = await res.json()
+        console.log('-> data', data)
+        this.setState({ currentWeather: data })
+      } catch (e) {
+        console.log('cant fetch data from weatherbit.io', e)
+      }
     }
   }
 
@@ -118,30 +122,31 @@ class App extends React.Component {
   }
 
   async getCurrentLocationName(language) {
-    const url =
-    `https://api.opencagedata.com/geocode/v1/json?q=${this.state.latitude}+${this.state.longitude}&language=${language}&roadinfo=0&key=32701a01f2f8492cbefb817597782a12`
-    try {
-      const res = await fetch(url)
-      const data = await res.json()
-      let city
-      if (data.results[0].components.village) city = data.results[0].components.village
-      else if (data.results[0].components.town) city = data.results[0].components.town
-      else city = data.results[0].components.city
-      // const { city } = data.results[0].components
-      const { country } = data.results[0].components
-      const location = `${city}, ${country}`
-      console.log('-> data.results[0].components', data.results[0].components)
-      if (city) {
-        // this.setState({ currentLocationCity: city })
-        this.setState({ currentLocationName: location })
-        this.setState({ timeOffsetSec: data.results[0].annotations.timezone.offset_sec })
-      } else {
+    if (this.state.latitude) {
+      const url =
+        `https://api.opencagedata.com/geocode/v1/json?q=${this.state.latitude}+${this.state.longitude}&language=${language}&roadinfo=0&key=32701a01f2f8492cbefb817597782a12`
+      try {
+        const res = await fetch(url)
+        const data = await res.json()
+        let city
+        if (data.results[0].components.village) city = data.results[0].components.village
+        else if (data.results[0].components.town) city = data.results[0].components.town
+        else city = data.results[0].components.city
+        const { country } = data.results[0].components
+        const location = `${city}, ${country}`
+        console.log('-> data.results[0].components', data.results[0].components)
+        if (city) {
+          // this.setState({ currentLocationCity: city })
+          this.setState({ currentLocationName: location })
+          this.setState({ timeOffsetSec: data.results[0].annotations.timezone.offset_sec })
+        } else {
+          this.setState({ currentLocationName: 'location not found' })
+        }
+      } catch (e) {
         this.setState({ currentLocationName: 'location not found' })
+        console.log('cant fetch data from api.opencagedata.com', e)
       }
-    } catch (e) {
-      this.setState({ currentLocationName: 'location not found' })
-      console.log('cant fetch data from api.opencagedata.com', e)
-    }
+    } else this.setState({ currentLocationName: 'location not found' })
   }
 
   async getCurrentPositionFromName(city) {
@@ -149,17 +154,21 @@ class App extends React.Component {
       const url = `https://api.opencagedata.com/geocode/v1/json?q=${city}&key=32701a01f2f8492cbefb817597782a12`
       const res = await fetch(url)
       const data = await res.json()
-      if (data.results.length === 0) {
-        this.setState({ latitude: null })
-        this.setState({ longitude: null })
-        this.setState({ currentLocationName: 'location not found' })
-      } else {
+      if (data.results[0].geometry.lat && data.results[0].geometry.lng) {
         this.setState({ latitude: data.results[0].geometry.lat })
         this.setState({ longitude: data.results[0].geometry.lng })
+      } else {
+        this.setState({ latitude: null })
+        this.setState({ longitude: null })
+        this.setState({ currentWeather: null })
+        this.setState({ weather3day: null })
+        this.setState({ currentLocationName: 'location not found' })
       }
     } catch (e) {
       this.setState({ latitude: null })
       this.setState({ longitude: null })
+      this.setState({ currentWeather: null })
+      this.setState({ weather3day: null })
       this.setState({ currentLocationName: 'location not found' })
     }
   }
@@ -232,6 +241,7 @@ class App extends React.Component {
               <TimeInfo timeOffsetSec={this.state.timeOffsetSec}
                 currentLanguage={this.state.currentLanguage}
                 load={this.state.load}
+                latitude={this.state.latitude}
               />
               <CurrentWeather
                 currentWeather={this.state.currentWeather}

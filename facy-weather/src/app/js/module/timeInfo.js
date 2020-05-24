@@ -49,7 +49,7 @@ class TimeInfo extends React.Component {
         break
       default: month = monthEn[this.state.date.getMonth()]
     }
-    if (!this.props.load) {
+    if (!this.props.load && this.props.latitude) {
       return (
 
         <div className='time-info'>
@@ -68,7 +68,8 @@ class TimeInfo extends React.Component {
 TimeInfo.propTypes = {
   timeOffsetSec: PropTypes.number,
   currentLanguage: PropTypes.string,
-  load: PropTypes.bool
+  load: PropTypes.bool,
+  latitude: PropTypes.number
 }
 
 export default TimeInfo
