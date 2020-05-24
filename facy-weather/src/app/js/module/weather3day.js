@@ -58,7 +58,7 @@ class Weather3day extends React.Component {
       if (this.props.currentLanguage === 'en') currentArray = daysEn
       if (this.props.currentLanguage === 'be') currentArray = daysBe
     }
-    if (this.props.weather3day) {
+    if (this.props.weather3day && !this.props.load) {
       return (
         <div className='weather-3day-wrapper'>
           <div className="weather-3day">
@@ -86,7 +86,8 @@ Weather3day.propTypes = {
   weather3day: PropTypes.object,
   currentLanguage: PropTypes.string,
   dayOfWeek: PropTypes.number,
-  celsius: PropTypes.number
+  celsius: PropTypes.bool,
+  load: PropTypes.bool
 }
 
 export default Weather3day

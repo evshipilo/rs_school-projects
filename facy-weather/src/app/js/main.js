@@ -11,6 +11,7 @@ import Weather3day from './module/weather3day'
 import '../css/style.scss'
 import TimeInfo from './module/timeInfo'
 import SwitcherCF from './module/switcherCF'
+import SearchCity from './module/searchCity'
 
 /* eslint class-methods-use-this: ["error", { "exceptMethods": ["render"] }] */
 
@@ -42,6 +43,7 @@ class App extends React.Component {
     this.getWeatherCurrent = this.getWeatherCurrent.bind(this)
     this.getCurrentPosition = this.getCurrentPosition.bind(this)
     this.tempToggle = this.tempToggle.bind(this)
+    this.getCurrentPositionFromName = this.getCurrentPositionFromName.bind(this)
   }
 
   tempToggle() {
@@ -134,6 +136,13 @@ class App extends React.Component {
     }
   }
 
+  async getCurrentPositionFromName(city) {
+    const url = `https://api.opencagedata.com/geocode/v1/json?q=${city}&key=32701a01f2f8492cbefb817597782a12`
+    const res = await fetch(url)
+    const data = await res.json()
+    console.log('-> data', data)
+  }
+
   getCurrentPosition() {
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(resolve, reject)
@@ -141,14 +150,7 @@ class App extends React.Component {
   }
 
   async getCurrentLocation() {
-    // const url = 'https://ipinfo..io/json?token=fa1d1815d7ab5c'
     try {
-      // const res = await fetch(url)
-      // const data = await res.json()
-      // const currentLocation = data.loc
-      // const [lat, long] = currentLocation.split(',')
-      // this.setState({ latitude: lat })
-      // this.setState({ longitude: long })
       const { coords } = await this.getCurrentPosition()
       this.setState({ latitude: coords.latitude })
       this.setState({ longitude: coords.longitude })
@@ -156,6 +158,12 @@ class App extends React.Component {
       console.log('cant get geolocation', e)
     }
   }
+
+  // async showNewCity(city){
+  //
+  //   this.setState({ load: true })
+  //
+  // }
 
   async componentDidMount() {
     this.setState({ load: true })
@@ -184,24 +192,35 @@ class App extends React.Component {
                 tempToggle={this.tempToggle}
               />
             </div>
-            <div className="col m6 s12 search center">6-columns (one-half)</div>
+            <div className="col m6 s12">
+              <SearchCity
+                currentLanguage={this.state.currentLanguage}
+                getCurrentPositionFromName={this.getCurrentPositionFromName}
+              />
+            </div>
           </div>
           <div className='row'>
             <div className='col m7 s12 left-column'>
-              <LocationInfo currentLocationName={this.state.currentLocationName}
+              <LocationInfo
+                currentLocationName={this.state.currentLocationName}
+                load={this.state.load}
               />
               <TimeInfo timeOffsetSec={this.state.timeOffsetSec}
-                currentLanguage={this.state.currentLanguage}/>
+                currentLanguage={this.state.currentLanguage}
+                load={this.state.load}
+              />
               <CurrentWeather
                 currentWeather={this.state.currentWeather}
                 currentLanguage={this.state.currentLanguage}
                 celsius={this.state.celsius}
+                load={this.state.load}
               />
               <Weather3day
                 weather3day={this.state.weather3day}
                 currentLanguage={this.state.currentLanguage}
                 dayOfWeek={this.state.dayOfWeek}
                 celsius={this.state.celsius}
+                load={this.state.load}
               />
             </div>
             <div className='col m5 s12 center'>

@@ -49,23 +49,26 @@ class TimeInfo extends React.Component {
         break
       default: month = monthEn[this.state.date.getMonth()]
     }
+    if (!this.props.load) {
+      return (
 
-    return (
+        <div className='time-info'>
+          <span>{day}</span>
+          <span>{this.state.date.getDate()}</span>
+          <span>{month}</span>
+          <span className='time'>{this.state.date.toLocaleTimeString()}</span>
+        </div>
 
-      <div className='time-info'>
-        <span>{day}</span>
-        <span>{this.state.date.getDate()}</span>
-        <span>{month}</span>
-        <span className='time'>{this.state.date.toLocaleTimeString()}</span>
-      </div>
-
-    )
+      )
+    }
+    return null
   }
 }
 
 TimeInfo.propTypes = {
   timeOffsetSec: PropTypes.number,
-  currentLanguage: PropTypes.string
+  currentLanguage: PropTypes.string,
+  load: PropTypes.bool
 }
 
 export default TimeInfo

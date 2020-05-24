@@ -238,3 +238,47 @@ html {
   width: 27px;
 }
 
+.searchCity{
+  width: 247px !important;
+  height: 44px !important;
+  background: rgba(76, 82, 85, 0.4) !important;
+  border: 1px solid rgba(228, 227, 227, 0.2) !important;
+  padding-left: 15px !important;
+  padding-right: 110px !important;
+  border-radius: 5px !important;
+  overflow: hidden !important;
+  display: inline-block !important;
+  color: white;
+  font-family: Montserrat;
+  font-size: 14px;
+  &::placeholder{
+    color: white;
+    font-size: 14px;
+    font-family: Montserrat;
+
+  }
+
+}
+
+.searchCity-btn{
+  font-family: Montserrat;
+  font-size: 14px;
+  color: white;
+  border: none;
+  width: 100px;
+  height: 47px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: rgba(174, 181, 185, 0.5) !important;
+  transition: 0.3s;
+  &:hover {
+    transition: 0.3s;
+    filter: invert(20%);
+  }
+}
+.input-wrapper{
+  position: relative;
+  display: inline-block;
+  margin-left: 244px;
+}

@@ -63,7 +63,7 @@ class CurrentWeather extends React.Component {
       if (icon[0] === 's' && icon[3] === 'd') src = 'img/snowy-3.svg'
       if (icon[0] === 's' && icon[3] === 'n') src = 'img/snowy-6.svg'
     }
-    if (this.props.currentWeather) {
+    if (this.props.currentWeather && !this.props.load) {
       return (
         <div className='current-weather-wrapper'>
           <div className='current-weather'>
@@ -85,7 +85,8 @@ class CurrentWeather extends React.Component {
 CurrentWeather.propTypes = {
   currentWeather: PropTypes.object,
   currentLanguage: PropTypes.string,
-  celsius: PropTypes.number
+  celsius: PropTypes.bool,
+  load: PropTypes.bool
 }
 
 export default CurrentWeather
