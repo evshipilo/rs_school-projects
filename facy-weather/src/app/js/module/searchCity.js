@@ -16,7 +16,7 @@ class SearchCity extends React.Component {
 
   handleKeyDown(e) {
     if (e.key === 'Enter') {
-      this.props.getCurrentPositionFromName(this.state.cityName)
+      this.props.showNewCity(this.state.cityName)
     }
   }
 
@@ -36,7 +36,7 @@ class SearchCity extends React.Component {
         />
         <button
           className='waves-effect waves-light btn-flat searchCity-btn'
-          onClick={() => this.props.getCurrentPositionFromName(this.state.cityName)}>
+          onClick={() => this.props.showNewCity(this.state.cityName)}>
           {currArr[1]}
         </button>
       </div>
@@ -46,7 +46,7 @@ class SearchCity extends React.Component {
 
 SearchCity.propTypes = {
   currentLanguage: PropTypes.string,
-  getCurrentPositionFromName: PropTypes.func
+  showNewCity: PropTypes.func
 }
 
 export default SearchCity

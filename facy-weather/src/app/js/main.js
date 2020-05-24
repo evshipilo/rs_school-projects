@@ -29,7 +29,7 @@ class App extends React.Component {
       longitude: null,
       currentWeather: null,
       weather3day: null,
-      currentLocationCity: null,
+      // currentLocationCity: null,
       currentLocationName: null,
       currentLanguage: 'en',
       timeOffsetSec: 0
@@ -44,6 +44,7 @@ class App extends React.Component {
     this.getCurrentPosition = this.getCurrentPosition.bind(this)
     this.tempToggle = this.tempToggle.bind(this)
     this.getCurrentPositionFromName = this.getCurrentPositionFromName.bind(this)
+    this.showNewCity = this.showNewCity.bind(this)
   }
 
   tempToggle() {
@@ -118,18 +119,25 @@ class App extends React.Component {
 
   async getCurrentLocationName(language) {
     const url =
-    `https://api.opencagedata.com/geocode/v1/json?q=${this.state.latitude}+${this.state.longitude}&language=${language}&key=32701a01f2f8492cbefb817597782a12`
+    `https://api.opencagedata.com/geocode/v1/json?q=${this.state.latitude}+${this.state.longitude}&language=${language}&roadinfo=0&key=32701a01f2f8492cbefb817597782a12`
     try {
       const res = await fetch(url)
       const data = await res.json()
-      const location = data.results[0].formatted
-      let [country, city, city1] = location.split(',')
-      if (city1.search(/[\d]/) !== -1) city = city1
-      const cleanCity = city.replace(/[\d\s]/g, '')
-      const cleanLocation = `${cleanCity}, ${country}`
-      this.setState({ currentLocationCity: cleanCity })
-      this.setState({ currentLocationName: cleanLocation })
-      this.setState({ timeOffsetSec: data.results[0].annotations.timezone.offset_sec })
+      let city
+      if (data.results[0].components.village) city = data.results[0].components.village
+      else if (data.results[0].components.town) city = data.results[0].components.town
+      else city = data.results[0].components.city
+      // const { city } = data.results[0].components
+      const { country } = data.results[0].components
+      const location = `${city}, ${country}`
+      console.log('-> data.results[0].components', data.results[0].components)
+      if (city) {
+        // this.setState({ currentLocationCity: city })
+        this.setState({ currentLocationName: location })
+        this.setState({ timeOffsetSec: data.results[0].annotations.timezone.offset_sec })
+      } else {
+        this.setState({ currentLocationName: 'location not found' })
+      }
     } catch (e) {
       this.setState({ currentLocationName: 'location not found' })
       console.log('cant fetch data from api.opencagedata.com', e)
@@ -137,10 +145,23 @@ class App extends React.Component {
   }
 
   async getCurrentPositionFromName(city) {
-    const url = `https://api.opencagedata.com/geocode/v1/json?q=${city}&key=32701a01f2f8492cbefb817597782a12`
-    const res = await fetch(url)
-    const data = await res.json()
-    console.log('-> data', data)
+    try {
+      const url = `https://api.opencagedata.com/geocode/v1/json?q=${city}&key=32701a01f2f8492cbefb817597782a12`
+      const res = await fetch(url)
+      const data = await res.json()
+      if (data.results.length === 0) {
+        this.setState({ latitude: null })
+        this.setState({ longitude: null })
+        this.setState({ currentLocationName: 'location not found' })
+      } else {
+        this.setState({ latitude: data.results[0].geometry.lat })
+        this.setState({ longitude: data.results[0].geometry.lng })
+      }
+    } catch (e) {
+      this.setState({ latitude: null })
+      this.setState({ longitude: null })
+      this.setState({ currentLocationName: 'location not found' })
+    }
   }
 
   getCurrentPosition() {
@@ -159,11 +180,14 @@ class App extends React.Component {
     }
   }
 
-  // async showNewCity(city){
-  //
-  //   this.setState({ load: true })
-  //
-  // }
+  async showNewCity(city) {
+    this.setState({ load: true })
+    await this.getCurrentPositionFromName(city)
+    await this.getWeather3Days(this.state.currentLanguage)
+    await this.getWeatherCurrent(this.state.currentLanguage)
+    await this.getCurrentLocationName(this.state.currentLanguage)
+    await this.setBackgroundImage()
+  }
 
   async componentDidMount() {
     this.setState({ load: true })
@@ -195,7 +219,7 @@ class App extends React.Component {
             <div className="col m6 s12">
               <SearchCity
                 currentLanguage={this.state.currentLanguage}
-                getCurrentPositionFromName={this.getCurrentPositionFromName}
+                showNewCity={this.showNewCity}
               />
             </div>
           </div>
