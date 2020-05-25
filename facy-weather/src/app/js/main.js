@@ -12,6 +12,8 @@ import '../css/style.scss'
 import TimeInfo from './module/timeInfo'
 import SwitcherCF from './module/switcherCF'
 import SearchCity from './module/searchCity'
+import Map from './module/map'
+
 
 /* eslint class-methods-use-this: ["error", { "exceptMethods": ["render"] }] */
 
@@ -131,11 +133,12 @@ class App extends React.Component {
         let city
         if (data.results[0].components.village) city = data.results[0].components.village
         else if (data.results[0].components.town) city = data.results[0].components.town
-        else city = data.results[0].components.city
+        else if (data.results[0].components.city) city = data.results[0].components.city
+        else city = data.results[0].components.county
         const { country } = data.results[0].components
         const location = `${city}, ${country}`
         console.log('-> data.results[0].components', data.results[0].components)
-        if (city) {
+        if (country) {
           // this.setState({ currentLocationCity: city })
           this.setState({ currentLocationName: location })
           this.setState({ timeOffsetSec: data.results[0].annotations.timezone.offset_sec })
@@ -258,7 +261,12 @@ class App extends React.Component {
               />
             </div>
             <div className='col m5 s12 center'>
-              sdfsdf
+              <Map
+                currentLanguage={this.state.currentLanguage}
+                latitude={this.state.latitude}
+                longitude={this.state.longitude}
+                load={this.state.load}
+              />
             </div>
           </div>
         </div>
