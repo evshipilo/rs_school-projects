@@ -283,7 +283,37 @@ html {
   margin-left: 244px;
 }
 
-.map-box{
-  width: 375px;
-  height: 400px;
+.search-col{
+  text-align: right;
+  padding-right: 90px !important;
 }
+
+.map-col{
+  text-align: right;
+  padding-right: 90px !important;
+}
+
+.mapboxgl-map{
+  width: 375px;
+  height: 398px;
+}
+
+.map-container{
+  display: inline-block;
+  margin-top: 130px;
+  position: relative;
+}
+
+.geo-position{
+  //display: inline-block;
+  position: absolute;
+  bottom: -50px;
+  right: 0px;
+  font-size: 20px;
+
+}
+
+.mapboxgl-ctrl-bottom-right > .mapboxgl-ctrl-attrib.mapboxgl-compact:after {
+  opacity: 0;
+}
+

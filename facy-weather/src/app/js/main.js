@@ -14,7 +14,6 @@ import SwitcherCF from './module/switcherCF'
 import SearchCity from './module/searchCity'
 import Map from './module/map'
 
-
 /* eslint class-methods-use-this: ["error", { "exceptMethods": ["render"] }] */
 
 class App extends React.Component {
@@ -27,6 +26,7 @@ class App extends React.Component {
       yearTime: null,
       backgroundImgSrc: null,
       load: true,
+      dms: null,
       latitude: null,
       longitude: null,
       currentWeather: null,
@@ -92,11 +92,20 @@ class App extends React.Component {
     const nd = new Date(utc + (1000 * this.state.timeOffsetSec))
     const month = nd.getMonth()
     const hour = nd.getHours()
+    const [,,, southNorth] = this.state.dms.lat.split(' ')
     this.setState({ dayOfWeek: nd.getDay() })
-    if (month === 11 || month === 0 || month === 1) this.setState({ yearTime: 'winter' })
-    if (month === 2 || month === 3 || month === 4) this.setState({ yearTime: 'spring' })
-    if (month === 5 || month === 6 || month === 7) this.setState({ yearTime: 'summer' })
-    if (month === 8 || month === 9 || month === 10) this.setState({ yearTime: 'autumn' })
+    if (southNorth === 'N') {
+      if (month === 11 || month === 0 || month === 1) this.setState({ yearTime: 'winter' })
+      if (month === 2 || month === 3 || month === 4) this.setState({ yearTime: 'spring' })
+      if (month === 5 || month === 6 || month === 7) this.setState({ yearTime: 'summer' })
+      if (month === 8 || month === 9 || month === 10) this.setState({ yearTime: 'autumn' })
+    }
+    if (southNorth === 'S') {
+      if (month === 11 || month === 0 || month === 1) this.setState({ yearTime: 'summer' })
+      if (month === 2 || month === 3 || month === 4) this.setState({ yearTime: 'autumn' })
+      if (month === 5 || month === 6 || month === 7) this.setState({ yearTime: 'winter' })
+      if (month === 8 || month === 9 || month === 10) this.setState({ yearTime: 'spring' })
+    }
     if (hour >= 6 && hour < 10) this.setState({ dayTime: 'morning' })
     if (hour >= 10 && hour < 18) this.setState({ dayTime: 'day' })
     if (hour >= 18 && hour <= 23) this.setState({ dayTime: 'evening' })
@@ -130,6 +139,7 @@ class App extends React.Component {
       try {
         const res = await fetch(url)
         const data = await res.json()
+        console.log('-> data222222222222', data)
         let city
         if (data.results[0].components.village) city = data.results[0].components.village
         else if (data.results[0].components.town) city = data.results[0].components.town
@@ -137,11 +147,12 @@ class App extends React.Component {
         else city = data.results[0].components.county
         const { country } = data.results[0].components
         const location = `${city}, ${country}`
-        console.log('-> data.results[0].components', data.results[0].components)
+        console.log('-> data.results[0].components', data.results[0].annotations.DMS)
         if (country) {
           // this.setState({ currentLocationCity: city })
           this.setState({ currentLocationName: location })
           this.setState({ timeOffsetSec: data.results[0].annotations.timezone.offset_sec })
+          this.setState({ dms: data.results[0].annotations.DMS })
         } else {
           this.setState({ currentLocationName: 'location not found' })
         }
@@ -157,14 +168,17 @@ class App extends React.Component {
       const url = `https://api.opencagedata.com/geocode/v1/json?q=${city}&key=32701a01f2f8492cbefb817597782a12`
       const res = await fetch(url)
       const data = await res.json()
+      console.log('-> data1111111111111111', data)
       if (data.results[0].geometry.lat && data.results[0].geometry.lng) {
         this.setState({ latitude: data.results[0].geometry.lat })
         this.setState({ longitude: data.results[0].geometry.lng })
+        this.setState({ dms: data.results[0].annotations.DMS })
       } else {
         this.setState({ latitude: null })
         this.setState({ longitude: null })
         this.setState({ currentWeather: null })
         this.setState({ weather3day: null })
+        this.setState({ dms: null })
         this.setState({ currentLocationName: 'location not found' })
       }
     } catch (e) {
@@ -228,7 +242,7 @@ class App extends React.Component {
                 tempToggle={this.tempToggle}
               />
             </div>
-            <div className="col m6 s12">
+            <div className="col m6 s12 search-col">
               <SearchCity
                 currentLanguage={this.state.currentLanguage}
                 showNewCity={this.showNewCity}
@@ -260,12 +274,13 @@ class App extends React.Component {
                 load={this.state.load}
               />
             </div>
-            <div className='col m5 s12 center'>
+            <div className='col m5 s12 map-col'>
               <Map
                 currentLanguage={this.state.currentLanguage}
                 latitude={this.state.latitude}
                 longitude={this.state.longitude}
                 load={this.state.load}
+                dms={this.state.dms}
               />
             </div>
           </div>
