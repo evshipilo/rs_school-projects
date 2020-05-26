@@ -63,18 +63,24 @@ class Weather3day extends React.Component {
         <div className='weather-3day-wrapper'>
           <div className="weather-3day">
             <p className='weather-3day-day'>{currentArray[this.props.dayOfWeek + 1]}</p>
-            <p className='weather-3day-temp'>{temp1}°</p>
-            <img src={icon1} alt="icon"/>
+            <div>
+              <span className='weather-3day-temp'>{temp1}°</span>
+              <img src={icon1} alt="icon"/>
+            </div>
           </div>
           <div className="weather-3day">
             <p className='weather-3day-day'>{currentArray[this.props.dayOfWeek + 2]}</p>
-            <p className='weather-3day-temp'>{temp2}°</p>
-            <img src={icon2} alt="icon"/>
+            <div>
+              <span className='weather-3day-temp'>{temp2}°</span>
+              <img src={icon2} alt="icon"/>
+            </div>
           </div>
           <div className="weather-3day">
             <p className='weather-3day-day'>{currentArray[this.props.dayOfWeek + 3]}</p>
-            <p className='weather-3day-temp'>{temp3}°</p>
-            <img src={icon3} alt="icon"/>
+            <div>
+              <span className='weather-3day-temp'>{temp3}°</span>
+              <img src={icon3} alt="icon"/>
+            </div>
           </div>
         </div>
       )
