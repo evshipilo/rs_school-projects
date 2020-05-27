@@ -31,7 +31,6 @@ class App extends React.Component {
       longitude: null,
       currentWeather: null,
       weather3day: null,
-      // currentLocationCity: null,
       currentLocationName: null,
       currentLanguage: 'en',
       timeOffsetSec: 0
@@ -47,6 +46,7 @@ class App extends React.Component {
     this.tempToggle = this.tempToggle.bind(this)
     this.getCurrentPositionFromName = this.getCurrentPositionFromName.bind(this)
     this.showNewCity = this.showNewCity.bind(this)
+    this.onUnload = this.onUnload.bind(this)
   }
 
   tempToggle() {
@@ -149,7 +149,6 @@ class App extends React.Component {
         const location = `${city}, ${country}`
         console.log('-> data.results[0].components', data.results[0].annotations.DMS)
         if (country) {
-          // this.setState({ currentLocationCity: city })
           this.setState({ currentLocationName: location })
           this.setState({ timeOffsetSec: data.results[0].annotations.timezone.offset_sec })
           this.setState({ dms: data.results[0].annotations.DMS })
@@ -168,7 +167,6 @@ class App extends React.Component {
       const url = `https://api.opencagedata.com/geocode/v1/json?q=${city}&key=32701a01f2f8492cbefb817597782a12`
       const res = await fetch(url)
       const data = await res.json()
-      console.log('-> data1111111111111111', data)
       if (data.results[0].geometry.lat && data.results[0].geometry.lng) {
         this.setState({ latitude: data.results[0].geometry.lat })
         this.setState({ longitude: data.results[0].geometry.lng })
@@ -215,14 +213,28 @@ class App extends React.Component {
     await this.setBackgroundImage()
   }
 
+  onUnload() {
+    localStorage.setItem('celsius', this.state.celsius)
+    localStorage.setItem('currentLanguage', this.state.currentLanguage)
+  }
+
   async componentDidMount() {
+    const cel = localStorage.getItem('celsius') === 'false'
+    const lang = localStorage.getItem('currentLanguage') || 'en'
     this.setState({ load: true })
+    this.setState({ celsius: !cel })
+    this.setState({ currentLanguage: lang })
     await this.getCurrentLocation()
     await this.getWeather3Days(this.state.currentLanguage)
     await this.getWeatherCurrent(this.state.currentLanguage)
     await this.getCurrentLocationName(this.state.currentLanguage)
     await this.setBackgroundImage()
     M.AutoInit()
+    window.addEventListener('beforeunload', this.onUnload)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener()('beforeunload', this.onUnload)
   }
 
   render() {
@@ -240,6 +252,7 @@ class App extends React.Component {
                 currentLanguage={this.state.currentLanguage}/>
               <SwitcherCF
                 tempToggle={this.tempToggle}
+                celsius={this.state.celsius}
               />
             </div>
             <div className="col l6 m12 s12 search-col">
