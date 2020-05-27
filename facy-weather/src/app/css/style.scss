@@ -3,11 +3,44 @@
 @import 'mixin';
 @import 'fonts';
 
+@mixin media-1400 {
+  @media (max-width: 1400px) {
+    @content;
+  }
+}
+
 @mixin media-1200 {
   @media (max-width: 1200px) {
     @content;
   }
 }
+
+@mixin media-992 {
+  @media (max-width: 992px) {
+    @content;
+  }
+}
+
+@mixin media-700 {
+  @media (max-width: 700px) {
+    @content;
+  }
+}
+
+@mixin media-450 {
+  @media (max-width: 450px) {
+    @content;
+  }
+}
+
+@mixin media-500 {
+  @media (max-width: 500px) {
+    @content;
+  }
+}
+
+
+
 
 html {
   font-family: Montserrat !important;
@@ -24,7 +57,15 @@ html {
   background-size: cover;
   overflow: hidden;
   position: relative;
-
+  @include media-1200{
+    height: 700px;
+  }
+  @include media-992{
+    height: 1200px;
+  }
+  @include media-450{
+    height: 1600px;
+  }
 }
 
 .navigation {
@@ -39,6 +80,12 @@ html {
 
 .buttons{
   padding-left: 93px !important;
+  @include media-992{
+    margin-bottom: 30px;
+  }
+  @include media-700{
+    padding-left: 10px !important;
+  }
 }
 
 .btn-change-wallpaper {
@@ -100,6 +147,9 @@ html {
 
 .left-column{
   padding-left: 90px !important;
+  @include media-700{
+    padding-left: 10px !important;
+  }
 }
 
 .location-info{
@@ -108,6 +158,12 @@ html {
   padding-top: 11px;
   margin-bottom: 4px;
   margin-top: 0;
+  @include media-1400{
+    font-size: 3vw;
+  }
+  @include media-992{
+    font-size: 40px;
+  }
 }
 
 .time-info{
@@ -127,19 +183,36 @@ html {
 }
 
 .current-weather-img{
-  //position: absolute;
-  width: 265px;
-  //top: -205px;
-  //right: -50px;
-  margin: -80px -60px;
-
-
+  width: 250px;
+  margin: -75px -55px -45px -55px;
+  @include media-1200{
+    width: 200px;
+    margin: -65px -55px -50px -55px;
+  }
+  @include media-700{
+    margin: -45px -45px -55px -35px;
+  }
+  @include media-700{
+    margin: -45px -45px -45px -35px;
+  }
 }
+
 .cur-temp{
   margin: 0;
-  font-size: 280px;
-  line-height: 350px;
+  font-size: 250px;
   display: inline-block;
+  @include media-1400{
+    font-size: 16vw;
+  }
+  @include media-992{
+    font-size: 177px;
+  }
+  @include media-700{
+    font-size: 18vw;
+  }
+  @include media-450{
+    padding-top: 20px;
+  }
 
 }
 
@@ -153,15 +226,19 @@ html {
 
 .current-weather{
   display: flex;
-  flex-wrap: nowrap;
+ // flex-wrap: nowrap;
 }
 
 .current-weather-info{
   position: relative;
- // align-self: center;
   font-size: 22px;
   z-index: 5;
- // margin-top: 100px;
+  @include media-1400{
+    font-size: 1.5vw;
+  }
+  @include media-992{
+    font-size: 15px;
+  }
   & p{
     margin: 5px;
   }
@@ -169,7 +246,9 @@ html {
 
 .weather-3day-wrapper{
   display: flex;
-  flex-wrap: nowrap;
+  @include media-450{
+    display: block;
+  }
 }
 
 .weather-3day-day{
@@ -183,20 +262,37 @@ html {
   display: inline-block;
   line-height: 45px;
   z-index: 5;
+  @include media-1400{
+    font-size: 5vw;
+  }
+  @include media-992{
+    font-size: 7vw;
+  }
+  @include media-450{
+    font-size: 50px;
+    margin-bottom: 50px;
+  }
 
 }
 
 .weather-3day{
-  position: relative;
   width: 33%;
-  & img{
-    //position: absolute;
-    margin: -20px;
-    width: 120px;
-    right: 25px;
-    top: 25px;
-    z-index: 4;
+  @include media-450{
+    width: 90%;
   }
+  & img{
+    margin: -30px -20px;
+    width: 50%;
+    @include media-700{
+      width: 40%;
+      margin: -30px -20px -10px -15px;
+    }
+    @include media-450{
+      width: 40%;
+      margin: -40px -20px;
+    }
+  }
+
 }
 
 .btn-switcher{
@@ -255,10 +351,14 @@ html {
   color: white;
   font-family: Montserrat;
   font-size: 14px;
+  @include media-450{
+    width: 160px !important;
+  }
   &::placeholder{
     color: white;
     font-size: 14px;
     font-family: Montserrat;
+
 
   }
 
@@ -284,28 +384,61 @@ html {
 .input-wrapper{
   position: relative;
   display: inline-block;
- // margin-left: 244px;
 }
 
 .search-col{
   text-align: right;
   padding-right: 90px !important;
+  @include media-992{
+    text-align: left;
+    padding-right: 0px !important;
+    padding-left: 90px !important;
+  }
+  @include media-700{
+    padding-left: 10px !important;
+  }
 }
 
 .map-col{
   text-align: right;
   padding-right: 90px !important;
+  @include media-992{
+    text-align: left;
+    padding-right: 0px !important;
+    padding-left: 90px !important;
+  }
+  @include media-700{
+    padding-left: 10px !important;
+  }
 }
 
 .mapboxgl-map{
   width: 375px;
   height: 398px;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  @include media-1400{
+    width: 300px;
+    height: 320px;
+  }
+  @include media-1200{
+    width: 250px;
+    height: 265px;
+  }
+  @include media-992{
+    width: 300px;
+    height: 320px;
+  }
 }
+
 
 .map-container{
   display: inline-block;
   margin-top: 130px;
   position: relative;
+  @include media-992{
+    margin-top: 30px;
+  }
 }
 
 .geo-position{
@@ -314,7 +447,7 @@ html {
   bottom: -50px;
   right: 0px;
   font-size: 20px;
-
+  text-align: right;
 }
 
 .mapboxgl-ctrl-bottom-right > .mapboxgl-ctrl-attrib.mapboxgl-compact:after {

@@ -27,15 +27,15 @@ class Map extends React.Component {
       [lat1, lat2,, lat3] = this.props.dms.lat.split(' ');
       [lng1, lng2,, lng3] = this.props.dms.lng.split(' ')
     }
-    if (this.props.dms && this.props.latitude) {
+    if (this.props.dms && this.props.latitude && !this.props.load) {
       console.log('-> this.props.latitude, this.props.longitude', this.props.latitude, this.props.longitude)
       return (
         <div className='map-container'>
           <Map1
             style="mapbox://styles/mapbox/streets-v8"
+            movingMethod='jumpTo'
             containerStyle={{
-              WebkitMaskImage: "url('img/Map.png')",
-              WebkitMaskSize: 'contain'
+              WebkitMaskImage: "url('img/Map.png')"
             }}
             center={[this.props.longitude, this.props.latitude]}
             zoom={[10]}

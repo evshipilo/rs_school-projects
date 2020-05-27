@@ -234,7 +234,7 @@ class App extends React.Component {
         <Preloader load={this.state.load}/>
         <div className='background-black'>
           <div className="row navigation">
-            <div className="col m6 s12 buttons">
+            <div className="col l6 m12 s12 buttons">
               <ChangeBackgroundButton changeBackground={this.setBackgroundImage}/>
               <ChangeLanguageButton setLanguage={this.setLanguage}
                 currentLanguage={this.state.currentLanguage}/>
@@ -242,7 +242,7 @@ class App extends React.Component {
                 tempToggle={this.tempToggle}
               />
             </div>
-            <div className="col m6 s12 search-col">
+            <div className="col l6 m12 s12 search-col">
               <SearchCity
                 currentLanguage={this.state.currentLanguage}
                 showNewCity={this.showNewCity}
@@ -250,7 +250,7 @@ class App extends React.Component {
             </div>
           </div>
           <div className='row'>
-            <div className='col m7 s12 left-column'>
+            <div className='col l8 m12 s12 left-column'>
               <LocationInfo
                 currentLocationName={this.state.currentLocationName}
                 load={this.state.load}
@@ -274,7 +274,7 @@ class App extends React.Component {
                 load={this.state.load}
               />
             </div>
-            <div className='col m5 s12 map-col'>
+            <div className='col l4 m12 s12 map-col'>
               <Map
                 currentLanguage={this.state.currentLanguage}
                 latitude={this.state.latitude}
