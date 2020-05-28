@@ -39,6 +39,20 @@ class SearchCity extends React.Component {
           onClick={() => this.props.showNewCity(this.state.cityName)}>
           {currArr[1]}
         </button>
+        { this.props.recognition ? (
+          <img className='speak-btn speak-on'
+            src="img/speak.png"
+            alt="speak"
+            onClick={() => this.props.recognitionToggle()}
+          />
+        ) : (
+          <img className='speak-btn'
+            src="img/speak.png"
+            alt="speak"
+            onClick={() => this.props.recognitionToggle()}
+          />
+        )
+        }
       </div>
     )
   }
@@ -46,7 +60,9 @@ class SearchCity extends React.Component {
 
 SearchCity.propTypes = {
   currentLanguage: PropTypes.string,
-  showNewCity: PropTypes.func
+  showNewCity: PropTypes.func,
+  recognition: PropTypes.bool,
+  recognitionToggle: PropTypes.func
 }
 
 export default SearchCity

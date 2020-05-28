@@ -28,7 +28,6 @@ class Map extends React.Component {
       [lng1, lng2,, lng3] = this.props.dms.lng.split(' ')
     }
     if (this.props.dms && this.props.latitude && !this.props.load) {
-      console.log('-> this.props.latitude, this.props.longitude', this.props.latitude, this.props.longitude)
       return (
         <div className='map-container'>
           <Map1

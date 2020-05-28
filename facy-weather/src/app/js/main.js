@@ -16,10 +16,15 @@ import Map from './module/map'
 
 /* eslint class-methods-use-this: ["error", { "exceptMethods": ["render"] }] */
 
+const SpeechRecognition = window.SpeechRecognition ||
+  window.webkitSpeechRecognition
+const recognition = new SpeechRecognition()
+
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      recognition: false,
       celsius: true,
       dayOfWeek: null,
       dayTime: null,
@@ -47,10 +52,41 @@ class App extends React.Component {
     this.getCurrentPositionFromName = this.getCurrentPositionFromName.bind(this)
     this.showNewCity = this.showNewCity.bind(this)
     this.onUnload = this.onUnload.bind(this)
+    this.speechToText = this.speechToText.bind(this)
+    this.stopRecognition = this.stopRecognition.bind(this)
+    this.recognitionToggle = this.recognitionToggle.bind(this)
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  speechToText() {
+    recognition.continuous = true
+    recognition.lang = 'en-US'
+    recognition.interimResults = false
+    recognition.maxAlternatives = 1
+
+    recognition.start()
+    recognition.onend = function () {
+      recognition.start()
+    }
+    recognition.onresult = function (event) {
+      console.log('-> event.results', event.results)
+    }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  stopRecognition() {
+    if (recognition) {
+      recognition.stop()
+      recognition.onend = function() { recognition.stop() }
+    }
   }
 
   tempToggle() {
     this.setState({ celsius: !this.state.celsius })
+  }
+
+  recognitionToggle() {
+    this.setState({ recognition: !this.state.recognition })
   }
 
   async getWeather3Days() {
@@ -60,7 +96,6 @@ class App extends React.Component {
         const res = await fetch(url)
         const data = await res.json()
         this.setState({ weather3day: data })
-        console.log('-> data', data)
       } catch (e) {
         console.log('cant fetch data from weatherbit.io', e)
       }
@@ -73,7 +108,6 @@ class App extends React.Component {
       try {
         const res = await fetch(url)
         const data = await res.json()
-        console.log('-> data', data)
         this.setState({ currentWeather: data })
       } catch (e) {
         console.log('cant fetch data from weatherbit.io', e)
@@ -139,7 +173,6 @@ class App extends React.Component {
       try {
         const res = await fetch(url)
         const data = await res.json()
-        console.log('-> data222222222222', data)
         let city
         if (data.results[0].components.village) city = data.results[0].components.village
         else if (data.results[0].components.town) city = data.results[0].components.town
@@ -147,7 +180,6 @@ class App extends React.Component {
         else city = data.results[0].components.county
         const { country } = data.results[0].components
         const location = `${city}, ${country}`
-        console.log('-> data.results[0].components', data.results[0].annotations.DMS)
         if (country) {
           this.setState({ currentLocationName: location })
           this.setState({ timeOffsetSec: data.results[0].annotations.timezone.offset_sec })
@@ -188,6 +220,7 @@ class App extends React.Component {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   getCurrentPosition() {
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(resolve, reject)
@@ -234,7 +267,7 @@ class App extends React.Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener()('beforeunload', this.onUnload)
+    window.removeEventListener('beforeunload', this.onUnload)
   }
 
   render() {
@@ -259,6 +292,8 @@ class App extends React.Component {
               <SearchCity
                 currentLanguage={this.state.currentLanguage}
                 showNewCity={this.showNewCity}
+                recognitionToggle={this.recognitionToggle}
+                recognition={this.state.recognition}
               />
             </div>
           </div>
