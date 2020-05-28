@@ -16,10 +16,6 @@ import Map from './module/map'
 
 /* eslint class-methods-use-this: ["error", { "exceptMethods": ["render"] }] */
 
-const SpeechRecognition = window.SpeechRecognition ||
-  window.webkitSpeechRecognition
-const recognition = new SpeechRecognition()
-
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -52,33 +48,7 @@ class App extends React.Component {
     this.getCurrentPositionFromName = this.getCurrentPositionFromName.bind(this)
     this.showNewCity = this.showNewCity.bind(this)
     this.onUnload = this.onUnload.bind(this)
-    this.speechToText = this.speechToText.bind(this)
-    this.stopRecognition = this.stopRecognition.bind(this)
     this.recognitionToggle = this.recognitionToggle.bind(this)
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  speechToText() {
-    recognition.continuous = true
-    recognition.lang = 'en-US'
-    recognition.interimResults = false
-    recognition.maxAlternatives = 1
-
-    recognition.start()
-    recognition.onend = function () {
-      recognition.start()
-    }
-    recognition.onresult = function (event) {
-      console.log('-> event.results', event.results)
-    }
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  stopRecognition() {
-    if (recognition) {
-      recognition.stop()
-      recognition.onend = function() { recognition.stop() }
-    }
   }
 
   tempToggle() {
