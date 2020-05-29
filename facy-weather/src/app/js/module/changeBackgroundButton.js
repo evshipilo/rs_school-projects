@@ -6,7 +6,7 @@ class ChangeBackgroundButton extends React.Component {
     return (
       <button
         style={{ backgroundImage: 'url("img/refresh.png")' }}
-        className='waves-effect waves-light btn-flat btn-change-wallpaper btn-change-wallpaper'
+        className='waves-effect waves-light btn-flat btn-change-wallpaper'
         onClick={() => this.props.changeBackground()}
       >
       </button>

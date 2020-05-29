@@ -44,9 +44,7 @@ class SearchCity extends React.Component {
         recognition.start()
       }
       recognition.onresult = (event) => {
-        // this.setState({ cityName: event.results[0][0].transcript })
         this.props.showNewCity(event.results[count][0].transcript)
-        console.log('-> event.results', count, event.results[count][0].transcript)
         count += 1
       }
     } else this.stopRecognition()

@@ -120,6 +120,24 @@ html {
   }
 }
 
+.btn-speaker{
+  height: 44px;
+  width: 44px;
+  border-radius: 5px;
+  transition: 0.3s;
+  background: rgba(174, 181, 185, 0.5) !important;
+  padding: 0;
+  margin-left: 10px;
+  & img{
+    width: 20px;
+    margin-top: 9px;
+  }
+  &:hover {
+    transition: 0.3s;
+    filter: invert(20%);
+  }
+}
+
 .btn-change-lang {
   height: 44px;
   width: 71px;

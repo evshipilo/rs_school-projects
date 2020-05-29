@@ -13,6 +13,7 @@ import TimeInfo from './module/timeInfo'
 import SwitcherCF from './module/switcherCF'
 import SearchCity from './module/searchCity'
 import Map from './module/map'
+import Speak from './module/speak'
 
 /* eslint class-methods-use-this: ["error", { "exceptMethods": ["render"] }] */
 
@@ -276,6 +277,11 @@ class App extends React.Component {
                 currentLanguage={this.state.currentLanguage}/>
               <SwitcherCF
                 tempToggle={this.tempToggle}
+                celsius={this.state.celsius}
+              />
+              <Speak
+                currentWeather={this.state.currentWeather}
+                currentLanguage={this.state.currentLanguage}
                 celsius={this.state.celsius}
               />
             </div>
