@@ -49,6 +49,7 @@ class App extends React.Component {
     this.showNewCity = this.showNewCity.bind(this)
     this.onUnload = this.onUnload.bind(this)
     this.recognitionToggle = this.recognitionToggle.bind(this)
+    this.containerRef = React.createRef()
   }
 
   tempToggle() {
@@ -128,7 +129,26 @@ class App extends React.Component {
       const blob = await resImg.blob()
       const image = new Image()
       image.src = URL.createObjectURL(blob)
-      this.setState({ backgroundImgSrc: image.src })
+      this.containerRef.current.animate([
+        { opacity: '1' },
+        { opacity: '0' }
+      ], {
+        duration: 1000,
+        easing: 'ease-in',
+        fill: 'forwards'
+      })
+      setTimeout(() => {
+        this.setState({ backgroundImgSrc: image.src })
+        this.containerRef.current.animate([
+          { opacity: '0' },
+          { opacity: '1' }
+        ], {
+          duration: 1000,
+          easing: 'ease-in',
+          fill: 'forwards'
+        })
+      }, 1000)
+      // this.setState({ backgroundImgSrc: image.src })
     } catch (e) {
       this.setState({ backgroundImgSrc: 'img/backgroundDefault.jpg' })
       console.log('cant fetch data from unsplash.com', e)
@@ -244,8 +264,9 @@ class App extends React.Component {
     return (
       <div
         className='container'
-        style={{ backgroundImage: `url(${this.state.backgroundImgSrc})` }}
       >
+        <div className='container-background' ref={this.containerRef}
+          style={{ backgroundImage: `url(${this.state.backgroundImgSrc})` }}> </div>
         <Preloader load={this.state.load}/>
         <div className='background-black'>
           <div className="row navigation">

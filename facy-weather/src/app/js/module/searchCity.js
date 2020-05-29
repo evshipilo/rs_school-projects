@@ -28,16 +28,19 @@ class SearchCity extends React.Component {
 
   // eslint-disable-next-line class-methods-use-this
   speechToText() {
-    const lang = this.props.currentLanguage === 'en' ? 'en-US' : 'ru-RU'
+    // const lang = this.props.currentLanguage === 'en' ? 'en-US' : 'ru-RU'
     if (!this.props.recognition) {
       recognition.continuous = true
-      recognition.lang = lang
+      // recognition.lang = this.props.currentLanguage === 'en' ? 'en-US' :
+      // 'ru-RU'
       recognition.interimResults = false
       recognition.maxAlternatives = 1
       let count = 0
 
       recognition.start()
       recognition.onend = () => {
+        // recognition.lang = this.props.currentLanguage === 'en' ? 'en-US' : 'ru-RU'
+        // console.log("-> ", recognition.lang)
         recognition.start()
       }
       recognition.onresult = (event) => {
