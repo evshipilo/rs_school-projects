@@ -35,7 +35,7 @@ class SearchCity extends React.Component {
       // 'ru-RU'
       recognition.interimResults = false
       recognition.maxAlternatives = 1
-      let count = 0
+     // let count = 0
 
       recognition.start()
       recognition.onend = () => {
@@ -44,8 +44,11 @@ class SearchCity extends React.Component {
         recognition.start()
       }
       recognition.onresult = (event) => {
-        this.props.showNewCity(event.results[count][0].transcript)
-        count += 1
+        this.props.showNewCity(event.results[0][0].transcript)
+        this.stopRecognition()
+        this.props.recognitionToggle()
+
+       // count += 1
       }
     } else this.stopRecognition()
   }
