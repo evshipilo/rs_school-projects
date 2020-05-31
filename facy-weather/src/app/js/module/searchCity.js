@@ -46,7 +46,6 @@ class SearchCity extends React.Component {
           event.results[0][0].transcript === 'погода' ||
           event.results[0][0].transcript === 'прогноз') {
           this.props.speakToggle(true)
-          console.log('-> event.results[0][0].transcript', event.results[0][0].transcript)
         } else this.props.showNewCity(event.results[0][0].transcript)
         this.stopRecognition()
         this.props.recognitionToggle()
