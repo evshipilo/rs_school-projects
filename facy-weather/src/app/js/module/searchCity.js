@@ -28,27 +28,28 @@ class SearchCity extends React.Component {
 
   // eslint-disable-next-line class-methods-use-this
   speechToText() {
-    // const lang = this.props.currentLanguage === 'en' ? 'en-US' : 'ru-RU'
     if (!this.props.recognition) {
       recognition.continuous = true
-      // recognition.lang = this.props.currentLanguage === 'en' ? 'en-US' :
-      // 'ru-RU'
+      recognition.lang = this.props.currentLanguage === 'en' ? 'en-US'
+        : 'ru-RU'
       recognition.interimResults = false
       recognition.maxAlternatives = 1
-     // let count = 0
+      // let count = 0
 
       recognition.start()
       recognition.onend = () => {
-        // recognition.lang = this.props.currentLanguage === 'en' ? 'en-US' : 'ru-RU'
-        // console.log("-> ", recognition.lang)
         recognition.start()
       }
       recognition.onresult = (event) => {
-        this.props.showNewCity(event.results[0][0].transcript)
+        if (event.results[0][0].transcript === 'weather' ||
+        event.results[0][0].transcript === 'forecast' ||
+          event.results[0][0].transcript === 'погода' ||
+          event.results[0][0].transcript === 'прогноз') {
+          this.props.speakToggle(true)
+          console.log('-> event.results[0][0].transcript', event.results[0][0].transcript)
+        } else this.props.showNewCity(event.results[0][0].transcript)
         this.stopRecognition()
         this.props.recognitionToggle()
-
-       // count += 1
       }
     } else this.stopRecognition()
   }
@@ -109,7 +110,8 @@ SearchCity.propTypes = {
   currentLanguage: PropTypes.string,
   showNewCity: PropTypes.func,
   recognition: PropTypes.bool,
-  recognitionToggle: PropTypes.func
+  recognitionToggle: PropTypes.func,
+  speakToggle: PropTypes.func
 }
 
 export default SearchCity

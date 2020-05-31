@@ -21,6 +21,7 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      speakSynth: false,
       recognition: false,
       celsius: true,
       dayOfWeek: null,
@@ -51,6 +52,11 @@ class App extends React.Component {
     this.onUnload = this.onUnload.bind(this)
     this.recognitionToggle = this.recognitionToggle.bind(this)
     this.containerRef = React.createRef()
+    this.speakToggle = this.speakToggle.bind(this)
+  }
+
+  speakToggle(val) {
+    this.setState({ speakSynth: val })
   }
 
   tempToggle() {
@@ -283,6 +289,8 @@ class App extends React.Component {
                 currentWeather={this.state.currentWeather}
                 currentLanguage={this.state.currentLanguage}
                 celsius={this.state.celsius}
+                speakSynth={this.state.speakSynth}
+                speakToggle={this.speakToggle}
               />
             </div>
             <div className="col l6 m12 s12 search-col">
@@ -291,6 +299,7 @@ class App extends React.Component {
                 showNewCity={this.showNewCity}
                 recognitionToggle={this.recognitionToggle}
                 recognition={this.state.recognition}
+                speakToggle={this.speakToggle}
               />
             </div>
           </div>

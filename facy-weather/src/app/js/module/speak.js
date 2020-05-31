@@ -59,7 +59,6 @@ class Speak extends React.Component {
 
   // eslint-disable-next-line class-methods-use-this
   textToSpeech() {
-    console.log('on')
     const utterThis = new SpeechSynthesisUtterance(this.createText())
     if (this.props.currentLanguage === 'en') utterThis.lang = 'en-US'
     if (this.props.currentLanguage === 'ru') utterThis.lang = 'ru-RU'
@@ -67,14 +66,12 @@ class Speak extends React.Component {
     this.setState({ speech: true })
     synth.speak(utterThis)
     utterThis.onend = () => {
-      console.log('end')
       this.setState({ speech: false })
     }
   }
 
   // eslint-disable-next-line class-methods-use-this
   stopSpeech() {
-    console.log('off')
     synth.cancel()
     this.setState({ speech: false })
   }
@@ -82,6 +79,13 @@ class Speak extends React.Component {
   speechHandle() {
     if (!this.state.speech) this.textToSpeech()
     else this.stopSpeech()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.speakSynth === true && prevProps.speakSynth === false) {
+      this.textToSpeech()
+      this.props.speakToggle(false)
+    }
   }
 
   render() {
@@ -109,7 +113,9 @@ class Speak extends React.Component {
 Speak.propTypes = {
   currentWeather: PropTypes.object,
   currentLanguage: PropTypes.string,
-  celsius: PropTypes.bool
+  celsius: PropTypes.bool,
+  speakSynth: PropTypes.bool,
+  speakToggle: PropTypes.func
 }
 
 export default Speak
