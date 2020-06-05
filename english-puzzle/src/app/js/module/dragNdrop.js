@@ -35,20 +35,6 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 
 const grid = 0
 
-// const getItemStyle = (isDragging, draggableStyle) => ({
-//   // some basic styles to make the items look a bit nicer
-//   userSelect: 'none',
-//   padding: grid,
-//   margin: `0 0 ${grid}px 0`,
-//   width: '10px',
-//
-//   // change background colour if dragging
-//   background: isDragging ? 'lightgreen' : 'grey',
-//
-//   // styles we need to apply on draggables
-//   ...draggableStyle
-// })
-
 const getListStyle = (isDraggingOver) => ({
   background: isDraggingOver ? 'lightblue' : 'lightgrey',
   display: 'flex',
@@ -87,21 +73,35 @@ class DragNdrop extends React.Component {
     this.getList = this.getList.bind(this)
     this.onDragEnd = this.onDragEnd.bind(this)
     this.getItemStyle = this.getItemStyle.bind(this)
+    this.clickHandler = this.clickHandler.bind(this)
   }
+
+  clickHandler(index) {
+    console.log('-> index', index)
+    const sourceClone = Array.from(this.state.items)
+    const destClone = Array.from(this.state.selected)
+    const [removed] = sourceClone.splice(index, 1)
+    destClone.splice(destClone.length, 0, removed)
+    this.setState({ items: sourceClone })
+    this.setState({ selected: destClone })
+
+  }
+
+  getList(id) { return this.state[this.state[id]] }
 
   getItemStyle(item, isDragging, draggableStyle) {
     const curWidth = item.content.length * 10
     return {
+      color: 'white',
+      textAlign: 'center',
       userSelect: 'none',
       padding: '0',
       margin: '0',
       width: `${curWidth}px`,
-      background: isDragging ? 'lightgreen' : 'grey',
+      background: isDragging ? 'green' : 'blue',
       ...draggableStyle
     }
   }
-
-  getList(id) { return this.state[this.state[id]] }
 
   onDragEnd(result) {
     const { source, destination } = result
@@ -121,15 +121,15 @@ class DragNdrop extends React.Component {
       }
       this.setState(state)
     } else {
-      const result = move(
+      const result1 = move(
         this.getList(source.droppableId),
         this.getList(destination.droppableId),
         source,
         destination
       )
       this.setState({
-        items: result.droppable,
-        selected: result.droppable2
+        items: result1.droppable,
+        selected: result1.droppable2
       })
     }
   }
@@ -148,7 +148,7 @@ class DragNdrop extends React.Component {
                   draggableId={item.id}
                   index={index}>
                   {(provided1, snapshot1) => (
-                    <div
+                    <div onClick={() => this.clickHandler(index)}
                       ref={provided1.innerRef}
                       {...provided1.draggableProps}
                       {...provided1.dragHandleProps}
