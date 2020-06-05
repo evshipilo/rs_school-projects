@@ -50,29 +50,59 @@ class DragNdrop extends React.Component {
       items: [
         {
           id: 'item-0',
-          content: 'I'
+          content: 'The'
         },
         {
           id: 'item-1',
-          content: 'love'
+          content: 'students'
         },
         {
           id: 'item-2',
-          content: 'you'
+          content: 'agree'
         },
         {
           id: 'item-3',
+          content: 'they'
+        },
+        {
+          id: 'item-4',
+          content: 'have'
+        },
+        {
+          id: 'item-5',
+          content: 'too'
+        },
+        {
+          id: 'item-6',
           content: 'much'
+        },
+        {
+          id: 'item-7',
+          content: 'homework'
         }
       ],
       selected: [],
       droppable: 'items',
-      droppable2: 'selected'
+      droppable2: 'selected',
+      width: 0
     }
     this.getList = this.getList.bind(this)
     this.onDragEnd = this.onDragEnd.bind(this)
     this.getItemStyle = this.getItemStyle.bind(this)
     this.clickHandler = this.clickHandler.bind(this)
+    this.setWidth = this.setWidth.bind(this)
+  }
+
+  setWidth() {
+    this.setState({
+      width: window.getComputedStyle(document.querySelector('.drop2'))
+        .width.split('px')[0]
+    })
+  }
+
+  componentDidMount() {
+    this.setWidth()
+    window.addEventListener('resize', this.setWidth)
   }
 
   clickHandler(index) {
@@ -96,7 +126,7 @@ class DragNdrop extends React.Component {
       padding: '0',
       margin: '0',
       width: `${curWidth}px`,
-      background: isDragging ? 'green' : 'blue',
+      background: isDragging ? 'lightgreen' : 'blue',
       ...draggableStyle
     }
   }
