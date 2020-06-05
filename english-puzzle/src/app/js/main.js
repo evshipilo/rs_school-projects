@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import M from 'materialize-css/dist/js/materialize.min'
 import '../css/style.scss'
 import DragNdrop from './module/dragNdrop'
+import GameField from './module/gameField'
 
 /* eslint class-methods-use-this: [0] */
 
@@ -21,7 +22,14 @@ class App extends React.Component {
   render() {
     return (
       <div className='container'>
-        <DragNdrop/>
+        <div className='section'>
+          <div className="row">
+            <GameField>
+              <DragNdrop/>
+            </GameField>
+
+          </div>
+        </div>
       </div>
 
     )

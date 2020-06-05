@@ -10,9 +10,20 @@ html {
 }
 
 .drop{
-  margin: 0 auto 200px auto;
+  //margin: 0 auto 200px auto;
+  position: absolute;
+  top: 420px;
+
 }
 
 .drop2{
-  margin: 0 auto;
+  position: absolute;
+  top: 40px;
+  //margin: 0 auto;
+}
+
+.card{
+  max-width: 800px;
+  height: 400px;
+  position: relative;
 }

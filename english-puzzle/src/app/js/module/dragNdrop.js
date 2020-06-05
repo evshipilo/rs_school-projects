@@ -2,10 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
-const getItems = (count, offset = 0) => Array.from({ length: count }, (v, k) => k).map((k) => ({
-  id: `item-${k + offset}`,
-  content: `item ${k + offset}`
-}))
+// const getItems = (count, offset = 0) => Array.from({ length: count }, (v, k) => k).map((k) => ({
+//   id: `item-${k + offset}`,
+//   content: `item ${k + offset}`
+// }))
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -16,9 +16,6 @@ const reorder = (list, startIndex, endIndex) => {
   return result
 }
 
-/**
- * Moves an item from one list to another list.
- */
 const move = (source, destination, droppableSource, droppableDestination) => {
   const sourceClone = Array.from(source)
   const destClone = Array.from(destination)
@@ -41,8 +38,10 @@ const getListStyle = (isDraggingOver) => ({
   height: '40px',
   padding: grid,
   overflow: 'auto',
-  width: '400px'
+  width: '100%'
 })
+
+/* eslint class-methods-use-this: [0] */
 
 class DragNdrop extends React.Component {
   constructor(props) {
@@ -84,7 +83,6 @@ class DragNdrop extends React.Component {
     destClone.splice(destClone.length, 0, removed)
     this.setState({ items: sourceClone })
     this.setState({ selected: destClone })
-
   }
 
   getList(id) { return this.state[this.state[id]] }
