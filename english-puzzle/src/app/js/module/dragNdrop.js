@@ -35,19 +35,19 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 
 const grid = 0
 
-const getItemStyle = (isDragging, draggableStyle) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: 'none',
-  padding: grid,
-  margin: `0 0 ${grid}px 0`,
-  width: '10px',
-
-  // change background colour if dragging
-  background: isDragging ? 'lightgreen' : 'grey',
-
-  // styles we need to apply on draggables
-  ...draggableStyle
-})
+// const getItemStyle = (isDragging, draggableStyle) => ({
+//   // some basic styles to make the items look a bit nicer
+//   userSelect: 'none',
+//   padding: grid,
+//   margin: `0 0 ${grid}px 0`,
+//   width: '10px',
+//
+//   // change background colour if dragging
+//   background: isDragging ? 'lightgreen' : 'grey',
+//
+//   // styles we need to apply on draggables
+//   ...draggableStyle
+// })
 
 const getListStyle = (isDraggingOver) => ({
   background: isDraggingOver ? 'lightblue' : 'lightgrey',
@@ -62,48 +62,63 @@ class DragNdrop extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      items: getItems(8),
-      selected: getItems(0),
+      items: [
+        {
+          id: 'item-0',
+          content: 'I'
+        },
+        {
+          id: 'item-1',
+          content: 'love'
+        },
+        {
+          id: 'item-2',
+          content: 'you'
+        },
+        {
+          id: 'item-3',
+          content: 'much'
+        }
+      ],
+      selected: [],
       droppable: 'items',
       droppable2: 'selected'
     }
     this.getList = this.getList.bind(this)
     this.onDragEnd = this.onDragEnd.bind(this)
+    this.getItemStyle = this.getItemStyle.bind(this)
   }
 
-  /**
-   * A semi-generic way to handle multiple lists. Matches
-   * the IDs of the droppable container to the names of the
-   * source arrays stored in the state.
-   */
-  // id2List = {
-  //   droppable: 'items',
-  //   droppable2: 'selected'
-  // }
+  getItemStyle(item, isDragging, draggableStyle) {
+    const curWidth = item.content.length * 10
+    return {
+      userSelect: 'none',
+      padding: '0',
+      margin: '0',
+      width: `${curWidth}px`,
+      background: isDragging ? 'lightgreen' : 'grey',
+      ...draggableStyle
+    }
+  }
 
   getList(id) { return this.state[this.state[id]] }
 
   onDragEnd(result) {
     const { source, destination } = result
-
     // dropped outside the list
     if (!destination) {
       return
     }
-
     if (source.droppableId === destination.droppableId) {
       const items = reorder(
         this.getList(source.droppableId),
         source.index,
         destination.index
       )
-
       let state = { items }
-
       if (source.droppableId === 'droppable2') {
         state = { selected: items }
       }
-
       this.setState(state)
     } else {
       const result = move(
@@ -112,7 +127,6 @@ class DragNdrop extends React.Component {
         source,
         destination
       )
-
       this.setState({
         items: result.droppable,
         selected: result.droppable2
@@ -120,14 +134,12 @@ class DragNdrop extends React.Component {
     }
   }
 
-  // Normally you would want to split things out into separate components.
-  // But in this example everything is just done in one place for simplicity
   render() {
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
         <Droppable droppableId="droppable" direction="horizontal">
           {(provided, snapshot) => (
-            <div
+            <div className='drop'
               ref={provided.innerRef}
               style={getListStyle(snapshot.isDraggingOver)}>
               {this.state.items.map((item, index) => (
@@ -135,14 +147,15 @@ class DragNdrop extends React.Component {
                   key={item.id}
                   draggableId={item.id}
                   index={index}>
-                  {(provided, snapshot) => (
+                  {(provided1, snapshot1) => (
                     <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      style={getItemStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style
+                      ref={provided1.innerRef}
+                      {...provided1.draggableProps}
+                      {...provided1.dragHandleProps}
+                      style={this.getItemStyle(
+                        item,
+                        snapshot1.isDragging,
+                        provided1.draggableProps.style
                       )}>
                       {item.content}
                     </div>
@@ -155,7 +168,7 @@ class DragNdrop extends React.Component {
         </Droppable>
         <Droppable droppableId="droppable2" direction="horizontal">
           {(provided, snapshot) => (
-            <div
+            <div className='drop2'
               ref={provided.innerRef}
               style={getListStyle(snapshot.isDraggingOver)}>
               {this.state.selected.map((item, index) => (
@@ -163,14 +176,15 @@ class DragNdrop extends React.Component {
                   key={item.id}
                   draggableId={item.id}
                   index={index}>
-                  {(provided, snapshot) => (
+                  {(provided1, snapshot1) => (
                     <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      style={getItemStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style
+                      ref={provided1.innerRef}
+                      {...provided1.draggableProps}
+                      {...provided1.dragHandleProps}
+                      style={this.getItemStyle(
+                        item,
+                        snapshot1.isDragging,
+                        provided1.draggableProps.style
                       )}>
                       {item.content}
                     </div>

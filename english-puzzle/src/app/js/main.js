@@ -20,7 +20,10 @@ class App extends React.Component {
 
   render() {
     return (
-      <DragNdrop/>
+      <div className='container'>
+        <DragNdrop/>
+      </div>
+
     )
   }
 }
