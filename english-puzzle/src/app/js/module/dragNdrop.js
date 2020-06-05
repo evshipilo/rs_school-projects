@@ -91,6 +91,19 @@ class DragNdrop extends React.Component {
     this.getItemStyle = this.getItemStyle.bind(this)
     this.clickHandler = this.clickHandler.bind(this)
     this.setWidth = this.setWidth.bind(this)
+    this.getListStyle2 = this.getListStyle2.bind(this)
+  }
+
+  getListStyle2(isDraggingOver) {
+    return {
+      background: isDraggingOver ? 'lightblue' : 'lightgrey',
+      display: 'flex',
+      height: '40px',
+      padding: grid,
+      overflow: 'auto',
+      width: '100%',
+      top: `${this.props.numOfSentence * 40}px`
+    }
   }
 
   setWidth() {
@@ -103,6 +116,12 @@ class DragNdrop extends React.Component {
   componentDidMount() {
     this.setWidth()
     window.addEventListener('resize', this.setWidth)
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.wordsData !== prevProps.wordsData) {
+
+    }
   }
 
   clickHandler(index) {
@@ -118,8 +137,12 @@ class DragNdrop extends React.Component {
   getList(id) { return this.state[this.state[id]] }
 
   getItemStyle(item, isDragging, draggableStyle) {
-    const curWidth = item.content.length * 10
+    const fullLength = 39
+    const widthToOneChar = this.state.width / fullLength
+    const curWidth = item.content.length * widthToOneChar
     return {
+      boxSizing: 'border-box',
+      outline: '1px solid white',
       color: 'white',
       textAlign: 'center',
       userSelect: 'none',
@@ -133,7 +156,6 @@ class DragNdrop extends React.Component {
 
   onDragEnd(result) {
     const { source, destination } = result
-    // dropped outside the list
     if (!destination) {
       return
     }
@@ -198,7 +220,7 @@ class DragNdrop extends React.Component {
           {(provided, snapshot) => (
             <div className='drop2'
               ref={provided.innerRef}
-              style={getListStyle(snapshot.isDraggingOver)}>
+              style={this.getListStyle2(snapshot.isDraggingOver)}>
               {this.state.selected.map((item, index) => (
                 <Draggable
                   key={item.id}
@@ -226,6 +248,11 @@ class DragNdrop extends React.Component {
       </DragDropContext>
     )
   }
+}
+
+DragNdrop.propTypes = {
+  numOfSentence: PropTypes.number,
+  wordsData: PropTypes.Array
 }
 
 export default DragNdrop
