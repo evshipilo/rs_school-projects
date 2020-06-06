@@ -23,6 +23,7 @@ html {
   max-width: 800px;
   height: 400px;
   position: relative;
+  margin: 0 auto;
 }
 
 .set-level{
@@ -39,4 +40,8 @@ html {
   position: absolute;
   top: -20px;
   font-size: 1.5rem;
+}
+
+.go{
+  margin-left: 10px;
 }

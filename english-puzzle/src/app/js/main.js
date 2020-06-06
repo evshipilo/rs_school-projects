@@ -21,6 +21,7 @@ class App extends React.Component {
     this.setPageNumber = this.setPageNumber.bind(this)
   }
 
+
   async getWordsData(difficulty, pageNumber) {
     try {
       const url = `https://afternoon-falls-25894.herokuapp.com/words?page=${pageNumber}&group=${difficulty}`
@@ -68,6 +69,7 @@ class App extends React.Component {
                 setPageNumber={this.setPageNumber}
                 difficulty={this.state.difficulty}
                 pageNumber={this.state.pageNumber}
+                getWordsData={this.getWordsData}
               />
             </div>
             <div className="col m6 s12 set-prompt">
