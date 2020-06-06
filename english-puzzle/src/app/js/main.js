@@ -4,6 +4,7 @@ import M from 'materialize-css/dist/js/materialize.min'
 import '../css/style.scss'
 import DragNdrop from './module/dragNdrop'
 import GameField from './module/gameField'
+import SetLevel from './module/setLevel'
 
 /* eslint class-methods-use-this: [0] */
 
@@ -16,6 +17,8 @@ class App extends React.Component {
       pageNumber: 0
     }
     this.getWordsData = this.getWordsData.bind(this)
+    this.setDifficulty = this.setDifficulty.bind(this)
+    this.setPageNumber = this.setPageNumber.bind(this)
   }
 
   async getWordsData(difficulty, pageNumber) {
@@ -41,6 +44,14 @@ class App extends React.Component {
     }
   }
 
+  setDifficulty(diff) {
+    this.setState({ difficulty: diff })
+  }
+
+  setPageNumber(page) {
+    this.setState({ pageNumber: page })
+  }
+
   async componentDidMount() {
     M.AutoInit()
     await this.getWordsData(this.state.difficulty, this.state.pageNumber)
@@ -49,6 +60,33 @@ class App extends React.Component {
   render() {
     return (
       <div className='container'>
+        <div className="section">
+          <div className="row">
+            <div className="col m6 s12 set-level">
+              <SetLevel
+                setDifficulty={this.setDifficulty}
+                setPageNumber={this.setPageNumber}
+                difficulty={this.state.difficulty}
+                pageNumber={this.state.pageNumber}
+              />
+            </div>
+            <div className="col m6 s12 set-prompt">
+
+            </div>
+
+          </div>
+        </div>
+        <div className="section">
+          <div className="row">
+            <div className="col s12 audio">
+
+            </div>
+            <div className="col s12 translation">
+
+            </div>
+
+          </div>
+        </div>
         <div className='section'>
           <div className="row">
             <GameField>

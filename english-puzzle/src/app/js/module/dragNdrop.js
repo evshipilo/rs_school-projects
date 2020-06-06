@@ -74,7 +74,7 @@ class DragNdrop extends React.Component {
       padding: grid,
       overflow: 'auto',
       width: '100%',
-      top: `${this.props.numOfSentence * 40}px`
+      top: `${this.state.numOfSentence * 40}px`
     }
   }
 
