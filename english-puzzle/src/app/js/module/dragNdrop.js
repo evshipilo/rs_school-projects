@@ -112,7 +112,7 @@ class DragNdrop extends React.Component {
     window.addEventListener('resize', this.setWidth)
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (this.props.wordsData !== prevProps.wordsData) {
       const sent = this.props.wordsData.map((it) => it.textExample)
       this.setState({ sentences: sent })
@@ -121,6 +121,10 @@ class DragNdrop extends React.Component {
       this.setState({ items: this.setItems(sent, 0) })
       this.setState({ selected: [] })
     }
+    if (!this.state.items.length && this.state.selected.length &&
+    !this.props.allInSelected) this.props.setAllInSelected(true)
+    if (this.state.items.length &&
+      this.props.allInSelected) this.props.setAllInSelected(false)
   }
 
   clickHandler(index) {
@@ -250,7 +254,9 @@ class DragNdrop extends React.Component {
 }
 
 DragNdrop.propTypes = {
-  wordsData: PropTypes.object
+  wordsData: PropTypes.object,
+  setAllInSelected: PropTypes.function,
+  allInSelected: PropTypes.bool
 }
 
 export default DragNdrop

@@ -33,7 +33,7 @@ class SetLevel extends React.Component {
             <option value='9' >10</option>
           </select>
         </div>
-        <button className='btn-small go'
+        <button className='btn-small waves-effect go'
           onClick={() => this.props.getWordsData(this.props.difficulty, this.props.pageNumber)}
         >go!</button>
       </div>

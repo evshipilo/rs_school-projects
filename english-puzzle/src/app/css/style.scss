@@ -16,7 +16,10 @@ html {
 
 .drop2{
   position: absolute;
- // top: 40px;
+}
+
+.container{
+  padding-top: 10px;
 }
 
 .card{
@@ -44,4 +47,12 @@ html {
 
 .go{
   margin-left: 10px;
+}
+
+.bottom-buttons{
+  margin-top: 70px;
+}
+
+.bottom-buttons-wrapper{
+  height: 35px;
 }
