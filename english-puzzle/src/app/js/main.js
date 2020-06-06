@@ -11,7 +11,6 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      numOfSentence: 0,
       wordsData: null,
       difficulty: 0,
       pageNumber: 0
@@ -54,7 +53,6 @@ class App extends React.Component {
           <div className="row">
             <GameField>
               <DragNdrop
-                numOfSentence={this.state.numOfSentence}
                 wordsData={this.state.wordsData}
               />
             </GameField>

@@ -47,44 +47,14 @@ class DragNdrop extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      items: [
-        {
-          id: 'item-0',
-          content: 'The'
-        },
-        {
-          id: 'item-1',
-          content: 'students'
-        },
-        {
-          id: 'item-2',
-          content: 'agree'
-        },
-        {
-          id: 'item-3',
-          content: 'they'
-        },
-        {
-          id: 'item-4',
-          content: 'have'
-        },
-        {
-          id: 'item-5',
-          content: 'too'
-        },
-        {
-          id: 'item-6',
-          content: 'much'
-        },
-        {
-          id: 'item-7',
-          content: 'homework'
-        }
-      ],
+      items: [],
       selected: [],
       droppable: 'items',
       droppable2: 'selected',
-      width: 0
+      width: 0,
+      sentences: null,
+      numOfSentence: 0,
+      numOfChars: 0
     }
     this.getList = this.getList.bind(this)
     this.onDragEnd = this.onDragEnd.bind(this)
@@ -92,6 +62,8 @@ class DragNdrop extends React.Component {
     this.clickHandler = this.clickHandler.bind(this)
     this.setWidth = this.setWidth.bind(this)
     this.getListStyle2 = this.getListStyle2.bind(this)
+    this.setItems = this.setItems.bind(this)
+    this.setNumOfChars = this.setNumOfChars.bind(this)
   }
 
   getListStyle2(isDraggingOver) {
@@ -113,6 +85,28 @@ class DragNdrop extends React.Component {
     })
   }
 
+  setItems(sentence, number) {
+    if (sentence) {
+      const sentArr = sentence[number].split(' ')
+      const items = sentArr.map((item, num) => ({
+        id: `item-${num}`,
+        content: `${item}`
+      }))
+      items.sort(() => (Math.random() - 0.5))
+      console.log('-> items', items)
+      return items
+    }
+    return null
+  }
+
+  setNumOfChars(sentence, number) {
+    if (sentence) {
+      return sentence[number]
+        .replace(/\s/g, '').length
+    }
+    return null
+  }
+
   componentDidMount() {
     this.setWidth()
     window.addEventListener('resize', this.setWidth)
@@ -120,12 +114,18 @@ class DragNdrop extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.wordsData !== prevProps.wordsData) {
-
+      const sent = this.props.wordsData.map((it) => it.textExample)
+      this.setState({ sentences: sent })
+      this.setState({ numOfSentence: 0 })
+      this.setState({ numOfChars: this.setNumOfChars(sent, 0) })
+      this.setState({ items: this.setItems(sent, 0) })
+      this.setState({ selected: [] })
     }
   }
 
   clickHandler(index) {
-    console.log('-> index', index)
+    console.log('-> this.state.sentences', this.state.sentences)
+    console.log('-> this.state.items', this.state.items)
     const sourceClone = Array.from(this.state.items)
     const destClone = Array.from(this.state.selected)
     const [removed] = sourceClone.splice(index, 1)
@@ -137,8 +137,7 @@ class DragNdrop extends React.Component {
   getList(id) { return this.state[this.state[id]] }
 
   getItemStyle(item, isDragging, draggableStyle) {
-    const fullLength = 39
-    const widthToOneChar = this.state.width / fullLength
+    const widthToOneChar = this.state.width / this.state.numOfChars
     const curWidth = item.content.length * widthToOneChar
     return {
       boxSizing: 'border-box',
@@ -251,8 +250,7 @@ class DragNdrop extends React.Component {
 }
 
 DragNdrop.propTypes = {
-  numOfSentence: PropTypes.number,
-  wordsData: PropTypes.Array
+  wordsData: PropTypes.object
 }
 
 export default DragNdrop
