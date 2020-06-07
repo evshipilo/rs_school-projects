@@ -17,7 +17,8 @@ class App extends React.Component {
       difficulty: 0,
       pageNumber: 0,
       allInSelected: false,
-      check: false
+      check: false,
+      win: false
 
     }
     this.getWordsData = this.getWordsData.bind(this)
@@ -25,6 +26,7 @@ class App extends React.Component {
     this.setPageNumber = this.setPageNumber.bind(this)
     this.setAllInSelected = this.setAllInSelected.bind(this)
     this.setCheck = this.setCheck.bind(this)
+    this.setWin = this.setWin.bind(this)
   }
 
   async getWordsData(difficulty, pageNumber) {
@@ -48,6 +50,10 @@ class App extends React.Component {
       console.log('-> e', e)
       this.setState({ wordsData: null })
     }
+  }
+
+  setWin(bool) {
+    this.setState({ win: bool })
   }
 
   setDifficulty(diff) {
@@ -105,6 +111,8 @@ class App extends React.Component {
               allInSelected={this.state.allInSelected}
               setCheck={this.setCheck}
               check={this.state.check}
+              win={this.state.win}
+              setWin={this.setWin}
             />
           </GameField>
         </div>

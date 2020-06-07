@@ -10,6 +10,9 @@ class BottomButtons extends React.Component {
           onClick={() => this.props.setCheck(true)}
         >check</button>
         }
+        <button className='btn-small waves-effect waves-light hoverable orange check'
+          onClick={() => this.props.setCheck(true)}
+        >i dont know</button>
       </div>
 
     )

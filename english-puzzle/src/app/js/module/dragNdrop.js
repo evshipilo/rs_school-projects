@@ -66,10 +66,15 @@ class DragNdrop extends React.Component {
     this.setNumOfChars = this.setNumOfChars.bind(this)
     this.checkResult = this.checkResult.bind(this)
     this.getItemStyleSelected = this.getItemStyleSelected.bind(this)
+    this.checkResult = this.checkResult.bind(this)
   }
 
   checkResult() {
-
+    let result = true
+    this.state.selected.forEach((item, index) => {
+      if (+item.id !== index) result = false
+    })
+    return result
   }
 
   getListStyle2(isDraggingOver) {
@@ -134,6 +139,11 @@ class DragNdrop extends React.Component {
 
     if (!prevProps.check && this.props.check) {
       this.checkResult()
+    }
+    if (!this.state.items.length && this.state.selected.length &&
+      this.props.check && this.checkResult() && !this.props.win) {
+      this.props.setWin(true)
+      console.log('-')
     }
   }
 
@@ -293,7 +303,9 @@ DragNdrop.propTypes = {
   setAllInSelected: PropTypes.function,
   allInSelected: PropTypes.bool,
   check: PropTypes.bool,
-  setCheck: PropTypes.func
+  setCheck: PropTypes.func,
+  setWin: PropTypes.func,
+  win: PropTypes.bool
 }
 
 export default DragNdrop
