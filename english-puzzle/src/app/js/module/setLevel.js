@@ -42,9 +42,9 @@ class SetLevel extends React.Component {
 }
 
 SetLevel.propTypes = {
-  setDifficulty: PropTypes.function,
-  setPageNumber: PropTypes.function,
-  getWordsData: PropTypes.function,
+  setDifficulty: PropTypes.func,
+  setPageNumber: PropTypes.func,
+  getWordsData: PropTypes.func,
   difficulty: PropTypes.number,
   pageNumber: PropTypes.number
 }

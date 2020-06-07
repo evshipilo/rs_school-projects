@@ -67,6 +67,19 @@ class DragNdrop extends React.Component {
     this.checkResult = this.checkResult.bind(this)
     this.getItemStyleSelected = this.getItemStyleSelected.bind(this)
     this.checkResult = this.checkResult.bind(this)
+    this.setRightSentence = this.setRightSentence.bind(this)
+  }
+
+  setRightSentence(number) {
+    if (this.state.sentences) {
+      const sentArr = this.state.sentences[number].split(' ')
+      const selected = sentArr.map((item, num) => ({
+        id: `${num}`,
+        content: `${item}`
+      }))
+      return selected
+    }
+    return null
   }
 
   checkResult() {
@@ -143,7 +156,20 @@ class DragNdrop extends React.Component {
     if (!this.state.items.length && this.state.selected.length &&
       this.props.check && this.checkResult() && !this.props.win) {
       this.props.setWin(true)
-      console.log('-')
+      console.log('-------')
+    }
+    if (!prevProps.dontKnow && this.props.dontKnow) {
+      this.setState({ items: [] })
+      this.setState({ selected: this.setRightSentence(this.state.numOfSentence) })
+    }
+    if (!prevProps.continuer && this.props.continuer) {
+      this.props.setContinue(false)
+      this.props.setAllInSelected(false)
+      this.props.setWin(false)
+      this.setState({ numOfChars: this.setNumOfChars(this.state.sentences, this.state.numOfSentence + 1) })
+      this.setState({ items: this.setItems(this.state.sentences, this.state.numOfSentence + 1) })
+      this.setState({ selected: [] })
+      this.setState({ numOfSentence: this.state.numOfSentence + 1 })
     }
   }
 
@@ -299,13 +325,16 @@ class DragNdrop extends React.Component {
 }
 
 DragNdrop.propTypes = {
-  wordsData: PropTypes.object,
-  setAllInSelected: PropTypes.function,
+  wordsData: PropTypes.array,
+  setAllInSelected: PropTypes.func,
   allInSelected: PropTypes.bool,
   check: PropTypes.bool,
   setCheck: PropTypes.func,
   setWin: PropTypes.func,
-  win: PropTypes.bool
+  win: PropTypes.bool,
+  dontKnow: PropTypes.bool,
+  continuer: PropTypes.bool,
+  setContinue: PropTypes.func
 }
 
 export default DragNdrop

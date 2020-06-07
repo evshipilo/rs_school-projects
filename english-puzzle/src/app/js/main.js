@@ -18,7 +18,9 @@ class App extends React.Component {
       pageNumber: 0,
       allInSelected: false,
       check: false,
-      win: false
+      win: false,
+      dontKnow: false,
+      continuer: false
 
     }
     this.getWordsData = this.getWordsData.bind(this)
@@ -27,6 +29,8 @@ class App extends React.Component {
     this.setAllInSelected = this.setAllInSelected.bind(this)
     this.setCheck = this.setCheck.bind(this)
     this.setWin = this.setWin.bind(this)
+    this.setDontKnow = this.setDontKnow.bind(this)
+    this.setContinue = this.setContinue.bind(this)
   }
 
   async getWordsData(difficulty, pageNumber) {
@@ -52,8 +56,16 @@ class App extends React.Component {
     }
   }
 
+  setContinue(bool) {
+    this.setState({ continuer: bool })
+  }
+
   setWin(bool) {
     this.setState({ win: bool })
+  }
+
+  setDontKnow(bool) {
+    this.setState({ dontKnow: bool })
   }
 
   setDifficulty(diff) {
@@ -113,6 +125,9 @@ class App extends React.Component {
               check={this.state.check}
               win={this.state.win}
               setWin={this.setWin}
+              dontKnow={this.state.dontKnow}
+              continuer={this.state.continuer}
+              setContinue={this.setContinue}
             />
           </GameField>
         </div>
@@ -120,6 +135,9 @@ class App extends React.Component {
           <BottomButtons
             allInSelected={this.state.allInSelected}
             setCheck={this.setCheck}
+            setDontKnow={this.setDontKnow}
+            win={this.state.win}
+            setContinue={this.setContinue}
           />
         </div>
       </div>
