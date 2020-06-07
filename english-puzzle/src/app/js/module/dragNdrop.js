@@ -83,11 +83,14 @@ class DragNdrop extends React.Component {
   }
 
   checkResult() {
-    let result = true
-    this.state.selected.forEach((item, index) => {
-      if (+item.id !== index) result = false
-    })
-    return result
+    const sentenceArr = this.state.selected.map((it) => it.content)
+    if (sentenceArr.join(' ') === this.state.sentences[this.state.numOfSentence]) return true
+    return false
+    // let result = true
+    // this.state.selected.forEach((item, index) => {
+    //   if (+item.id !== index) result = false
+    // })
+    // return result
   }
 
   getListStyle2(isDraggingOver) {
@@ -210,6 +213,13 @@ class DragNdrop extends React.Component {
     if (!check) color = 'blue'
     else {
       color = index === +item.id ? 'green' : 'red'
+      const sentenceArr = this.state.sentences[this.state.numOfSentence].split(' ')
+      if (sentenceArr[index] === item.content) color = 'green'
+      // sentenceArr.forEach((it, num) => {
+      //   if (+item.id !== num && item.content === it) color = 'green'
+      // })
+      // const sentenseArr = this.state.selected.map((it) => it.content)
+      // if (sentenseArr.join(' ') === this.state.sentences[this.state.numOfSentence]) color = 'green'
     }
     return {
       boxSizing: 'border-box',
