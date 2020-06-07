@@ -6,7 +6,9 @@ class BottomButtons extends React.Component {
     return (
       <div className='bottom-buttons-wrapper'>
         {this.props.allInSelected &&
-        <button className='btn-small waves-effect waves-light hoverable red'>check</button>
+        <button className='btn-small waves-effect waves-light hoverable red check'
+          onClick={() => this.props.setCheck(true)}
+        >check</button>
         }
       </div>
 
@@ -15,7 +17,8 @@ class BottomButtons extends React.Component {
 }
 
 BottomButtons.propTypes = {
-  allInSelected: PropTypes.bool
+  allInSelected: PropTypes.bool,
+  setCheck: PropTypes.func
 }
 
 export default BottomButtons

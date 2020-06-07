@@ -16,13 +16,15 @@ class App extends React.Component {
       wordsData: null,
       difficulty: 0,
       pageNumber: 0,
-      allInSelected: false
+      allInSelected: false,
+      check: false
 
     }
     this.getWordsData = this.getWordsData.bind(this)
     this.setDifficulty = this.setDifficulty.bind(this)
     this.setPageNumber = this.setPageNumber.bind(this)
     this.setAllInSelected = this.setAllInSelected.bind(this)
+    this.setCheck = this.setCheck.bind(this)
   }
 
   async getWordsData(difficulty, pageNumber) {
@@ -58,6 +60,10 @@ class App extends React.Component {
 
   setAllInSelected(bool) {
     this.setState({ allInSelected: bool })
+  }
+
+  setCheck(bool) {
+    this.setState({ check: bool })
   }
 
   async componentDidMount() {
@@ -97,12 +103,15 @@ class App extends React.Component {
               wordsData={this.state.wordsData}
               setAllInSelected={this.setAllInSelected}
               allInSelected={this.state.allInSelected}
+              setCheck={this.setCheck}
+              check={this.state.check}
             />
           </GameField>
         </div>
         <div className="row center bottom-buttons">
           <BottomButtons
             allInSelected={this.state.allInSelected}
+            setCheck={this.setCheck}
           />
         </div>
       </div>

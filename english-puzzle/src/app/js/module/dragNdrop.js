@@ -64,6 +64,12 @@ class DragNdrop extends React.Component {
     this.getListStyle2 = this.getListStyle2.bind(this)
     this.setItems = this.setItems.bind(this)
     this.setNumOfChars = this.setNumOfChars.bind(this)
+    this.checkResult = this.checkResult.bind(this)
+    this.getItemStyleSelected = this.getItemStyleSelected.bind(this)
+  }
+
+  checkResult() {
+
   }
 
   getListStyle2(isDraggingOver) {
@@ -89,7 +95,7 @@ class DragNdrop extends React.Component {
     if (sentence) {
       const sentArr = sentence[number].split(' ')
       const items = sentArr.map((item, num) => ({
-        id: `item-${num}`,
+        id: `${num}`,
         content: `${item}`
       }))
       items.sort(() => (Math.random() - 0.5))
@@ -123,8 +129,12 @@ class DragNdrop extends React.Component {
     }
     if (!this.state.items.length && this.state.selected.length &&
     !this.props.allInSelected) this.props.setAllInSelected(true)
-    if (this.state.items.length &&
-      this.props.allInSelected) this.props.setAllInSelected(false)
+    // if (this.state.items.length &&
+    //   this.props.allInSelected) this.props.setAllInSelected(false)
+
+    if (!prevProps.check && this.props.check) {
+      this.checkResult()
+    }
   }
 
   clickHandler(index) {
@@ -153,6 +163,29 @@ class DragNdrop extends React.Component {
       margin: '0',
       width: `${curWidth}px`,
       background: isDragging ? 'lightgreen' : 'blue',
+      ...draggableStyle
+    }
+  }
+
+  getItemStyleSelected(index, item, isDragging, draggableStyle, check) {
+    const widthToOneChar = this.state.width / this.state.numOfChars
+    const curWidth = item.content.length * widthToOneChar
+    let color
+    if (!check) color = 'blue'
+    else {
+      color = index === +item.id ? 'green' : 'red'
+    }
+    return {
+      boxSizing: 'border-box',
+      outline: '1px solid white',
+      color: 'white',
+      textAlign: 'center',
+      userSelect: 'none',
+      padding: '0',
+      margin: '0',
+      width: `${curWidth}px`,
+      background: isDragging ? 'lightgreen' : `${color}`,
+
       ...draggableStyle
     }
   }
@@ -234,10 +267,12 @@ class DragNdrop extends React.Component {
                       ref={provided1.innerRef}
                       {...provided1.draggableProps}
                       {...provided1.dragHandleProps}
-                      style={this.getItemStyle(
+                      style={this.getItemStyleSelected(
+                        index,
                         item,
                         snapshot1.isDragging,
-                        provided1.draggableProps.style
+                        provided1.draggableProps.style,
+                        this.props.check
                       )}>
                       {item.content}
                     </div>
@@ -256,7 +291,9 @@ class DragNdrop extends React.Component {
 DragNdrop.propTypes = {
   wordsData: PropTypes.object,
   setAllInSelected: PropTypes.function,
-  allInSelected: PropTypes.bool
+  allInSelected: PropTypes.bool,
+  check: PropTypes.bool,
+  setCheck: PropTypes.func
 }
 
 export default DragNdrop
