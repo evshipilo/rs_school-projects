@@ -6,6 +6,7 @@ import DragNdrop from './module/dragNdrop'
 import GameField from './module/gameField'
 import SetLevel from './module/setLevel'
 import BottomButtons from './module/bottomButtons'
+import Translation from './module/translation'
 
 /* eslint class-methods-use-this: [0] */
 
@@ -20,7 +21,9 @@ class App extends React.Component {
       check: false,
       win: false,
       dontKnow: false,
-      continuer: false
+      continuer: false,
+      translation: null,
+      numOfSentence: 0
 
     }
     this.getWordsData = this.getWordsData.bind(this)
@@ -31,6 +34,7 @@ class App extends React.Component {
     this.setWin = this.setWin.bind(this)
     this.setDontKnow = this.setDontKnow.bind(this)
     this.setContinue = this.setContinue.bind(this)
+    this.setNumOfSentence = this.setNumOfSentence.bind(this)
   }
 
   async getWordsData(difficulty, pageNumber) {
@@ -50,10 +54,19 @@ class App extends React.Component {
       })
       console.log('-> dataSlice', dataSlice)
       this.setState({ wordsData: dataSlice })
+      this.setState({ translation: null })
     } catch (e) {
       console.log('-> e', e)
       this.setState({ wordsData: null })
+      this.setState({
+        translation: 'cant fetch data, select difficulty &' +
+          ' page and click GO!'
+      })
     }
+  }
+
+  setNumOfSentence(data) {
+    this.setState({ numOfSentence: data })
   }
 
   setContinue(bool) {
@@ -112,11 +125,17 @@ class App extends React.Component {
 
           </div>
           <div className="col s12 translation">
-
+            <Translation
+              translation={this.state.translation}
+            />
           </div>
         </div>
         <div className="row">
-          <GameField>
+          <GameField
+            wordsData={this.state.wordsData}
+            numOfSentence={this.state.numOfSentence}
+            continuer={this.state.continuer}
+          >
             <DragNdrop
               wordsData={this.state.wordsData}
               setAllInSelected={this.setAllInSelected}
@@ -128,6 +147,7 @@ class App extends React.Component {
               dontKnow={this.state.dontKnow}
               continuer={this.state.continuer}
               setContinue={this.setContinue}
+              setNumOfSentence={this.setNumOfSentence}
             />
           </GameField>
         </div>

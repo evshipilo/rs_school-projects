@@ -101,7 +101,7 @@ class DragNdrop extends React.Component {
       padding: grid,
       overflow: 'auto',
       width: '100%',
-      top: `${this.state.numOfSentence * 40}px`
+      top: `${this.state.numOfSentence * 40 + 2}px`
     }
   }
 
@@ -166,13 +166,14 @@ class DragNdrop extends React.Component {
       this.setState({ selected: this.setRightSentence(this.state.numOfSentence) })
     }
     if (!prevProps.continuer && this.props.continuer) {
-      this.props.setContinue(false)
       this.props.setAllInSelected(false)
       this.props.setWin(false)
+      this.props.setNumOfSentence(this.state.numOfSentence)
       this.setState({ numOfChars: this.setNumOfChars(this.state.sentences, this.state.numOfSentence + 1) })
       this.setState({ items: this.setItems(this.state.sentences, this.state.numOfSentence + 1) })
       this.setState({ selected: [] })
       this.setState({ numOfSentence: this.state.numOfSentence + 1 })
+      this.props.setContinue(false)
     }
   }
 
@@ -215,11 +216,6 @@ class DragNdrop extends React.Component {
       color = index === +item.id ? 'green' : 'red'
       const sentenceArr = this.state.sentences[this.state.numOfSentence].split(' ')
       if (sentenceArr[index] === item.content) color = 'green'
-      // sentenceArr.forEach((it, num) => {
-      //   if (+item.id !== num && item.content === it) color = 'green'
-      // })
-      // const sentenseArr = this.state.selected.map((it) => it.content)
-      // if (sentenseArr.join(' ') === this.state.sentences[this.state.numOfSentence]) color = 'green'
     }
     return {
       boxSizing: 'border-box',
@@ -344,7 +340,8 @@ DragNdrop.propTypes = {
   win: PropTypes.bool,
   dontKnow: PropTypes.bool,
   continuer: PropTypes.bool,
-  setContinue: PropTypes.func
+  setContinue: PropTypes.func,
+  setNumOfSentence: PropTypes.func
 }
 
 export default DragNdrop
