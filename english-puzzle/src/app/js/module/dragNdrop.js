@@ -54,7 +54,8 @@ class DragNdrop extends React.Component {
       width: 0,
       sentences: null,
       numOfSentence: 0,
-      numOfChars: 0
+      numOfChars: 0,
+      src: null
     }
     this.getList = this.getList.bind(this)
     this.onDragEnd = this.onDragEnd.bind(this)
@@ -68,6 +69,8 @@ class DragNdrop extends React.Component {
     this.getItemStyleSelected = this.getItemStyleSelected.bind(this)
     this.checkResult = this.checkResult.bind(this)
     this.setRightSentence = this.setRightSentence.bind(this)
+    this.getBackground = this.getBackground.bind(this)
+    this.getBackgroundSize = this.getBackgroundSize.bind(this)
   }
 
   setRightSentence(number) {
@@ -144,6 +147,15 @@ class DragNdrop extends React.Component {
       this.setState({ numOfChars: this.setNumOfChars(sent, 0) })
       this.setState({ items: this.setItems(sent, 0) })
       this.setState({ selected: [] })
+      const img = new Image()
+      img.src = 'img/01.jpg'
+      img.onload = () => {
+        console.log('-> img.height', img.height, img.width)
+
+        this.setState({ src: 'img/01.jpg' })
+        this.setState({ imgHeight: img.height })
+        this.setState({ imgWidth: img.width })
+      }
     }
     if (!this.state.items.length && this.state.selected.length &&
     !this.props.allInSelected) this.props.setAllInSelected(true)
@@ -183,7 +195,6 @@ class DragNdrop extends React.Component {
       this.props.setContinue(false)
       this.props.setButtons(false)
       this.props.nextPage()
-
     }
   }
 
@@ -200,7 +211,45 @@ class DragNdrop extends React.Component {
 
   getList(id) { return this.state[this.state[id]] }
 
+  getBackground(index) {
+    const kX = this.state.imgWidth / this.state.width
+    const kY = this.state.imgHeight / 400
+    let x,
+      y
+    if (kX <= kY) {
+      console.log('->kX <= kY ')
+      const offsetY = (this.state.imgHeight * this.state.width) / (2 * this.state.imgWidth)
+      console.log('-> offsetY', offsetY)
+      y = (offsetY + this.state.numOfSentence * 40) * -1
+      const arrOfWords = this.state.sentences[this.state.numOfSentence].split(' ')
+      let wordsLength = 0
+      for (let i = 0; i < index; i += 1) {
+        wordsLength += arrOfWords[i].length
+      }
+      x = ((this.state.width / this.state.numOfChars) * wordsLength) * -1
+    } else {
+      const offsetX = (this.state.imgWidth * 400) / (2 * this.state.imgHeight)
+      y = this.state.numOfSentence * -40
+      const arrOfWords = this.state.sentences[this.state.numOfSentence].split(' ')
+      let wordsLength = 0
+      for (let i = 0; i < index; i += 1) {
+        wordsLength += arrOfWords[i].length
+      }
+      x = ((this.state.width / this.state.numOfChars) * wordsLength + offsetX) * -1
+    }
+    console.log('-> x,y', index, x)
+    return { x, y }
+  }
+
+  getBackgroundSize() {
+    const kX = this.state.imgWidth / this.state.width
+    const kY = this.state.imgHeight / 400
+    if (kX <= kY) return `${this.state.width}px auto`
+    return 'auto 400px'
+  }
+
   getItemStyle(item, isDragging, draggableStyle) {
+    console.log('-> getBackgroundSize()', this.getBackgroundSize())
     const widthToOneChar = this.state.width / this.state.numOfChars
     const curWidth = item.content.length * widthToOneChar
     return {
@@ -212,7 +261,10 @@ class DragNdrop extends React.Component {
       padding: '0',
       margin: '0',
       width: `${curWidth}px`,
-      background: isDragging ? 'lightgreen' : 'blue',
+      backgroundImage: `url(${this.state.src})`,
+      backgroundSize: this.getBackgroundSize(),
+      backgroundPosition: `${this.getBackground(+item.id).x}px ${this.getBackground(+item.id).y}px `,
+      // background: isDragging ? 'lightgreen' : 'blue',
       ...draggableStyle
     }
   }
@@ -220,14 +272,13 @@ class DragNdrop extends React.Component {
   getItemStyleSelected(index, item, isDragging, draggableStyle, check) {
     const widthToOneChar = this.state.width / this.state.numOfChars
     const curWidth = item.content.length * widthToOneChar
-    let color
-    if (!check) color = 'blue'
-    else {
+    let color = null
+    if (check) {
       color = index === +item.id ? 'green' : 'red'
       const sentenceArr = this.state.sentences[this.state.numOfSentence].split(' ')
       if (sentenceArr[index] === item.content) color = 'green'
     }
-    return {
+    const styleObg = {
       boxSizing: 'border-box',
       border: '1px solid white',
       color: 'white',
@@ -236,10 +287,15 @@ class DragNdrop extends React.Component {
       padding: '0',
       margin: '0',
       width: `${curWidth}px`,
-      background: isDragging ? 'lightgreen' : `${color}`,
+      backgroundImage: `url(${this.state.src})`,
+      backgroundSize: this.getBackgroundSize(),
+      backgroundPosition: `${this.getBackground(+item.id).x}px ${this.getBackground(+item.id).y}px `,
 
       ...draggableStyle
     }
+    if (color) styleObg.background = color
+
+    return styleObg
   }
 
   onDragEnd(result) {

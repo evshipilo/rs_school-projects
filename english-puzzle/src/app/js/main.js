@@ -63,7 +63,7 @@ class App extends React.Component {
       console.log('-> e', e)
       this.setState({ wordsData: null })
       this.setState({
-        translation: 'cant fetch data, select difficulty &' +
+        translation: 'cant fetch data, select level &' +
           ' page and click GO!'
       })
     }
