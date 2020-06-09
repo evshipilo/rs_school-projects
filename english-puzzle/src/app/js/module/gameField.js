@@ -31,10 +31,9 @@ class GameField extends React.Component {
   getItemStyle(word, sentence) {
     const widthToOneChar = this.state.width / this.setNumOfChars(sentence)
     const curWidth = word.length * widthToOneChar
-    console.log('-> curWidth', curWidth)
     return {
       boxSizing: 'border-box',
-      outline: '1px solid white',
+      border: '1px solid white',
       color: 'white',
       textAlign: 'center',
       userSelect: 'none',

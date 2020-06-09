@@ -86,11 +86,6 @@ class DragNdrop extends React.Component {
     const sentenceArr = this.state.selected.map((it) => it.content)
     if (sentenceArr.join(' ') === this.state.sentences[this.state.numOfSentence]) return true
     return false
-    // let result = true
-    // this.state.selected.forEach((item, index) => {
-    //   if (+item.id !== index) result = false
-    // })
-    // return result
   }
 
   getListStyle2(isDraggingOver) {
@@ -101,7 +96,7 @@ class DragNdrop extends React.Component {
       padding: grid,
       overflow: 'auto',
       width: '100%',
-      top: `${this.state.numOfSentence * 40 + 2}px`
+      top: `${this.state.numOfSentence * 40}px`
     }
   }
 
@@ -142,16 +137,16 @@ class DragNdrop extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.props.wordsData !== prevProps.wordsData) {
       const sent = this.props.wordsData.map((it) => it.textExample)
+      this.props.setButtons(true)
       this.setState({ sentences: sent })
       this.setState({ numOfSentence: 0 })
+      this.props.setNumOfSentence(0)
       this.setState({ numOfChars: this.setNumOfChars(sent, 0) })
       this.setState({ items: this.setItems(sent, 0) })
       this.setState({ selected: [] })
     }
     if (!this.state.items.length && this.state.selected.length &&
     !this.props.allInSelected) this.props.setAllInSelected(true)
-    // if (this.state.items.length &&
-    //   this.props.allInSelected) this.props.setAllInSelected(false)
 
     if (!prevProps.check && this.props.check) {
       this.checkResult()
@@ -159,21 +154,36 @@ class DragNdrop extends React.Component {
     if (!this.state.items.length && this.state.selected.length &&
       this.props.check && this.checkResult() && !this.props.win) {
       this.props.setWin(true)
-      console.log('-------')
     }
     if (!prevProps.dontKnow && this.props.dontKnow) {
       this.setState({ items: [] })
       this.setState({ selected: this.setRightSentence(this.state.numOfSentence) })
     }
-    if (!prevProps.continuer && this.props.continuer) {
+    if (!prevProps.continuer && this.props.continuer && this.state.numOfSentence < 9) {
       this.props.setAllInSelected(false)
       this.props.setWin(false)
       this.props.setNumOfSentence(this.state.numOfSentence)
-      this.setState({ numOfChars: this.setNumOfChars(this.state.sentences, this.state.numOfSentence + 1) })
+      this.setState({
+        numOfChars:
+          this.setNumOfChars(this.state.sentences, this.state.numOfSentence + 1)
+      })
       this.setState({ items: this.setItems(this.state.sentences, this.state.numOfSentence + 1) })
       this.setState({ selected: [] })
       this.setState({ numOfSentence: this.state.numOfSentence + 1 })
       this.props.setContinue(false)
+    }
+    if (!prevProps.continuer && this.props.continuer && this.state.numOfSentence === 9) {
+      this.props.setAllInSelected(false)
+      this.props.setWin(false)
+      this.props.setNumOfSentence(0)
+      this.setState({ numOfChars: 0 })
+      this.setState({ items: [] })
+      this.setState({ selected: [] })
+      this.setState({ numOfSentence: 0 })
+      this.props.setContinue(false)
+      this.props.setButtons(false)
+      this.props.nextPage()
+
     }
   }
 
@@ -195,7 +205,7 @@ class DragNdrop extends React.Component {
     const curWidth = item.content.length * widthToOneChar
     return {
       boxSizing: 'border-box',
-      outline: '1px solid white',
+      border: '1px solid white',
       color: 'white',
       textAlign: 'center',
       userSelect: 'none',
@@ -219,7 +229,7 @@ class DragNdrop extends React.Component {
     }
     return {
       boxSizing: 'border-box',
-      outline: '1px solid white',
+      border: '1px solid white',
       color: 'white',
       textAlign: 'center',
       userSelect: 'none',
@@ -341,7 +351,9 @@ DragNdrop.propTypes = {
   dontKnow: PropTypes.bool,
   continuer: PropTypes.bool,
   setContinue: PropTypes.func,
-  setNumOfSentence: PropTypes.func
+  setNumOfSentence: PropTypes.func,
+  setButtons: PropTypes.func,
+  nextPage: PropTypes.func
 }
 
 export default DragNdrop

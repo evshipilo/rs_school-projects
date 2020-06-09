@@ -23,7 +23,8 @@ class App extends React.Component {
       dontKnow: false,
       continuer: false,
       translation: null,
-      numOfSentence: 0
+      numOfSentence: 0,
+      buttons: false
 
     }
     this.getWordsData = this.getWordsData.bind(this)
@@ -35,9 +36,12 @@ class App extends React.Component {
     this.setDontKnow = this.setDontKnow.bind(this)
     this.setContinue = this.setContinue.bind(this)
     this.setNumOfSentence = this.setNumOfSentence.bind(this)
+    this.setButtons = this.setButtons.bind(this)
+    this.nextPage = this.nextPage.bind(this)
   }
 
   async getWordsData(difficulty, pageNumber) {
+    console.log('-> diff  page', difficulty, pageNumber)
     try {
       const url = `https://afternoon-falls-25894.herokuapp.com/words?page=${pageNumber}&group=${difficulty}`
       const res = await fetch(url)
@@ -63,6 +67,28 @@ class App extends React.Component {
           ' page and click GO!'
       })
     }
+  }
+
+  async nextPage() {
+    let page,
+      diff
+    if (+this.state.pageNumber < 9) {
+      page = +this.state.pageNumber + 1
+      diff = +this.state.difficulty
+    } else if (+this.state.difficulty < 5) {
+      page = 0
+      diff = +this.state.difficulty + 1
+    } else {
+      page = 0
+      diff = 0
+    }
+    this.setState({ pageNumber: page })
+    this.setState({ difficulty: diff })
+    await this.getWordsData(diff, page)
+  }
+
+  setButtons(bool) {
+    this.setState({ buttons: bool })
   }
 
   setNumOfSentence(data) {
@@ -148,6 +174,8 @@ class App extends React.Component {
               continuer={this.state.continuer}
               setContinue={this.setContinue}
               setNumOfSentence={this.setNumOfSentence}
+              setButtons={this.setButtons}
+              nextPage={this.nextPage}
             />
           </GameField>
         </div>
@@ -158,6 +186,7 @@ class App extends React.Component {
             setDontKnow={this.setDontKnow}
             win={this.state.win}
             setContinue={this.setContinue}
+            buttons={this.state.buttons}
           />
         </div>
       </div>

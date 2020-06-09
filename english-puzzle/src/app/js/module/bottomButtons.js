@@ -5,19 +5,19 @@ class BottomButtons extends React.Component {
   render() {
     return (
       <div className='bottom-buttons-wrapper'>
-        {this.props.allInSelected && !this.props.win &&
+        {this.props.allInSelected && !this.props.win && this.props.buttons &&
         <button className='btn-small waves-effect waves-light hoverable red check'
           onClick={() => this.props.setCheck(true)}
         >check</button>
         }
-        {!this.props.win &&
+        {!this.props.win && this.props.buttons &&
         <button className='btn-small waves-effect waves-light hoverable orange check'
           onClick={() => {
             this.props.setDontKnow(true)
             this.props.setCheck(true)
           }}
         >i dont know</button>}
-        {this.props.win &&
+        {this.props.win && this.props.buttons &&
         <button className='btn-small waves-effect waves-light hoverable blue check'
           onClick={() => {
             this.props.setDontKnow(false)
@@ -36,7 +36,8 @@ BottomButtons.propTypes = {
   setCheck: PropTypes.func,
   setDontKnow: PropTypes.func,
   win: PropTypes.bool,
-  setContinue: PropTypes.func
+  setContinue: PropTypes.func,
+  buttons: PropTypes.bool
 }
 
 export default BottomButtons
