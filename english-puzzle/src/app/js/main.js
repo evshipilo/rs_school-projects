@@ -56,7 +56,7 @@ class App extends React.Component {
         const item = it
         item.textExample = item.textExample.replace(/(<b>)|(<\/b>)|([,.!?])/g, '')
       })
-      console.log('-> dataSlice', dataSlice)
+      dataSlice[0].background = 'img/01.jpg'
       this.setState({ wordsData: dataSlice })
       this.setState({ translation: null })
     } catch (e) {

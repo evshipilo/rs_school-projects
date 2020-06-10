@@ -11,6 +11,8 @@ class GameField extends React.Component {
     this.setWidth = this.setWidth.bind(this)
     this.getItemStyle = this.getItemStyle.bind(this)
     this.setNumOfChars = this.setNumOfChars.bind(this)
+    this.getBackgroundSize = this.getBackgroundSize.bind(this)
+    this.getBackground = this.getBackground.bind(this)
   }
 
   setWidth() {
@@ -28,11 +30,47 @@ class GameField extends React.Component {
     return null
   }
 
-  getItemStyle(word, sentence) {
+  getBackgroundSize() {
+    const kImage = this.state.imgWidth / this.state.imgHeight
+    const kField = this.state.width / 400
+    if (kImage <= kField) return `${this.state.width}px auto`
+    return 'auto 400px'
+  }
+
+  getBackground(word, sentence, index, sentenceIndex) {
+    const kImage = this.state.imgWidth / this.state.imgHeight
+    const kField = this.state.width / 400
+    let x,
+      y
+    if (kImage <= kField) {
+      const offsetY = (((this.state.width / this.state.imgWidth) * this.state.imgHeight) - 400) / 2
+      y = (offsetY + sentenceIndex * 40) * -1
+      const arrOfWords = sentence.split(' ')
+      let wordsLength = 0
+      for (let i = 0; i < index; i += 1) {
+        wordsLength += arrOfWords[i].length
+      }
+      x = ((this.state.width / this.setNumOfChars(sentence)) * wordsLength) * -1
+    } else {
+      const offsetX = (((400 / this.state.imgHeight) * this.state.imgWidth) - this.state.width) / 2
+      y = sentenceIndex * -40
+      const arrOfWords = sentence.split(' ')
+      let wordsLength = 0
+      for (let i = 0; i < index; i += 1) {
+        wordsLength += arrOfWords[i].length
+      }
+      x = ((this.state.width / this.setNumOfChars(sentence)) * wordsLength + offsetX) * -1
+    }
+    return { x, y }
+  }
+
+  getItemStyle(word, sentence, index, sentenceIndex) {
     const widthToOneChar = this.state.width / this.setNumOfChars(sentence)
     const curWidth = word.length * widthToOneChar
     return {
       boxSizing: 'border-box',
+      verticalAlign: 'middle',
+      textShadow: 'black 0 0 4px',
       border: '1px solid white',
       color: 'white',
       textAlign: 'center',
@@ -40,7 +78,10 @@ class GameField extends React.Component {
       padding: '0',
       margin: '0',
       width: `${curWidth}px`,
-      background: 'green',
+      backgroundImage: `url(${this.state.src})`,
+      backgroundSize: this.getBackgroundSize(),
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: `${this.getBackground(word, sentence, index, sentenceIndex).x}px ${this.getBackground(word, sentence, index, sentenceIndex).y}px `,
       height: '40px'
     }
   }
@@ -54,6 +95,13 @@ class GameField extends React.Component {
     if (this.props.continuer !== prevProps.continuer) {
       const sent = this.props.wordsData.map((it) => it.textExample)
       this.setState({ sentences: sent })
+      const img = new Image()
+      img.src = this.props.wordsData[0].background
+      img.onload = () => {
+        this.setState({ src: this.props.wordsData[0].background })
+        this.setState({ imgHeight: img.height })
+        this.setState({ imgWidth: img.width })
+      }
     }
   }
 
@@ -65,7 +113,7 @@ class GameField extends React.Component {
         it.split(' ').map((item, number) => <div
           className='game-field-word'
           key={`${num}${number}`}
-          style={this.getItemStyle(item, it)}
+          style={this.getItemStyle(item, it, number, num)}
         >{item}</div>)
       } </div>)
     }

@@ -148,11 +148,11 @@ class DragNdrop extends React.Component {
       this.setState({ items: this.setItems(sent, 0) })
       this.setState({ selected: [] })
       const img = new Image()
-      img.src = 'img/01.jpg'
+      img.src = this.props.wordsData[0].background
       img.onload = () => {
         console.log('-> img.height', img.height, img.width)
 
-        this.setState({ src: 'img/01.jpg' })
+        this.setState({ src: this.props.wordsData[0].background })
         this.setState({ imgHeight: img.height })
         this.setState({ imgWidth: img.width })
       }
@@ -212,14 +212,12 @@ class DragNdrop extends React.Component {
   getList(id) { return this.state[this.state[id]] }
 
   getBackground(index) {
-    const kX = this.state.imgWidth / this.state.width
-    const kY = this.state.imgHeight / 400
+    const kImage = this.state.imgWidth / this.state.imgHeight
+    const kField = this.state.width / 400
     let x,
       y
-    if (kX <= kY) {
-      console.log('->kX <= kY ')
-      const offsetY = (this.state.imgHeight * this.state.width) / (2 * this.state.imgWidth)
-      console.log('-> offsetY', offsetY)
+    if (kImage <= kField) {
+      const offsetY = (((this.state.width / this.state.imgWidth) * this.state.imgHeight) - 400) / 2
       y = (offsetY + this.state.numOfSentence * 40) * -1
       const arrOfWords = this.state.sentences[this.state.numOfSentence].split(' ')
       let wordsLength = 0
@@ -228,7 +226,7 @@ class DragNdrop extends React.Component {
       }
       x = ((this.state.width / this.state.numOfChars) * wordsLength) * -1
     } else {
-      const offsetX = (this.state.imgWidth * 400) / (2 * this.state.imgHeight)
+      const offsetX = (((400 / this.state.imgHeight) * this.state.imgWidth) - this.state.width) / 2
       y = this.state.numOfSentence * -40
       const arrOfWords = this.state.sentences[this.state.numOfSentence].split(' ')
       let wordsLength = 0
@@ -237,23 +235,23 @@ class DragNdrop extends React.Component {
       }
       x = ((this.state.width / this.state.numOfChars) * wordsLength + offsetX) * -1
     }
-    console.log('-> x,y', index, x)
     return { x, y }
   }
 
   getBackgroundSize() {
-    const kX = this.state.imgWidth / this.state.width
-    const kY = this.state.imgHeight / 400
-    if (kX <= kY) return `${this.state.width}px auto`
+    const kImage = this.state.imgWidth / this.state.imgHeight
+    const kField = this.state.width / 400
+    if (kImage <= kField) return `${this.state.width}px auto`
     return 'auto 400px'
   }
 
   getItemStyle(item, isDragging, draggableStyle) {
-    console.log('-> getBackgroundSize()', this.getBackgroundSize())
     const widthToOneChar = this.state.width / this.state.numOfChars
     const curWidth = item.content.length * widthToOneChar
     return {
       boxSizing: 'border-box',
+      verticalAlign: 'middle',
+      textShadow: 'black 0 0 4px',
       border: '1px solid white',
       color: 'white',
       textAlign: 'center',
@@ -280,6 +278,8 @@ class DragNdrop extends React.Component {
     }
     const styleObg = {
       boxSizing: 'border-box',
+      verticalAlign: 'middle',
+      textShadow: 'black 0 0 4px',
       border: '1px solid white',
       color: 'white',
       textAlign: 'center',
