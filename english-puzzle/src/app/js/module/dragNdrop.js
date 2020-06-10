@@ -184,7 +184,11 @@ class DragNdrop extends React.Component {
       this.setState({ numOfSentence: this.state.numOfSentence + 1 })
       this.props.setContinue(false)
     }
-    if (!prevProps.continuer && this.props.continuer && this.state.numOfSentence === 9) {
+    if (!prevProps.continuer && this.props.continuer && this.state.numOfSentence === 9 &&
+    !this.props.next) {
+      this.props.setNext(true)
+    }
+    if (prevProps.next && !this.props.next) {
       this.props.setAllInSelected(false)
       this.props.setWin(false)
       this.props.setNumOfSentence(0)
@@ -199,8 +203,6 @@ class DragNdrop extends React.Component {
   }
 
   clickHandler(index) {
-    console.log('-> this.state.sentences', this.state.sentences)
-    console.log('-> this.state.items', this.state.items)
     const sourceClone = Array.from(this.state.items)
     const destClone = Array.from(this.state.selected)
     const [removed] = sourceClone.splice(index, 1)
@@ -330,68 +332,70 @@ class DragNdrop extends React.Component {
 
   render() {
     return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
-        <Droppable droppableId="droppable" direction="horizontal">
-          {(provided, snapshot) => (
-            <div className='drop'
-              ref={provided.innerRef}
-              style={getListStyle(snapshot.isDraggingOver)}>
-              {this.state.items.map((item, index) => (
-                <Draggable
-                  key={item.id}
-                  draggableId={item.id}
-                  index={index}>
-                  {(provided1, snapshot1) => (
-                    <div onClick={() => this.clickHandler(index)}
-                      ref={provided1.innerRef}
-                      {...provided1.draggableProps}
-                      {...provided1.dragHandleProps}
-                      style={this.getItemStyle(
-                        item,
-                        snapshot1.isDragging,
-                        provided1.draggableProps.style
-                      )}>
-                      {item.content}
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-        <Droppable droppableId="droppable2" direction="horizontal">
-          {(provided, snapshot) => (
-            <div className='drop2'
-              ref={provided.innerRef}
-              style={this.getListStyle2(snapshot.isDraggingOver)}>
-              {this.state.selected.map((item, index) => (
-                <Draggable
-                  key={item.id}
-                  draggableId={item.id}
-                  index={index}>
-                  {(provided1, snapshot1) => (
-                    <div
-                      ref={provided1.innerRef}
-                      {...provided1.draggableProps}
-                      {...provided1.dragHandleProps}
-                      style={this.getItemStyleSelected(
-                        index,
-                        item,
-                        snapshot1.isDragging,
-                        provided1.draggableProps.style,
-                        this.props.check
-                      )}>
-                      {item.content}
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+      <div>
+        {!this.props.next && <DragDropContext onDragEnd={this.onDragEnd}>
+          <Droppable droppableId="droppable" direction="horizontal">
+            {(provided, snapshot) => (
+              <div className='drop'
+                ref={provided.innerRef}
+                style={getListStyle(snapshot.isDraggingOver)}>
+                {this.state.items.map((item, index) => (
+                  <Draggable
+                    key={item.id}
+                    draggableId={item.id}
+                    index={index}>
+                    {(provided1, snapshot1) => (
+                      <div onClick={() => this.clickHandler(index)}
+                        ref={provided1.innerRef}
+                        {...provided1.draggableProps}
+                        {...provided1.dragHandleProps}
+                        style={this.getItemStyle(
+                          item,
+                          snapshot1.isDragging,
+                          provided1.draggableProps.style
+                        )}>
+                        {item.content}
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+          <Droppable droppableId="droppable2" direction="horizontal">
+            {(provided, snapshot) => (
+              <div className='drop2'
+                ref={provided.innerRef}
+                style={this.getListStyle2(snapshot.isDraggingOver)}>
+                {this.state.selected.map((item, index) => (
+                  <Draggable
+                    key={item.id}
+                    draggableId={item.id}
+                    index={index}>
+                    {(provided1, snapshot1) => (
+                      <div
+                        ref={provided1.innerRef}
+                        {...provided1.draggableProps}
+                        {...provided1.dragHandleProps}
+                        style={this.getItemStyleSelected(
+                          index,
+                          item,
+                          snapshot1.isDragging,
+                          provided1.draggableProps.style,
+                          this.props.check
+                        )}>
+                        {item.content}
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>}
+      </div>
     )
   }
 }
@@ -409,7 +413,9 @@ DragNdrop.propTypes = {
   setContinue: PropTypes.func,
   setNumOfSentence: PropTypes.func,
   setButtons: PropTypes.func,
-  nextPage: PropTypes.func
+  nextPage: PropTypes.func,
+  setNext: PropTypes.func,
+  next: PropTypes.bool
 }
 
 export default DragNdrop

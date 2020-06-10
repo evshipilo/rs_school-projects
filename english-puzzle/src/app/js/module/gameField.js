@@ -13,6 +13,7 @@ class GameField extends React.Component {
     this.setNumOfChars = this.setNumOfChars.bind(this)
     this.getBackgroundSize = this.getBackgroundSize.bind(this)
     this.getBackground = this.getBackground.bind(this)
+    this.getFullBackgroundStyle = this.getFullBackgroundStyle.bind(this)
   }
 
   setWidth() {
@@ -35,6 +36,32 @@ class GameField extends React.Component {
     const kField = this.state.width / 400
     if (kImage <= kField) return `${this.state.width}px auto`
     return 'auto 400px'
+  }
+
+  getFullBackgroundStyle() {
+    const kImage = this.state.imgWidth / this.state.imgHeight
+    const kField = this.state.width / 400
+    let x,
+      y
+    if (kImage <= kField) {
+      y = (((this.state.width / this.state.imgWidth) * this.state.imgHeight) - 400) / 2
+      x = 0
+    } else {
+      x = (((400 / this.state.imgHeight) * this.state.imgWidth) - this.state.width) / 2
+      y = 0
+    }
+    return {
+      boxSizing: 'border-box',
+      padding: '0',
+      margin: '0',
+      width: `${this.state.width}px`,
+      height: '400px',
+      backgroundImage: `url(${this.state.src})`,
+      backgroundSize: this.getBackgroundSize(),
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: `${-x}px ${-y}px`
+
+    }
   }
 
   getBackground(word, sentence, index, sentenceIndex) {
@@ -120,7 +147,7 @@ class GameField extends React.Component {
 
     return (
       <div className="card grey lighten-4">
-        {items}
+        {this.props.next ? <div style={this.getFullBackgroundStyle()}> </div> : items}
         {this.props.children}
       </div>
     )
@@ -131,7 +158,8 @@ GameField.propTypes = {
   children: PropTypes.object,
   wordsData: PropTypes.array,
   continuer: PropTypes.bool,
-  numOfSentence: PropTypes.number
+  numOfSentence: PropTypes.number,
+  next: PropTypes.bool
 }
 
 export default GameField

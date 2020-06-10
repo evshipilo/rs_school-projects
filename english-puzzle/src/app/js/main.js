@@ -24,7 +24,8 @@ class App extends React.Component {
       continuer: false,
       translation: null,
       numOfSentence: 0,
-      buttons: false
+      buttons: false,
+      next: false
 
     }
     this.getWordsData = this.getWordsData.bind(this)
@@ -38,6 +39,7 @@ class App extends React.Component {
     this.setNumOfSentence = this.setNumOfSentence.bind(this)
     this.setButtons = this.setButtons.bind(this)
     this.nextPage = this.nextPage.bind(this)
+    this.setNext = this.setNext.bind(this)
   }
 
   async getWordsData(difficulty, pageNumber) {
@@ -85,6 +87,10 @@ class App extends React.Component {
     this.setState({ pageNumber: page })
     this.setState({ difficulty: diff })
     await this.getWordsData(diff, page)
+  }
+
+  setNext(bool){
+    this.setState({next: bool})
   }
 
   setButtons(bool) {
@@ -139,6 +145,7 @@ class App extends React.Component {
               difficulty={this.state.difficulty}
               pageNumber={this.state.pageNumber}
               getWordsData={this.getWordsData}
+              setNext={this.setNext}
             />
           </div>
           <div className="col m6 s12 set-prompt">
@@ -161,6 +168,7 @@ class App extends React.Component {
             wordsData={this.state.wordsData}
             numOfSentence={this.state.numOfSentence}
             continuer={this.state.continuer}
+            next={this.state.next}
           >
             <DragNdrop
               wordsData={this.state.wordsData}
@@ -176,6 +184,8 @@ class App extends React.Component {
               setNumOfSentence={this.setNumOfSentence}
               setButtons={this.setButtons}
               nextPage={this.nextPage}
+              next={this.state.next}
+              setNext={this.setNext}
             />
           </GameField>
         </div>
@@ -187,6 +197,8 @@ class App extends React.Component {
             win={this.state.win}
             setContinue={this.setContinue}
             buttons={this.state.buttons}
+            next={this.state.next}
+            setNext={this.setNext}
           />
         </div>
       </div>

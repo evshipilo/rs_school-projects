@@ -28,7 +28,10 @@ class SetLevel extends React.Component {
           <li><a key={10} href="#!" onClick={() => this.props.setPageNumber(9)}>10</a></li>
         </ul>
         <button className='btn-small waves-effect go'
-          onClick={() => this.props.getWordsData(this.props.difficulty, this.props.pageNumber)}
+          onClick={() => {
+            this.props.getWordsData(this.props.difficulty, this.props.pageNumber)
+            this.props.setNext(false)
+          }}
         >go!</button>
       </div>
     )
@@ -40,7 +43,8 @@ SetLevel.propTypes = {
   setPageNumber: PropTypes.func,
   getWordsData: PropTypes.func,
   difficulty: PropTypes.number,
-  pageNumber: PropTypes.number
+  pageNumber: PropTypes.number,
+  setNext: PropTypes.number
 }
 
 export default SetLevel
