@@ -289,13 +289,17 @@ class DragNdrop extends React.Component {
       padding: '0',
       margin: '0',
       width: `${curWidth}px`,
-      backgroundImage: `url(${this.state.src})`,
-      backgroundSize: this.getBackgroundSize(),
-      backgroundPosition: `${this.getBackground(+item.id).x}px ${this.getBackground(+item.id).y}px `,
+
 
       ...draggableStyle
     }
     if (color) styleObg.background = color
+    else {
+      styleObg.backgroundImage= `url(${this.state.src})`
+        styleObg.backgroundSize= this.getBackgroundSize()
+        styleObg.backgroundPosition= `${this.getBackground(+item.id).x}px ${this.getBackground(+item.id).y}px `
+    }
+
 
     return styleObg
   }
