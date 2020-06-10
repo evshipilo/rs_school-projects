@@ -9,6 +9,7 @@ html {
   color: #000;
 }
 
+
 .drop{
   position: absolute;
   top: 420px;
@@ -29,6 +30,7 @@ html {
   height: 400px;
   position: relative;
   margin: 0 auto;
+ // font-family: PragatiNarrow-Regular;
 }
 
 .set-level{
@@ -75,5 +77,13 @@ html {
 
 .dropdown-trigger{
   margin-left: 10px;
+}
+
+.set-prompt i{
+  font-size: 2rem;
+}
+
+.tooltipped{
+  margin-right: 5px;
 }
 

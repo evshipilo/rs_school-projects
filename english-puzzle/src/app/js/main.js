@@ -7,6 +7,7 @@ import GameField from './module/gameField'
 import SetLevel from './module/setLevel'
 import BottomButtons from './module/bottomButtons'
 import Translation from './module/translation'
+import PromptButtons from './module/promptButtons'
 
 /* eslint class-methods-use-this: [0] */
 
@@ -25,7 +26,11 @@ class App extends React.Component {
       translation: null,
       numOfSentence: 0,
       buttons: false,
-      next: false
+      next: false,
+      autoListeningPrompt: true,
+      translationPrompt: true,
+      listeningPrompt: true,
+      backgroundPrompt: false
 
     }
     this.getWordsData = this.getWordsData.bind(this)
@@ -40,6 +45,10 @@ class App extends React.Component {
     this.setButtons = this.setButtons.bind(this)
     this.nextPage = this.nextPage.bind(this)
     this.setNext = this.setNext.bind(this)
+    this.setAutoListeningPrompt = this.setAutoListeningPrompt.bind(this)
+    this.setListeningPrompt = this.setListeningPrompt.bind(this)
+    this.setTranslationPrompt = this.setTranslationPrompt.bind(this)
+    this.setBackgroundPrompt = this.setBackgroundPrompt.bind(this)
   }
 
   async getWordsData(difficulty, pageNumber) {
@@ -89,8 +98,24 @@ class App extends React.Component {
     await this.getWordsData(diff, page)
   }
 
-  setNext(bool){
-    this.setState({next: bool})
+  setAutoListeningPrompt(bool) {
+    this.setState({ autoListeningPrompt: bool })
+  }
+
+  setListeningPrompt(bool) {
+    this.setState({ listeningPrompt: bool })
+  }
+
+  setTranslationPrompt(bool) {
+    this.setState({ translationPrompt: bool })
+  }
+
+  setBackgroundPrompt(bool) {
+    this.setState({ backgroundPrompt: bool })
+  }
+
+  setNext(bool) {
+    this.setState({ next: bool })
   }
 
   setButtons(bool) {
@@ -149,7 +174,16 @@ class App extends React.Component {
             />
           </div>
           <div className="col m6 s12 set-prompt">
-
+            <PromptButtons
+              translationPrompt={this.state.translationPrompt}
+              listeningPrompt={this.state.listeningPrompt}
+              autoListeningPrompt={this.state.autoListeningPrompt}
+              backgroundPrompt={this.state.backgroundPrompt}
+              setTranslationPrompt={this.setTranslationPrompt}
+              setListeningPrompt={this.setListeningPrompt}
+              setAutoListeningPrompt={this.setAutoListeningPrompt}
+              setBackgroundPrompt={this.setBackgroundPrompt}
+            />
           </div>
 
         </div>
@@ -159,7 +193,7 @@ class App extends React.Component {
           </div>
           <div className="col s12 translation">
             <Translation
-              translation={this.state.translation}
+
             />
           </div>
         </div>
