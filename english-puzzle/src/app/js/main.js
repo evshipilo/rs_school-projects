@@ -51,6 +51,7 @@ class App extends React.Component {
     this.setTranslationPrompt = this.setTranslationPrompt.bind(this)
     this.setBackgroundPrompt = this.setBackgroundPrompt.bind(this)
     this.randomInteger = this.randomInteger.bind(this)
+    this.onUnload = this.onUnload.bind(this)
   }
 
   randomInteger(min, max) {
@@ -74,7 +75,10 @@ class App extends React.Component {
         const item = it
         item.textExample = item.textExample.replace(/(<b>)|(<\/b>)|([,.!?])/g, '')
       })
-      dataSlice[0].background = `img/${Paintings[this.randomInteger(1, 125)].cutSrc}`
+      const num = this.randomInteger(1, 125)
+      dataSlice[0].background = `img/${Paintings[num].cutSrc}`
+      dataSlice[0].description = `"${Paintings[num].name}", author: ${Paintings[num].author}, ${Paintings[num].year} year.`
+
       this.setState({ wordsData: dataSlice })
       this.setState({ translation: null })
     } catch (e) {
@@ -162,8 +166,29 @@ class App extends React.Component {
   }
 
   async componentDidMount() {
+    const difficulty = +localStorage.getItem('difficulty') || 0
+    const pageNumber = +localStorage.getItem('pageNumber') || 0
+    this.setState({ difficulty })
+    this.setState({ pageNumber })
     M.AutoInit()
-    await this.getWordsData(this.state.difficulty, this.state.pageNumber)
+    await this.getWordsData(difficulty, pageNumber)
+    window.addEventListener('beforeunload', this.onUnload)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('beforeunload', this.onUnload)
+  }
+
+  onUnload() {
+    localStorage.setItem('difficulty', this.state.difficulty)
+    localStorage.setItem('pageNumber', this.state.pageNumber)
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.state.next && !prevState.next) {
+      console.log('-> this.state.wordsData[0].description', this.state.wordsData[0].description)
+      this.setState({ translation: this.state.wordsData[0].description })
+    }
   }
 
   render() {
@@ -200,7 +225,7 @@ class App extends React.Component {
           </div>
           <div className="col s12 translation">
             <Translation
-
+              translation={this.state.translation}
             />
           </div>
         </div>
