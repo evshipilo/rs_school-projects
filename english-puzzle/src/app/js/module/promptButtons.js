@@ -34,7 +34,7 @@ class PromptButtons extends React.Component {
 
   render() {
     return (
-      <div className='center-align'>
+      <div className='promts center-align'>
         <a onClick={() => this.props.setAutoListeningPrompt(!this.props.autoListeningPrompt)}
           ref={this.autoListeningRef}
           className="btn-small red tooltipped" data-position="bottom"

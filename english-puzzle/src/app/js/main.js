@@ -8,6 +8,7 @@ import SetLevel from './module/setLevel'
 import BottomButtons from './module/bottomButtons'
 import Translation from './module/translation'
 import PromptButtons from './module/promptButtons'
+import Paintings from './module/paintings'
 
 /* eslint class-methods-use-this: [0] */
 
@@ -49,6 +50,12 @@ class App extends React.Component {
     this.setListeningPrompt = this.setListeningPrompt.bind(this)
     this.setTranslationPrompt = this.setTranslationPrompt.bind(this)
     this.setBackgroundPrompt = this.setBackgroundPrompt.bind(this)
+    this.randomInteger = this.randomInteger.bind(this)
+  }
+
+  randomInteger(min, max) {
+    const rand = min + Math.random() * (max + 1 - min)
+    return Math.floor(rand)
   }
 
   async getWordsData(difficulty, pageNumber) {
@@ -67,7 +74,7 @@ class App extends React.Component {
         const item = it
         item.textExample = item.textExample.replace(/(<b>)|(<\/b>)|([,.!?])/g, '')
       })
-      dataSlice[0].background = 'img/01.jpg'
+      dataSlice[0].background = `img/${Paintings[this.randomInteger(1, 125)].cutSrc}`
       this.setState({ wordsData: dataSlice })
       this.setState({ translation: null })
     } catch (e) {
@@ -163,7 +170,7 @@ class App extends React.Component {
     return (
       <div className='container'>
         <div className="row">
-          <div className="col m6 s12 set-level">
+          <div className="col l6 s12 set-level center">
             <SetLevel
               setDifficulty={this.setDifficulty}
               setPageNumber={this.setPageNumber}
@@ -173,7 +180,7 @@ class App extends React.Component {
               setNext={this.setNext}
             />
           </div>
-          <div className="col m6 s12 set-prompt">
+          <div className="col l6 s12 set-prompt">
             <PromptButtons
               translationPrompt={this.state.translationPrompt}
               listeningPrompt={this.state.listeningPrompt}

@@ -157,6 +157,7 @@ const config = {
         from: 'src/img/*',
         to: 'img/',
         flatten: true,
+        force: true,
       },
     ]),
     new HtmlWebPackPlugin({
