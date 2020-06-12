@@ -22,13 +22,13 @@ class PromptButtons extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    this.props.translationPrompt ? this.translationRef.current.classList.add('lighten-4')
+    !this.props.translationPrompt ? this.translationRef.current.classList.add('lighten-4')
       : this.translationRef.current.classList.remove('lighten-4')
-    this.props.listeningPrompt ? this.listeningRef.current.classList.add('lighten-4')
+    !this.props.listeningPrompt ? this.listeningRef.current.classList.add('lighten-4')
       : this.listeningRef.current.classList.remove('lighten-4')
-    this.props.autoListeningPrompt ? this.autoListeningRef.current.classList.add('lighten-4')
+    !this.props.autoListeningPrompt ? this.autoListeningRef.current.classList.add('lighten-4')
       : this.autoListeningRef.current.classList.remove('lighten-4')
-    this.props.backgroundPrompt ? this.backgroundRef.current.classList.add('lighten-4')
+    !this.props.backgroundPrompt ? this.backgroundRef.current.classList.add('lighten-4')
       : this.backgroundRef.current.classList.remove('lighten-4')
   }
 
@@ -43,7 +43,7 @@ class PromptButtons extends React.Component {
         <a onClick={() => this.props.setTranslationPrompt(!this.props.translationPrompt)}
           ref={this.translationRef}
           className="btn-small red tooltipped" data-position="bottom"
-          data-tooltip="transcription"><i
+          data-tooltip="translation"><i
             className="material-icons ">assignment</i></a>
         <a onClick={() => this.props.setListeningPrompt(!this.props.listeningPrompt)}
           ref={this.listeningRef}

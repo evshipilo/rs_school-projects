@@ -174,7 +174,7 @@ class DragNdrop extends React.Component {
     if (!prevProps.continuer && this.props.continuer && this.state.numOfSentence < 9) {
       this.props.setAllInSelected(false)
       this.props.setWin(false)
-      this.props.setNumOfSentence(this.state.numOfSentence)
+      this.props.setNumOfSentence(this.state.numOfSentence + 1)
       this.setState({
         numOfChars:
           this.setNumOfChars(this.state.sentences, this.state.numOfSentence + 1)

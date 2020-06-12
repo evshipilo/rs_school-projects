@@ -60,7 +60,6 @@ class App extends React.Component {
   }
 
   async getWordsData(difficulty, pageNumber) {
-    console.log('-> diff  page', difficulty, pageNumber)
     try {
       const url = `https://afternoon-falls-25894.herokuapp.com/words?page=${pageNumber}&group=${difficulty}`
       const res = await fetch(url)
@@ -78,9 +77,9 @@ class App extends React.Component {
       const num = this.randomInteger(1, 125)
       dataSlice[0].background = `img/${Paintings[num].cutSrc}`
       dataSlice[0].description = `"${Paintings[num].name}", author: ${Paintings[num].author}, ${Paintings[num].year} year.`
-
+      console.log('-> dataSlice', dataSlice)
       this.setState({ wordsData: dataSlice })
-      this.setState({ translation: null })
+     // this.setState({ translation: null })
     } catch (e) {
       console.log('-> e', e)
       this.setState({ wordsData: null })
@@ -188,6 +187,30 @@ class App extends React.Component {
     if (this.state.next && !prevState.next) {
       console.log('-> this.state.wordsData[0].description', this.state.wordsData[0].description)
       this.setState({ translation: this.state.wordsData[0].description })
+    }
+    if (!this.state.next && this.state.translationPrompt && !prevState.translationPrompt) {
+      this.setState({
+        translation: this.state.wordsData[this.state.numOfSentence].textExampleTranslate || null
+      })
+    }
+    if (!this.state.next && !this.state.translationPrompt && prevState.translationPrompt) {
+      this.setState({
+        translation: null
+      })
+    }
+    if (prevState.wordsData && this.state.translationPrompt) {
+      if (this.state.wordsData[this.state.numOfSentence].id !==
+        prevState.wordsData[prevState.numOfSentence].id) {
+        this.setState({
+          translation: this.state.wordsData[this.state.numOfSentence].textExampleTranslate
+        })
+      }
+    }
+    if (!prevState.wordsData && this.state.wordsData && this.state.translationPrompt) {
+      console.log("-> this.state.wordsData[0].textExampleTranslate", this.state.wordsData[0].textExampleTranslate);
+      this.setState({
+        translation: this.state.wordsData[0].textExampleTranslate
+      })
     }
   }
 
