@@ -2,12 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
-// const getItems = (count, offset = 0) => Array.from({ length: count }, (v, k) => k).map((k) => ({
-//   id: `item-${k + offset}`,
-//   content: `item ${k + offset}`
-// }))
-
-// a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list)
   const [removed] = result.splice(startIndex, 1)
@@ -118,7 +112,6 @@ class DragNdrop extends React.Component {
         content: `${item}`
       }))
       items.sort(() => (Math.random() - 0.5))
-      console.log('-> items', items)
       return items
     }
     return null
@@ -150,8 +143,6 @@ class DragNdrop extends React.Component {
       const img = new Image()
       img.src = this.props.wordsData[0].background
       img.onload = () => {
-        console.log('-> img.height', img.height, img.width)
-
         this.setState({ src: this.props.wordsData[0].background })
         this.setState({ imgHeight: img.height })
         this.setState({ imgWidth: img.width })

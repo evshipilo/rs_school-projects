@@ -31,7 +31,8 @@ class App extends React.Component {
       autoListeningPrompt: true,
       translationPrompt: true,
       listeningPrompt: true,
-      backgroundPrompt: false
+      backgroundPrompt: false,
+      audioStart: false
 
     }
     this.getWordsData = this.getWordsData.bind(this)
@@ -52,11 +53,20 @@ class App extends React.Component {
     this.setBackgroundPrompt = this.setBackgroundPrompt.bind(this)
     this.randomInteger = this.randomInteger.bind(this)
     this.onUnload = this.onUnload.bind(this)
+    this.audioPlay = this.audioPlay.bind(this)
   }
 
   randomInteger(min, max) {
     const rand = min + Math.random() * (max + 1 - min)
     return Math.floor(rand)
+  }
+
+  audioPlay() {
+    const [, fileName] = this.state.wordsData[this.state.numOfSentence].audioExample.split('/')
+    const audio = new Audio(`https://raw.githubusercontent.com/evshipilo/rslang-data/master/data/${fileName}`)
+    audio.play()
+    audio.onplaying = () => this.setState({ audioStart: true })
+    audio.onended = () => this.setState({ audioStart: false })
   }
 
   async getWordsData(difficulty, pageNumber) {
@@ -184,7 +194,6 @@ class App extends React.Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.state.next && !prevState.next) {
-      console.log('-> this.state.wordsData[0].description', this.state.wordsData[0].description)
       this.setState({ translation: this.state.wordsData[0].description })
     }
     if (!this.state.next && this.state.translationPrompt && !prevState.translationPrompt) {
@@ -210,9 +219,30 @@ class App extends React.Component {
         translation: this.state.wordsData[0].textExampleTranslate
       })
     }
+    // if (!prevState.dontKnow && this.state.dontKnow) {
+    //   this.setState({ translationPrompt: true })
+    //   this.setState({ listerningPrompt: true })
+    //   this.setState({ backgroundPrompt: true })
+    // }
+
   }
 
   render() {
+    let audio
+    if (this.state.listeningPrompt && this.state.audioStart) {
+      audio = <button className='btn waves-effect waves-light audio-start'
+      ><i
+          className="material-icons ">volume_up</i></button>
+    }
+    if (this.state.listeningPrompt && !this.state.audioStart) {
+      audio = <button className='btn waves-effect waves-light audio-start '
+        onClick={() => {
+          this.audioPlay()
+        }}
+      ><i
+          className="material-icons ">volume_mute</i></button>
+    }
+
     return (
       <div className='container'>
         <div className="row">
@@ -241,8 +271,8 @@ class App extends React.Component {
 
         </div>
         <div className="row">
-          <div className="col s12 audio">
-
+          <div className="col s12 audio center">
+            {audio}
           </div>
           <div className="col s12 translation">
             <Translation
