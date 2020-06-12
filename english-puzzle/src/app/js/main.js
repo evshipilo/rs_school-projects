@@ -79,7 +79,6 @@ class App extends React.Component {
       dataSlice[0].description = `"${Paintings[num].name}", author: ${Paintings[num].author}, ${Paintings[num].year} year.`
       console.log('-> dataSlice', dataSlice)
       this.setState({ wordsData: dataSlice })
-     // this.setState({ translation: null })
     } catch (e) {
       console.log('-> e', e)
       this.setState({ wordsData: null })
@@ -207,7 +206,6 @@ class App extends React.Component {
       }
     }
     if (!prevState.wordsData && this.state.wordsData && this.state.translationPrompt) {
-      console.log("-> this.state.wordsData[0].textExampleTranslate", this.state.wordsData[0].textExampleTranslate);
       this.setState({
         translation: this.state.wordsData[0].textExampleTranslate
       })
@@ -258,6 +256,7 @@ class App extends React.Component {
             numOfSentence={this.state.numOfSentence}
             continuer={this.state.continuer}
             next={this.state.next}
+            backgroundPrompt={this.state.backgroundPrompt}
           >
             <DragNdrop
               wordsData={this.state.wordsData}
@@ -275,6 +274,7 @@ class App extends React.Component {
               nextPage={this.nextPage}
               next={this.state.next}
               setNext={this.setNext}
+              backgroundPrompt={this.state.backgroundPrompt}
             />
           </GameField>
         </div>

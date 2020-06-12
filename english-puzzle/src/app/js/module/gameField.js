@@ -94,7 +94,7 @@ class GameField extends React.Component {
   getItemStyle(word, sentence, index, sentenceIndex) {
     const widthToOneChar = this.state.width / this.setNumOfChars(sentence)
     const curWidth = word.length * widthToOneChar
-    return {
+    const styleObg = {
       boxSizing: 'border-box',
       verticalAlign: 'middle',
       textShadow: 'black 0 0 4px',
@@ -105,12 +105,16 @@ class GameField extends React.Component {
       padding: '0',
       margin: '0',
       width: `${curWidth}px`,
-      backgroundImage: `url(${this.state.src})`,
-      backgroundSize: this.getBackgroundSize(),
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: `${this.getBackground(word, sentence, index, sentenceIndex).x}px ${this.getBackground(word, sentence, index, sentenceIndex).y}px `,
       height: '40px'
     }
+    if (!this.props.backgroundPrompt) styleObg.background = 'green'
+    else {
+      styleObg.backgroundImage = `url(${this.state.src})`
+      styleObg.backgroundSize = this.getBackgroundSize()
+      styleObg.backgroundRepeat = 'no-repeat'
+      styleObg.backgroundPosition = `${this.getBackground(word, sentence, index, sentenceIndex).x}px ${this.getBackground(word, sentence, index, sentenceIndex).y}px `
+    }
+    return styleObg
   }
 
   componentDidMount() {
@@ -159,7 +163,8 @@ GameField.propTypes = {
   wordsData: PropTypes.array,
   continuer: PropTypes.bool,
   numOfSentence: PropTypes.number,
-  next: PropTypes.bool
+  next: PropTypes.bool,
+  backgroundPrompt: PropTypes.bool
 }
 
 export default GameField

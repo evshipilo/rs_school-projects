@@ -250,7 +250,7 @@ class DragNdrop extends React.Component {
   getItemStyle(item, isDragging, draggableStyle) {
     const widthToOneChar = this.state.width / this.state.numOfChars
     const curWidth = item.content.length * widthToOneChar
-    return {
+    const styleObg = {
       boxSizing: 'border-box',
       verticalAlign: 'middle',
       textShadow: 'black 0 0 4px',
@@ -261,12 +261,16 @@ class DragNdrop extends React.Component {
       padding: '0',
       margin: '0',
       width: `${curWidth}px`,
-      backgroundImage: `url(${this.state.src})`,
-      backgroundSize: this.getBackgroundSize(),
-      backgroundPosition: `${this.getBackground(+item.id).x}px ${this.getBackground(+item.id).y}px `,
-      // background: isDragging ? 'lightgreen' : 'blue',
       ...draggableStyle
     }
+    if (!this.props.backgroundPrompt) styleObg.background = isDragging ? 'lightgreen' : 'blue'
+    else {
+      styleObg.backgroundImage = `url(${this.state.src})`
+      styleObg.backgroundSize = this.getBackgroundSize()
+      styleObg.backgroundPosition = `${this.getBackground(+item.id).x}px ${this.getBackground(+item.id).y}px`
+    }
+
+    return styleObg
   }
 
   getItemStyleSelected(index, item, isDragging, draggableStyle, check) {
@@ -293,10 +297,11 @@ class DragNdrop extends React.Component {
       ...draggableStyle
     }
     if (color) styleObg.background = color
+    else if (!this.props.backgroundPrompt) styleObg.background = isDragging ? 'lightgreen' : 'blue'
     else {
       styleObg.backgroundImage = `url(${this.state.src})`
       styleObg.backgroundSize = this.getBackgroundSize()
-      styleObg.backgroundPosition = `${this.getBackground(+item.id).x}px ${this.getBackground(+item.id).y}px `
+      styleObg.backgroundPosition = `${this.getBackground(+item.id).x}px ${this.getBackground(+item.id).y}px`
     }
 
     return styleObg
@@ -417,7 +422,8 @@ DragNdrop.propTypes = {
   setButtons: PropTypes.func,
   nextPage: PropTypes.func,
   setNext: PropTypes.func,
-  next: PropTypes.bool
+  next: PropTypes.bool,
+  backgroundPrompt: PropTypes.bool
 }
 
 export default DragNdrop
