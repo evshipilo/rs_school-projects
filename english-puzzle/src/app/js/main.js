@@ -219,12 +219,12 @@ class App extends React.Component {
         translation: this.state.wordsData[0].textExampleTranslate
       })
     }
-    // if (!prevState.dontKnow && this.state.dontKnow) {
-    //   this.setState({ translationPrompt: true })
-    //   this.setState({ listerningPrompt: true })
-    //   this.setState({ backgroundPrompt: true })
-    // }
-
+    if (prevState.wordsData && this.state.autoListeningPrompt &&
+      this.state.wordsData[this.state.numOfSentence].id !==
+      prevState.wordsData[prevState.numOfSentence].id &&
+      prevState.numOfSentence !== 9) this.audioPlay()
+    if (!prevState.wordsData && this.state.wordsData &&
+      this.state.autoListeningPrompt) this.audioPlay()
   }
 
   render() {
