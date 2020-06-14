@@ -154,7 +154,7 @@ const config = {
     }),
     new CopyPlugin([
       {
-        from: 'src/img/*',
+        from: 'src/img/',
         to: 'img/',
         flatten: true,
         force: true,

@@ -1,13 +1,32 @@
 @import "./node_modules/materialize-css/sass/materialize";
 @import 'fonts';
 
-@mixin media-tab {
-  @media (max-width: 800px) {
+@mixin media-400 {
+  @media (max-width: 400px) {
     @content;
   }
 }
-@mixin media-mob {
+
+@mixin media-500 {
   @media (max-width: 500px) {
+    @content;
+  }
+}
+
+@mixin media-600 {
+  @media (max-width: 600px) {
+    @content;
+  }
+}
+
+@mixin media-700 {
+  @media (max-width: 700px) {
+    @content;
+  }
+}
+
+@mixin media-800 {
+  @media (max-width: 800px) {
     @content;
   }
 }
@@ -25,12 +44,10 @@ html {
 .drop {
   position: absolute;
   top: 420px;
- // font-size: 2rem;
 }
 
 .drop2 {
   position: absolute;
-//  font-size: 2rem;
 }
 
 .container {
@@ -44,19 +61,31 @@ html {
   margin: 0 auto;
   font-family: PragatiNarrow-Regular;
   font-size: 2rem;
-//  line-height: 38px;
-  @include media-tab{
-    font-size: 2.5vw;
+  vertical-align: middle;
+  line-height: 35px;
+  @include media-800 {
+    font-size: 2rem;
   }
-  @include media-tab{
-    font-size: 4vw;
+  @include media-700 {
+    font-size: 1.8rem;
   }
+  @include media-600 {
+    font-size: 1.5rem;
+  }
+  @include media-500 {
+    font-size: 1.2rem;
+  }
+  @include media-400 {
+    font-size: 1rem;
+  }
+
 }
 
 .set-level {
   display: inline-block;
   margin-bottom: 5px;
-  & a{
+
+  & a {
     margin-bottom: 5px;
   }
 
