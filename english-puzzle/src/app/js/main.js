@@ -28,10 +28,10 @@ class App extends React.Component {
       numOfSentence: 0,
       buttons: false,
       next: false,
-      autoListeningPrompt: true,
-      translationPrompt: true,
-      listeningPrompt: true,
-      backgroundPrompt: false,
+      autoListeningPrompt: localStorage.getItem('autoListeningPrompt') !== 'false',
+      translationPrompt: localStorage.getItem('translationPrompt') !== 'false',
+      listeningPrompt: localStorage.getItem('listeningPrompt') !== 'false',
+      backgroundPrompt: localStorage.getItem('backgroundPrompt') === 'true',
       audioStart: false
 
     }
@@ -190,6 +190,10 @@ class App extends React.Component {
   onUnload() {
     localStorage.setItem('difficulty', this.state.difficulty)
     localStorage.setItem('pageNumber', this.state.pageNumber)
+    localStorage.setItem('listeningPrompt', this.state.listeningPrompt)
+    localStorage.setItem('autoListeningPrompt', this.state.autoListeningPrompt)
+    localStorage.setItem('backgroundPrompt', this.state.backgroundPrompt)
+    localStorage.setItem('translationPrompt', this.state.translationPrompt)
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -224,7 +228,9 @@ class App extends React.Component {
       prevState.wordsData[prevState.numOfSentence].id &&
       prevState.numOfSentence !== 9) this.audioPlay()
     if (!prevState.wordsData && this.state.wordsData &&
-      this.state.autoListeningPrompt) this.audioPlay()
+      this.state.autoListeningPrompt) {
+      this.audioPlay()
+    }
   }
 
   render() {
